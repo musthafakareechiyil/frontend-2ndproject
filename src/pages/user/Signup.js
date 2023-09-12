@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserUrl } from '../../APIs/BaseUrl'
 
 function Signup() {
@@ -8,6 +8,7 @@ function Signup() {
   const [password, setPassword] = useState('')
   const [fullname, setFullname] = useState('')
   const [username, setUsername] = useState('')
+  const navigate = useNavigate()
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -38,6 +39,7 @@ function Signup() {
 
       if (response.status === 201){
         console.log('Registration success',response.data)
+        navigate("/user/login")
       }else{
         console.log('Registration failed',response.statusText)
       }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserUrl } from '../../APIs/BaseUrl'
 import { currentUser } from '../../Redux/userSlice'
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,7 @@ function Login() {
     const [epu, setEpu] = useState('')
     const [password, setPassword] = useState('')
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -36,6 +37,7 @@ function Login() {
 
             const response = await axios.post(UserUrl+'login',userData);
             if (response.status === 200){
+                navigate('/user')
                 console.log("Logged in successfully", response.data);
                 const user = response.data.user
                 const token = response.data.token
