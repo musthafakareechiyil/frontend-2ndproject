@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { AdminUrl } from '../../APIs/BaseUrl';
+import { loggedAdmin } from '../../Redux/adiminSlice';
+import { useDispatch } from 'react-redux'
 
 function AdminLogin() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch()
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -19,6 +22,9 @@ function AdminLogin() {
 
             if (response.status === 200) {
                 console.log(response.data, "login success")
+                const admin = response.data.admin
+                const token = response.data.token
+                dispatch(loggedAdmin({admin:admin,token}))
             } else {
                 console.log("login failed", response.statusText)
             }
