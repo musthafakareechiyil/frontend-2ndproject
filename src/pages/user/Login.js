@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { UserUrl } from '../../APIs/BaseUrl'
 
 function Login() {
-    const [epu, setEpu] = useState()
-    const [password, setPassword] = useState()
+    const [epu, setEpu] = useState('')
+    const [password, setPassword] = useState('')
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -41,6 +41,10 @@ function Login() {
             console.log("Error occurred",error)
         }
     }
+
+    const isEpuNotEmpty = epu.trim() !== '';
+    const isPasswordNotEmpty = password.trim() !== '';
+
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col justify-center sm:py-12">
       <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md bg-gray-900 rounded-md shadow-2xl">
@@ -48,6 +52,9 @@ function Login() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="pb-4">
+              {isEpuNotEmpty && (
+                <p className='text-gray-400 text-xs pl-3 pb-1'>Email Phone or Username</p>
+              )}
               <label htmlFor="emailOrPhoneOrUsername" className="sr-only">
                 Email Phone or Username
               </label>
@@ -66,6 +73,9 @@ function Login() {
               />
             </div>
             <div>
+              {isPasswordNotEmpty && (
+                <p className='text-gray-400 text-xs pl-3 pb-1'>Password</p>
+              )}
               <label htmlFor="password" className="sr-only">
                 Password
               </label>

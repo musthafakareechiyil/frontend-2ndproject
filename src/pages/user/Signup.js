@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import { UserUrl } from '../../APIs/BaseUrl'
 
 function Signup() {
-  const [emailorphone, setEmailorphone] = useState()
-  const [password, setPassword] = useState()
-  const [fullname, setFullname] = useState()
-  const [username, setUsername] = useState()
+  const [emailorphone, setEmailorphone] = useState('')
+  const [password, setPassword] = useState('')
+  const [fullname, setFullname] = useState('')
+  const [username, setUsername] = useState('')
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -45,6 +45,10 @@ function Signup() {
       console.log('Error occurred',error)
     }
   }
+  const isEmailorphoneNotEmpty = emailorphone.trim() !== '';
+  const isPasswordNotEmpty = password.trim() !== '';
+  const isFullnameNotEmpty = fullname.trim() !== '';
+  const isUsernameNotEmpty = username.trim() !== '';
 
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col justify-center sm:py-12">
@@ -53,6 +57,9 @@ function Signup() {
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="rounded-md shadow-sm -space-y-px ">
           <div className='pb-4'>
+            {isEmailorphoneNotEmpty && (
+              <p className='text-gray-400 text-xs pl-3 pb-1'>Email or Phone</p>
+            )}
             <label htmlFor="email" className="sr-only ">
               Email or Phone
             </label>
@@ -71,6 +78,9 @@ function Signup() {
             />
           </div>
           <div className='pb-4'>
+            {isPasswordNotEmpty && (
+              <p className='text-gray-400 text-xs pl-3 pb-1'>Password</p>
+            )}
             <label htmlFor="password" className="sr-only">
               Password
             </label>
@@ -89,6 +99,9 @@ function Signup() {
             />
           </div>
           <div className='pb-4'>
+          {isFullnameNotEmpty && (
+            <p className='text-gray-400 text-xs pl-3 pb-1'>Fullname</p>
+          )}
             <label htmlFor="fullName" className="sr-only">
               Full Name
             </label>
@@ -107,6 +120,9 @@ function Signup() {
             />
           </div>
           <div>
+          {isUsernameNotEmpty && (
+            <p className='text-gray-400 text-xs pl-3 pb-1'>Username</p>
+          )}
             <label htmlFor="username" className="sr-only">
               Username
             </label>
