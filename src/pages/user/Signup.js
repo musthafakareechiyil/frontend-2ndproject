@@ -39,7 +39,7 @@ function Signup() {
 
       if (response.status === 201){
         console.log('Registration success',response.data)
-        navigate("/user/login")
+        navigate("/login")
       }else{
         console.log('Registration failed',response.statusText)
       }
@@ -151,7 +151,7 @@ function Signup() {
           >
             Sign Up
           </button>
-          <p className='text-white text-sm mt-5'>already have an account? <Link to="/user/login" className='text-indigo-500'>Log in</Link></p>
+          <p className='text-white text-sm mt-5'>already have an account? <Link to="/login" className='text-indigo-500'>Log in</Link></p>
         </div>
       </form>
     </div>

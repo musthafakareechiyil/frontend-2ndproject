@@ -37,11 +37,11 @@ function Login() {
 
             const response = await axios.post(UserUrl+'login',userData);
             if (response.status === 200){
-                navigate('/user')
-                console.log("Logged in successfully", response.data);
-                const user = response.data.user
-                const token = response.data.token
-                dispatch(currentUser({user:user, token}))
+              console.log("Logged in successfully", response.data);
+              const user = response.data.user
+              const token = response.data.token
+              dispatch(currentUser({user:user, token}))
+              navigate('/')
             }else{
                 console.log("Login failed",response.statusText)
             }
@@ -111,7 +111,7 @@ function Login() {
               Log in
             </button>
           </div>
-          <p className='text-white text-sm mt-5'>donot have an account?  <Link to = "/user/users" className='text-indigo-500'> Sign up</Link></p>
+          <p className='text-white text-sm mt-5'>donot have an account?  <Link to = "/signup" className='text-indigo-500'> Sign up</Link></p>
         </form>
       </div>
     </div>
