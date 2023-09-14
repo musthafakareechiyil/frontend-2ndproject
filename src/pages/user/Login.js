@@ -43,7 +43,7 @@ function Login() {
               const token = response.data.token
               dispatch(currentUser({user:user, token}))
 
-              localStorage.setItem('token', token)
+              // localStorage.setItem('token', token)
 
               navigate('/')
             }else{

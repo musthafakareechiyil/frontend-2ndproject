@@ -14,6 +14,8 @@ const userSlice = createSlice({
         currentUser: (state,action) => {
             state.user = action.payload.user
             state.token = action.payload.token
+
+            localStorage.setItem('token', action.payload.token)
         },
         userLogout: (state) => {
             state.user = null
