@@ -38,9 +38,13 @@ function Login() {
             const response = await axios.post(UserUrl+'login',userData);
             if (response.status === 200){
               console.log("Logged in successfully", response.data);
+
               const user = response.data.user
               const token = response.data.token
               dispatch(currentUser({user:user, token}))
+
+              localStorage.setItem('token', token)
+
               navigate('/')
             }else{
                 console.log("Login failed",response.statusText)
