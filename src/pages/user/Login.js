@@ -1,61 +1,84 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
-import { UserUrl } from '../../APIs/BaseUrl'
-import { currentUser } from '../../Redux/userSlice'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserUrl } from '../../APIs/BaseUrl';
+import { currentUser } from '../../Redux/userSlice';
+import { useDispatch } from 'react-redux';
+import { GoogleLogin } from '@react-oauth/google';
 
 function Login() {
-    const [epu, setEpu] = useState('')
-    const [password, setPassword] = useState('')
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+  const [epu, setEpu] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        try {
-            let userData = {}
-            const emailRegExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-            const numericRegExp = /^\d+$/;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      let userData = {};
+      const emailRegExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+      const numericRegExp = /^\d+$/;
 
-            if (epu.match(emailRegExp)){
-                userData = {
-                    email: epu,
-                    password: password
-                }
-            }else if (numericRegExp.test(epu) && epu.length >= 10){
-                userData = {
-                    phone: epu,
-                    password: password
-                }
-            }else{
-                userData = {
-                    username: epu,
-                    password: password
-                }
-            }
+      if (epu.match(emailRegExp)) {
+        userData = {
+          email: epu,
+          password: password,
+        };
+      } else if (numericRegExp.test(epu) && epu.length >= 10) {
+        userData = {
+          phone: epu,
+          password: password,
+        };
+      } else {
+        userData = {
+          username: epu,
+          password: password,
+        };
+      }
 
-            const response = await axios.post(UserUrl+'login',userData);
-            if (response.status === 200){
-              console.log("Logged in successfully", response.data);
+      const response = await axios.post(UserUrl + 'login', userData);
+      if (response.status === 200) {
+        console.log('Logged in successfully', response.data);
 
-              const user = response.data.user
-              const token = response.data.token
-              dispatch(currentUser({user:user, token}))
+        const user = response.data.user;
+        const token = response.data.token;
+        dispatch(currentUser({ user: user, token }));
 
-              // localStorage.setItem('token', token)
-
-              navigate('/')
-            }else{
-                console.log("Login failed",response.statusText)
-            }
-        }catch(error){
-            console.log("Error occurred",error)
-        }
+        navigate('/');
+      } else {
+        console.log('Login failed', response.statusText);
+      }
+    } catch (error) {
+      console.log('Error occurred', error);
     }
+  };
 
-    const isEpuNotEmpty = epu.trim() !== '';
-    const isPasswordNotEmpty = password.trim() !== '';
+  const handleGoogleLoginSuccess = (credentialResponse) => {
+    const googleToken = credentialResponse.credential;
+    console.log('Google login successful', googleToken);
+
+    axios
+      .post(UserUrl + 'login', { google_token: googleToken })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log('Logged in successfully with Google', response.data);
+
+          const user = response.data.user;
+          const token = response.data.token;
+          dispatch(currentUser({ user: user, token }));
+
+          navigate('/');
+        } else {
+          console.log('Login with Google failed', response.statusText);
+        }
+      })
+      .catch((error) => {
+        console.log('Error occurred while logging in with Google', error);
+      });
+  };
+
+  const isEpuNotEmpty = epu.trim() !== '';
+  const isPasswordNotEmpty = password.trim() !== '';
 
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col justify-center sm:py-12">
@@ -72,8 +95,8 @@ function Login() {
               </label>
               <input
                 value={epu}
-                onChange = {(e) => {
-                    setEpu(e.target.value)
+                onChange={(e) => {
+                  setEpu(e.target.value);
                 }}
                 id="emailOrPhoneOrUsername"
                 name="emailOrPhoneOrUsername"
@@ -93,8 +116,8 @@ function Login() {
               </label>
               <input
                 value={password}
-                onChange = {(e) => {
-                    setPassword(e.target.value)
+                onChange={(e) => {
+                  setPassword(e.target.value);
                 }}
                 id="password"
                 name="password"
@@ -115,11 +138,20 @@ function Login() {
               Log in
             </button>
           </div>
-          <p className='text-white text-sm mt-5'>donot have an account?  <Link to = "/signup" className='text-indigo-500'> Sign up</Link></p>
+          <div className='border-t-2 shadow-sm border-gray-700 pt-3'></div>
+          <div className='flex justify-center pb-3'>
+          <GoogleLogin
+            onSuccess={handleGoogleLoginSuccess}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          />
+          </div>
+          <p className='text-white text-sm mt-5'>donot have an account?  <Link to="/signup" className='text-indigo-500'> Sign up</Link></p>
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
