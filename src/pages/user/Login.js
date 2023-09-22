@@ -34,8 +34,9 @@ function Login() {
           password: password,
         };
       } else if (numericRegExp.test(epu) && epu.length >= 10) {
+        const phoneNumber = "+91"+epu
         userData = {
-          phone: epu,
+          phone: phoneNumber,
           password: password,
         };
       } else {
@@ -102,19 +103,21 @@ function Login() {
       if (user && user.confirm){
         const confirmation = await user.confirm(otp)
         console.log(confirmation)
-
         const phoneToken = confirmation.user.accessToken
-
-        console.log("user details ,", phoneToken)
-
         const response = await axios.post(UserUrl+'login',{phone_token: phoneToken})
+        if (response.status === 200){
+          console.log(response.data)
+          const token = response.data.token
+          const user = response.data.user
 
-        console.log(response)
-
-
+          dispatch(currentUser({user: user, token}))
+          navigate("/")
+        }else{
+          console.log("Login with otp failed",response.statusText)
+        }
       }
     }catch(error){
-
+      console.log("error occured while loggin in with otp", error)
     }
   }
 
@@ -216,6 +219,7 @@ function Login() {
                 required
                 className="appearance-none rounded-md relative block w-full px-3 py-2 my-5 placeholder-gray-400 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm bg-gray-700"
                 placeholder="Phone Number"
+                defaultValue="+91"
               />
             </div>
             <div>
