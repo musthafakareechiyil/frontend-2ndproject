@@ -3,12 +3,14 @@ import React, { useState } from 'react'
 import { AdminUrl } from '../../APIs/BaseUrl';
 import { loggedAdmin } from '../../Redux/adiminSlice';
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom';
 
 function AdminLogin() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -25,6 +27,7 @@ function AdminLogin() {
                 const admin = response.data.admin
                 const token = response.data.token
                 dispatch(loggedAdmin({admin:admin,token}))
+                navigate('/dashboard')
             } else {
                 console.log("login failed", response.statusText)
             }
