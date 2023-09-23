@@ -10,7 +10,6 @@ import Users from "./pages/admin/Users";
 
 function App() {
   const adminToken = useSelector((state) => state?.adminDetails?.token)
-  console.log(adminToken,"dfjhdasfaosiudhfajsd")
   const userToken = useSelector((state) => state?.userDetails?.token)
 
   return (

@@ -17,9 +17,9 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [otpForm, setOtpForm] = useState(false)
-  const [phoneNumber, setPhoneNumber] = useState()
-  const [otp, setOtp] = useState()
-  const [user, setUser] = useState()
+  const [phoneNumber, setPhoneNumber] = useState("+91")
+  const [otp, setOtp] = useState('')
+  const [user, setUser] = useState(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,13 +65,11 @@ function Login() {
 
   const handleGoogleLoginSuccess = (credentialResponse) => {
     const googleToken = credentialResponse.credential;
-    console.log('Google login successful', googleToken);
 
     axios
       .post(UserUrl + 'login', { google_token: googleToken })
       .then((response) => {
         if (response.status === 200) {
-          console.log('Logged in successfully with Google', response.data);
 
           const user = response.data.user;
           const token = response.data.token;
@@ -205,7 +203,6 @@ function Login() {
         )}
         {otpForm && (
           <div>
-            {/* Render the OTP form here */}
             <div>
               <label htmlFor="phoneNumber" className="sr-only">
                 Phone Number
@@ -219,7 +216,6 @@ function Login() {
                 required
                 className="appearance-none rounded-md relative block w-full px-3 py-2 my-5 placeholder-gray-400 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm bg-gray-700"
                 placeholder="Phone Number"
-                defaultValue="+91"
               />
             </div>
             <div>
