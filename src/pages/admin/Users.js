@@ -35,6 +35,19 @@ function Users() {
         setIsModalOpen(false)
     }
 
+    const handleDeleteUser = async(userId) => {
+        try{
+            const confirmDelete = window.confirm(`Are you sure you want to delete the user ${userId}`)
+            if (confirmDelete){
+                const response = await adminAxios.delete(AdminUrl+ `usermanagment/${userId}`)
+                console.log(response)
+                setUsers(users.filter(user => user.id !== userId));
+            }
+        }catch(error){
+            console.log("Error while deleting user",error)
+        }
+    }
+
 
 
   return (
@@ -60,7 +73,9 @@ function Users() {
                             onClick={()=>openModal(user.id)}
                         />
                         <FontAwesomeIcon icon={faUserPen} style={{color: "#ffffff",}} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'/>                    
-                        <FontAwesomeIcon icon={faTrash} style={{color: "#ffffff",}} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'/>                    
+                        <FontAwesomeIcon icon={faTrash} style={{color: "#ffffff",}} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'
+                            onClick={()=>handleDeleteUser(user.id)}
+                        />                    
                     </td>
                 </tr>
                 ))}
