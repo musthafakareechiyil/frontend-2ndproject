@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPen, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faUserPen, faEye, faTrash, faTrashArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { AdminUrl } from '../../APIs/BaseUrl';
 import '../../../src/scrollbar.css'
 import UserShow from '../../components/UserShow';
@@ -48,6 +48,21 @@ function Users() {
         }
     }
 
+    const handleUserRecover = async(userId) => {
+        try{
+            const confirmRecover = window.confirm(`Are you sure you want to recover the user ${userId}`)
+            const response = await adminAxios.post(AdminUrl+`usermanagment/${userId}/recover_user`)
+            console.log(response, "user recovered")
+
+            setUsers((prevUsers) => 
+                prevUsers.map((user) =>
+                    user.id === userId? { ...user, deleted_at:null} : user
+                )
+            )
+        }catch(error){
+            console.log("User recovery failed",error)
+        }
+    }
 
 
   return (
@@ -73,9 +88,11 @@ function Users() {
                             onClick={()=>openModal(user.id)}
                         />
                         <FontAwesomeIcon icon={faUserPen} style={{color: "#ffffff",}} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'/>                    
-                        <FontAwesomeIcon icon={faTrash} style={{color: "#ffffff",}} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'
-                            onClick={()=>handleDeleteUser(user.id)}
-                        />                    
+                        {user.deleted_at ? (
+                            <FontAwesomeIcon icon={faTrashArrowUp} style={{ color: "#ffffff" }} className='mr-4 cursor-pointer p-2 hover-bg-gray-700 rounded-md mt-1' onClick={() => handleUserRecover(user.id)}/>
+                          ) : (
+                            <FontAwesomeIcon icon={faTrash} style={{ color: "#ffffff" }} className='mr-4 cursor-pointer p-2 hover-bg-gray-700 rounded-md mt-1' onClick={() => handleDeleteUser(user.id)} />
+                        )}
                     </td>
                 </tr>
                 ))}
