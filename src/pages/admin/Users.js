@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPen, faEye, faTrash, faTrashArrowUp, faCircle, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faTrash, faTrashArrowUp, faCircle, faBan } from '@fortawesome/free-solid-svg-icons';
 import { AdminUrl } from '../../APIs/BaseUrl';
 import '../../../src/scrollbar.css'
 import UserShow from '../../components/UserShow';
