@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPen, faEye, faTrash, faTrashArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faUserPen, faEye, faTrash, faTrashArrowUp, faCircle, faBan } from '@fortawesome/free-solid-svg-icons';
 import { AdminUrl } from '../../APIs/BaseUrl';
 import '../../../src/scrollbar.css'
 import UserShow from '../../components/UserShow';
@@ -41,7 +41,11 @@ function Users() {
             if (confirmDelete){
                 const response = await adminAxios.delete(AdminUrl+ `usermanagment/${userId}`)
                 console.log(response)
-                setUsers(users.filter(user => user.id !== userId));
+                setUsers((prevUsers) =>
+                    prevUsers.map((user) =>
+                        user.id === userId? { ...user, deleted_at: new Date() }: user
+                    )
+                )
             }
         }catch(error){
             console.log("Error while deleting user",error)
@@ -51,16 +55,41 @@ function Users() {
     const handleUserRecover = async(userId) => {
         try{
             const confirmRecover = window.confirm(`Are you sure you want to recover the user ${userId}`)
-            const response = await adminAxios.post(AdminUrl+`usermanagment/${userId}/recover_user`)
-            console.log(response, "user recovered")
-
-            setUsers((prevUsers) => 
-                prevUsers.map((user) =>
-                    user.id === userId? { ...user, deleted_at:null} : user
+            if (confirmRecover){
+                const response = await adminAxios.post(AdminUrl+`usermanagment/${userId}/recover_user`)
+                console.log(response, "user recovered")
+                setUsers((prevUsers) => 
+                    prevUsers.map((user) =>
+                        user.id === userId? { ...user, deleted_at:null} : user
+                    )
                 )
-            )
+            }
         }catch(error){
             console.log("User recovery failed",error)
+        }
+    }
+
+    const handleBlockUser = async(userId) => {
+        try{
+            const userToBlock = users.find((user) => user.id === userId);
+
+            if (userToBlock.deleted_at) {
+                // User is deleted, show an alert and do not proceed
+                window.alert('Deleted user cannot be updated');
+                return;
+              }
+            const confirmBlock = window.confirm("Are you sure to change user_block")
+            if (confirmBlock){
+                const response = await adminAxios.patch(AdminUrl+`usermanagment/${userId}/block`)
+                console.log(response, 'user blocked or unblocked')
+                setUsers((prevUsers)=>
+                    prevUsers.map((user) => 
+                        user.id === userId? { ...user, blocked: !user.blocked} : user
+                    )
+                )
+            }
+        }catch(error){
+            console.log("User block fails",error)   
         }
     }
 
@@ -75,7 +104,7 @@ function Users() {
                 <tr>
                 <td className='px-4 py-2 font-bold'>ID</td>
                 <td className='px-4 py-2 font-bold'>Username</td>
-                <td className='px-4 py-2 font-bold'>Actions</td>
+                <td className='px-6 py-2 font-bold '>Actions</td>
                 </tr>
             </tbody>
             <tbody className=''>
@@ -89,10 +118,17 @@ function Users() {
                         />
                         <FontAwesomeIcon icon={faUserPen} style={{color: "#ffffff",}} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'/>                    
                         {user.deleted_at ? (
-                            <FontAwesomeIcon icon={faTrashArrowUp} style={{ color: "#ffffff" }} className='mr-4 cursor-pointer p-2 hover-bg-gray-700 rounded-md mt-1' onClick={() => handleUserRecover(user.id)}/>
+                            <FontAwesomeIcon icon={faTrashArrowUp} style={{ color: "#ff0000" }} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1' onClick={() => handleUserRecover(user.id)}/>
                           ) : (
-                            <FontAwesomeIcon icon={faTrash} style={{ color: "#ffffff" }} className='mr-4 cursor-pointer p-2 hover-bg-gray-700 rounded-md mt-1' onClick={() => handleDeleteUser(user.id)} />
+                            <FontAwesomeIcon icon={faTrash} style={{ color: "#ffffff" }} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1' onClick={() => handleDeleteUser(user.id)} />
                         )}
+                        <FontAwesomeIcon
+                        icon={user.blocked ? faBan : faCircle}
+                        style={{ color: user.blocked ? "#ff0000" : "#00f020" }}
+                        className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'
+                        onClick={() => handleBlockUser(user.id)}
+                      />
+                      
                     </td>
                 </tr>
                 ))}

@@ -39,7 +39,7 @@ function UserShow({ user, isOpen, closeModal }) {
                 <span className='font-bold mr-2'>Updated_at :</span> {user.updated_at}
               </p>
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-200">
-                <span className='font-bold mr-2'>Deleted :</span> {user.deleted_at || 'Nil'}
+                <span className='font-bold mr-2'>Deleted_at :</span> {user.deleted_at || 'Nil'}
               </p>
             </div>
             <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
