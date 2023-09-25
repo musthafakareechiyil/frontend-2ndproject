@@ -6,20 +6,25 @@ import { AdminUrl } from '../../APIs/BaseUrl';
 import '../../../src/scrollbar.css'
 import UserShow from '../../components/UserShow';
 import { AdminAxios } from '../../config/Header_request';
+import Shimmer from '../../components/Shimmer';
+
 
 function Users() {
     const [users, setUsers] = useState([])
     const [selectedUser, setSelectedUser] = useState(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const adminAxios = AdminAxios()
 
     useEffect(()=>{
         adminAxios.get(AdminUrl+'usermanagment')
             .then((response) => {
                 setUsers(response.data)
+                setIsLoading(false)
             })
             .catch((error) => {
                 console.log("Error while fetching users", error)
+                setIsLoading(false)
             })
     },[])
 
@@ -99,6 +104,7 @@ function Users() {
       <Sidebar />
       <div className='w-4/5 h-screen flex justify-center'>
         <div className='p-5 w-1/2 mt-7 overflow-y-auto'>
+            {isLoading? (<Shimmer/>):(
             <table className='w-full table-auto'>
             <tbody>
                 <tr>
@@ -134,6 +140,7 @@ function Users() {
                 ))}
             </tbody>
             </table>
+            ) }
         </div>
       </div>
       {selectedUser && (
