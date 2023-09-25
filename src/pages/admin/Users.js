@@ -122,7 +122,6 @@ function Users() {
                         <FontAwesomeIcon icon={faEye} style={{color: "#ffffff",}} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'
                             onClick={()=>openModal(user.id)}
                         />
-                        <FontAwesomeIcon icon={faUserPen} style={{color: "#ffffff",}} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1'/>                    
                         {user.deleted_at ? (
                             <FontAwesomeIcon icon={faTrashArrowUp} style={{ color: "#ff0000" }} className='mr-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md mt-1' onClick={() => handleUserRecover(user.id)}/>
                           ) : (
