@@ -8,6 +8,7 @@ function Signup() {
   const [password, setPassword] = useState('')
   const [fullname, setFullname] = useState('')
   const [username, setUsername] = useState('')
+  const [alert, setAlert] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = async(e) => {
@@ -44,7 +45,12 @@ function Signup() {
         console.log('Registration failed',response.statusText)
       }
     }catch(error){
-      console.log('Error occurred',error)
+      console.log('Error occurred',error.response.data.errors)
+      if (error.response.data.errors) {
+        setAlert(error.response.data.errors);
+      } else {
+        setAlert(['An error occurred. Please try again.']);
+      }    
     }
   }
   const isEmailorphoneNotEmpty = emailorphone.trim() !== '';
@@ -143,7 +149,16 @@ function Signup() {
             />
           </div>
         </div>
-
+        {alert.length > 0 && (
+          <div className="text-red-500 text-sm mt-2">
+            <ul>
+              {alert.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
         <div>
           <button
             type="submit"

@@ -20,6 +20,8 @@ function Login() {
   const [phoneNumber, setPhoneNumber] = useState("+91")
   const [otp, setOtp] = useState('')
   const [user, setUser] = useState(null)
+  const [alert, setAlert] = useState('')
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +61,12 @@ function Login() {
         console.log('Login failed', response.statusText);
       }
     } catch (error) {
-      console.log('Error occurred', error);
+      console.log('Error occurred at catch', error.response);
+      if (error.response.data.error) {
+        setAlert(error.response.data.error);
+      } else {
+        setAlert(['An error occurred. Please try again.']);
+      } 
     }
   };
 
@@ -172,7 +179,9 @@ function Login() {
               />
             </div>
           </div>
-
+          {alert && (
+            <div className="text-red-500 text-sm mt-2">Invalid Credentials</div>
+          )} 
           <div>
             <button
               type="submit"

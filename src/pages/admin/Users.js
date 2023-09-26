@@ -16,17 +16,21 @@ function Users() {
     const [isLoading, setIsLoading] = useState(true)
     const adminAxios = AdminAxios()
 
-    useEffect(()=>{
-        adminAxios.get(AdminUrl+'usermanagment')
-            .then((response) => {
-                setUsers(response.data)
-                setIsLoading(false)
-            })
-            .catch((error) => {
-                console.log("Error while fetching users", error)
-                setIsLoading(false)
-            })
-    },[])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await adminAxios.get(AdminUrl + 'usermanagment');
+                setUsers(response.data);
+                setIsLoading(false);
+            } catch (error) {
+                console.log("Error while fetching users", error);
+                setIsLoading(false);
+            }
+        };
+    
+        fetchData();
+    }, []);
+    
 
     const openModal = async(userId) => {
         const response = await adminAxios.get(AdminUrl+`usermanagment/${userId}`)
@@ -79,7 +83,6 @@ function Users() {
             const userToBlock = users.find((user) => user.id === userId);
 
             if (userToBlock.deleted_at) {
-                // User is deleted, show an alert and do not proceed
                 window.alert('Deleted user cannot be updated');
                 return;
               }
