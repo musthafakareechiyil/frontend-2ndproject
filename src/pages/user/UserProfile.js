@@ -27,7 +27,7 @@ function UserProfile() {
             />
           </div>
           {/* Username */}
-          <h1 className='text-2xl font-semibold mt-4'>{userData.username}</h1>
+          <h1 className='text-2xl font-semibold mt-2 mb-3'>{userData.username}</h1>
           {/* Edit and View Archive Buttons */}
           <div className='flex mt-4'>
             <button className='text-gray-200 mr-4 px-4 py-1 cursor-pointer hover:bg-gray-600 bg-gray-700 rounded-md'>Edit Profile</button>
