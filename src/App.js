@@ -6,6 +6,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import { useSelector } from "react-redux";
 import Dashboard from "./pages/admin/Dashboard";
 import Users from "./pages/admin/Users";
+import UserProfile from "./pages/user/UserProfile";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="admin" element= {adminToken? <Navigate to='/dashboard'/>:<AdminLogin/>}/>
           <Route path="dashboard" element = {adminToken? <Dashboard/>:<AdminLogin/>}/>
           <Route path="users" element = {adminToken? <Users/>:<AdminLogin/>}/>
+          <Route path="user/profile" element = {userToken? <UserProfile/>:<Login/>}/>
         </Routes>
     </div>
   );

@@ -128,13 +128,19 @@ function Login() {
 
   const isEpuNotEmpty = epu.trim() !== '';
   const isPasswordNotEmpty = password.trim() !== '';
+  const appLogo = {logo: "https://res.cloudinary.com/dbpcfcpit/image/upload/v1696220925/V-logo-removebg-preview_rjpizi.png"}
+
 
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col justify-center sm:py-12">
       <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md bg-gray-900 rounded-md shadow-2xl">
-        <h2 className="text-center text-white text-2xl font-semibold">App Logo</h2>
+        <img 
+          src={appLogo.logo}
+          className="w-28 h-auto mx-auto"
+          alt='App Logo'
+        />
         { !otpForm &&(
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="pb-4">
               {isEpuNotEmpty && (
