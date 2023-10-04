@@ -45,7 +45,7 @@ function Signup() {
         console.log('Registration failed',response.statusText)
       }
     }catch(error){
-      console.log('Error occurred',error.response.data.errors)
+      console.log('Error occurred',error)
       if (error.response.data.errors) {
         setAlert(error.response.data.errors);
       } else {
