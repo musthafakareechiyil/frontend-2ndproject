@@ -12,7 +12,7 @@ const SuggestedUsers = () => {
     const fetchSuggestedUsers = async () => {
       try {
         const response = await userAxios.get(UserUrl + 'users');
-        // filter ou the current user from the response data
+        // filter out the current user from the response data
         const filteredUsers = response.data.filter(user => user.id !== currentUser.id)
         setUsers(filteredUsers);
         console.log(response, "retrieving users data");
@@ -45,7 +45,7 @@ const SuggestedUsers = () => {
           <li key={user.id} className="flex items-center justify-between py-2 mb-1 cursor-pointer">
             <div className="flex items-center">
               <img
-                src={`https://example.com/profile-images/${user.username}.jpg`} // Replace with the actual image URL
+                src={user.profile_url}
                 alt={`Profile of ${user.username}`}
                 className="w-8 h-8 rounded-full object-cover mr-2"
               />
@@ -55,7 +55,7 @@ const SuggestedUsers = () => {
               className="bg-indigo-600 hover:bg-indigo-800 text-white px-3 py-1 rounded-md"
               onClick={() => followUser(user.username)}
             >
-              Follow
+              {currentUser.following ? 'follwing':"follow"}
             </button>
           </li>
         ))}
