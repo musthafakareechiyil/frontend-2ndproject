@@ -1,16 +1,19 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar';
-import Feed from '../../components/FeedItem';
 import SuggestedUsers from '../../components/SuggestedUsers';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { UserUrl } from '../../APIs/BaseUrl';
+import { UserAxios } from '../../config/Header_request';
+import FeedItem from '../../components/FeedItem';
 
 function Home() {
   const currentUser = useSelector((state) => state?.userDetails?.user)
+  const userAxios = UserAxios();
 
-  const uploadPost = async (e,type) => {
+  const uploadPost = async (e) => {
     const selectedPostImageOrVideos = e.target.files[0]
     if(selectedPostImageOrVideos){
       try{
@@ -22,6 +25,9 @@ function Home() {
   
         const response = await axios.post(`https://api.cloudinary.com/v1_1/dbpcfcpit/${resourceType}/upload`,data)
         console.log(response.data.url)
+        const post_url = response.data.url
+
+        await userAxios.post(UserUrl+'posts',{post_url})
         
       }catch(error){
         console.error("Error uploading post",error)
@@ -33,10 +39,10 @@ function Home() {
     <div className='min-h-screen bg-gray-800 flex '>
       {/* Sidebar component */}
       <Sidebar type="user" styleprop="home" />
-      {/* Feed component */} 
       <div className='w-4/5 flex'>
+        {/* Feed component */} 
         <div className='overflow-y-auto w-2/3' style={{ maxHeight: 'calc(100vh - 4rem)' }}>
-          <Feed />
+          <FeedItem/>
         </div>
         
         <div className='flex flex-col m-9 text-gray-300'>

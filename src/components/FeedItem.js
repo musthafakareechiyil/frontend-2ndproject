@@ -1,24 +1,46 @@
 import { faComment, faEllipsisVertical, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { UserUrl } from '../APIs/BaseUrl';
+import { useSelector } from 'react-redux';
+import { UserAxios } from '../config/Header_request';
 
-function FeedItem({ imageSrc, username }) {
+function FeedItem() {
   const [liked, setLiked] = useState(false);
+  const currentUser = useSelector((state)=> state?.userDetails?.user)
+  const userAxios = UserAxios()
+  const [ feeds, setFeeds ] = useState('')
 
   const toggleLike = () => {
     setLiked(!liked);
   };
 
+  useEffect(()=> {
+    const feedData = async () => {
+      try {
+        const response = await userAxios.get(UserUrl+'posts')
+        console.log(response.data)
+        setFeeds(response.data)
+      }catch (error){
+        console.error("error while fetching feed data", error)
+      }
+    }
+    feedData()
+  // eslint-disable-next-line
+  },[])
+
   return (
+    <>
+    { feeds && feeds.map((feed) => (
     <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg">
       <div className="flex justify-between items-center">
         <div className="flex items-center ms-3 mt-2 mb-3">
           <img
-            src={imageSrc}
+            src={currentUser.profile_url}
             alt="User Profile"
             className="w-9 h-9 rounded-full object-cover mr-2"
           />
-          <span className="font-semibold">{username}</span>
+          <span className="font-semibold">{currentUser.username}</span>
         </div>
         <div>
           <button className="text-white">
@@ -30,7 +52,7 @@ function FeedItem({ imageSrc, username }) {
           </button>
         </div>
       </div>
-      <img src={imageSrc} alt="Post" className="w-full" />
+      <img src={feed.post_url} alt="Post" className="w-full" />
 
       <div className="flex justify-between mt-4 mb-2 mx-2">
         <div>
@@ -66,35 +88,9 @@ function FeedItem({ imageSrc, username }) {
         </button>
       </div>
     </div>
+    ))}
+    </>
   );
 }
 
-export default function Feed() {
-  // Sample data for the feed items
-  const feedItems = [
-    {
-      id: 1,
-      imageSrc: 'https://imgs.search.brave.com/fXd4lPQ-VGV-38zBBz8Qwp-6YXaRcPDoK2GEZaU599g/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/aXN0b2NrcGhvdG8u/Y29tL3Jlc291cmNl/cy9pbWFnZXMvSG9t/ZVBhZ2UvRm91clBh/Y2svQzItUGhvdG9z/LWlTdG9jay0xMzU2/MTk3Njk1LmpwZw',
-      username: 'User1',
-    },
-    {
-      id: 2,
-      imageSrc: 'https://imgs.search.brave.com/GLmoOADPgCQ7oGcz2z7XgLxc5kuEAZNpjEzuGe3Rnac/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMucGV4ZWxzLmNv/bS9waG90b3MvMTM4/NjYwNC9wZXhlbHMt/cGhvdG8tMTM4NjYw/NC5qcGVnP2F1dG89/Y29tcHJlc3MmY3M9/dGlueXNyZ2ImZHBy/PTEmdz01MDA',
-      username: 'User2',
-    },
-    {
-      id: 3,
-      imageSrc: 'https://res.cloudinary.com/dbpcfcpit/image/upload/v1696220925/V-logo-removebg-preview_rjpizi.png',
-      username: 'User2',
-    },
-    // Add more items as needed
-  ];
-
-  return (
-    <div>
-      {feedItems.map((item) => (
-        <FeedItem key={item.id} imageSrc={item.imageSrc} username={item.username} />
-      ))}
-    </div>
-  );
-}
+export default FeedItem
