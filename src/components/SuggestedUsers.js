@@ -57,7 +57,7 @@ const SuggestedUsers = () => {
   }
 
   return (
-    <div className="bg-gray-800 mt-8 w-64">
+    <div className="bg-gray-800 mt-8">
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-gray-500 text-sm font-semibold mr-5">Suggested for You</h2>
         { seeAll === true ? (

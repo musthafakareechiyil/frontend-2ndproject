@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Sidebar from '../../components/Sidebar';
 import Feed from '../../components/FeedItem';
 import SuggestedUsers from '../../components/SuggestedUsers';
+import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-
 function Home() {
-  const [ image, setImage ] = useState(null)
+  const currentUser = useSelector((state) => state?.userDetails?.user)
 
-  const submitImage = async() => {
-    try{
-      const data = new FormData()
-      data.append("file",image)
-      data.append("upload_preset","V_world")
-      data.append("clound_name","dbpcfcpit")
-
-      const response = await axios.post("https://api.cloudinary.com/v1_1/dbpcfcpit/image/upload",data)
-      console.log(response.data.url)
-    }catch(e){
-      console.log(e, "error occured")
+  const uploadPost = async (e,type) => {
+    const selectedPostImageOrVideos = e.target.files[0]
+    if(selectedPostImageOrVideos){
+      try{
+        const data = new FormData()
+        data.append('file', selectedPostImageOrVideos)
+        data.append('upload_preset', 'V_world')
+        data.append('cloud_name','dbpcfcpit')
+        const resourceType = selectedPostImageOrVideos.type === 'video/mp4' ? 'video' : 'image';
+  
+        const response = await axios.post(`https://api.cloudinary.com/v1_1/dbpcfcpit/${resourceType}/upload`,data)
+        console.log(response.data.url)
+        
+      }catch(error){
+        console.error("Error uploading post",error)
+      }
     }
   }
-
+  console.log(currentUser)
   return (
     <div className='min-h-screen bg-gray-800 flex '>
       {/* Sidebar component */}
@@ -31,8 +38,25 @@ function Home() {
         <div className='overflow-y-auto w-2/3' style={{ maxHeight: 'calc(100vh - 4rem)' }}>
           <Feed />
         </div>
-        {/* suggestion */}
-        <div>
+        
+        <div className='flex flex-col m-9 text-gray-300'>
+          <div className=' bg-gray-900 p-4 shadow-2xl rounded-lg'>
+            Hai <span className='font-semibold'>{currentUser.username}</span>, do you <br/> want to add a post ?<br/>
+            <FontAwesomeIcon icon={faArrowUpFromBracket} className='h- w-20 p-2 hover:bg-gray-700 rounded-full cursor-pointer border-4 border-green-700 ml-20 mt-5 mb-5'
+              onClick={()=> document.getElementById('post').click()}
+            />
+
+            <input 
+              type='file'
+              id = 'post'
+              accept='image/*, video/*'
+              style={{display: 'none'}}
+              multiple
+              onChange={uploadPost}
+            />
+
+          </div>
+          {/* suggestion */}
           <SuggestedUsers/>
         </div>
         {/* add post */}
