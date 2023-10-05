@@ -34,17 +34,8 @@ function Home() {
         {/* suggestion */}
         <div>
           <SuggestedUsers/>
-          <input 
-            className='text-white py-2 bg-gray-700 rounded-md cursor-pointer'
-            type='file'
-            onChange={(e) => setImage(e.target.files[0])}            
-          />
-          <button
-            className='p-2 bg-gray-700 text-white'
-            onClick={submitImage}
-          >uplaod</button>
-
         </div>
+        {/* add post */}
       </div>     
     </div>
   );

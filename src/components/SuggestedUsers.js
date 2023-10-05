@@ -60,12 +60,23 @@ const SuggestedUsers = () => {
     <div className="bg-gray-800 mt-8 w-64">
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-gray-500 text-sm font-semibold mr-5">Suggested for You</h2>
-        <button
+        { seeAll === true ? (
+          <button
+          className="text-blue-500 hover:bg-gray-700 px-2 rounded-md"
+          onClick={() => setSeeAll(false)}
+        >
+          See Less
+        </button>
+
+        ):(
+          <button
           className="text-blue-500 hover:bg-gray-700 px-2 rounded-md"
           onClick={() => setSeeAll(true)}
         >
           See All
         </button>
+        )}
+
       </div>
       <ul>
         {users && users.slice(0, seeAll ? users.length : 5).map((user) => (
