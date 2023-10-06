@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faChartLine, faHouse, faMagnifyingGlass, faPhotoFilm, faComment, faBell, faUser, faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faChartLine, faHouse, faMagnifyingGlass, faPhotoFilm, faComment, faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { adminLogout } from '../Redux/adiminSlice';
 import { userLogout } from '../Redux/userSlice';

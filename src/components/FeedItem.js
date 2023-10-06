@@ -12,6 +12,7 @@ function FeedItem() {
   const userAxios = UserAxios();
   const [feeds, setFeeds] = useState([]);
   const videoRef = useRef(null)
+  const videoIntersectionObserver = useRef(null)
 
   const toggleLike = () => {
     setLiked(!liked);
@@ -28,6 +29,16 @@ function FeedItem() {
     }
   }
 
+  const handleVideoIntersection = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting){
+        entry.target.play()
+      }else{
+        entry.target.pause()
+      }
+    })
+  }
+
   useEffect(() => {
     const feedData = async () => {
       try {
@@ -39,6 +50,17 @@ function FeedItem() {
       }
     };
     feedData();
+
+    videoIntersectionObserver.current = new IntersectionObserver(handleVideoIntersection,{
+      root: null,
+      threshold: 0.5
+    })
+
+    return () => {
+      if (videoIntersectionObserver.current){
+        videoIntersectionObserver.current.disconnect()
+      }
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -67,7 +89,14 @@ function FeedItem() {
             {feed.post_url.toLowerCase().endsWith('.mp4') ? (
               // Render the video with mute control button
               <div>
-                <video autoPlay muted={muted} controls={false} className="w-full" loop ref={videoRef} onClick={handleVideoClick}>
+                <video autoPlay muted={muted} controls={false} className="w-full" loop muteRef={videoRef} onClick={handleVideoClick}
+                ref = {(el) => {
+                  if (el) {
+                    videoIntersectionObserver.current.observe(el)
+                  }
+                  videoRef.current = el;
+                }}
+              >
                   <source src={feed.post_url} type="video/mp4"/>
                 </video>
                 <button onClick={toggleMute} className="text-white">
