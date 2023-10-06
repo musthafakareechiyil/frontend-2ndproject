@@ -31,7 +31,7 @@ function FeedItem() {
 
   const handleVideoIntersection = (entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting){
+      if (entry.isIntersecting && !entry.target.paused){
         entry.target.play()
       }else{
         entry.target.pause()
@@ -89,7 +89,7 @@ function FeedItem() {
             {feed.post_url.toLowerCase().endsWith('.mp4') ? (
               // Render the video with mute control button
               <div>
-                <video autoPlay muted={muted} controls={false} className="w-full" loop muteRef={videoRef} onClick={handleVideoClick}
+                <video autoPlay muted={muted} controls={false} className="w-full" loop muteref={videoRef} onClick={handleVideoClick}
                 ref = {(el) => {
                   if (el) {
                     videoIntersectionObserver.current.observe(el)
