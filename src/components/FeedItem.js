@@ -31,13 +31,24 @@ function FeedItem() {
 
   const handleVideoIntersection = (entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting && !entry.target.paused){
-        entry.target.play()
-      }else{
-        entry.target.pause()
+      if (entry.isIntersecting) {
+        const video = entry.target;
+  
+        // Check if the video can play
+        if (video.readyState >= 2) {
+          video.play();
+        } else {
+          // Listen for the 'canplay' event before playing
+          video.addEventListener('canplay', () => {
+            video.play();
+          }, { once: true });
+        }
+      } else {
+        entry.target.pause();
       }
-    })
+    });
   }
+  
 
   useEffect(() => {
     const feedData = async () => {
@@ -86,6 +97,7 @@ function FeedItem() {
                 </button>
               </div>
             </div>
+            <div style={{ maxHeight: 'calc(85vh - 4rem)', overflow: 'hidden' }}>
             {feed.post_url.toLowerCase().endsWith('.mp4') ? (
               // Render the video with mute control button
               <div>
@@ -111,6 +123,7 @@ function FeedItem() {
               // Render the image
               <img src={feed.post_url} alt="Post" className="w-full" />
             )}
+            </div>
             <div className="flex justify-between mt-4 mb-2 mx-2">
               <div>
                 <button
