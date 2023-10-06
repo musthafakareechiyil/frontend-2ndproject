@@ -39,13 +39,13 @@ function Home() {
     <div className='min-h-screen bg-gray-800 flex '>
       {/* Sidebar component */}
       <Sidebar type="user" styleprop="home" />
-      <div className='w-4/5 flex'>
+      <div className='w-4/5 flex justify-center'>
         {/* Feed component */} 
-        <div className='overflow-y-auto w-2/3' style={{ maxHeight: 'calc(100vh - 4rem)' }}>
+        <div className='overflow-y-auto max-w-2xl' style={{ maxHeight: 'calc(100vh - 4rem)' }}>
           <FeedItem/>
         </div>
         
-        <div className='flex flex-col m-9 text-gray-300'>
+        <div className='flex flex-col m-9 text-gray-300 ml-10'>
           <div className=' bg-gray-900 p-4 shadow-2xl rounded-lg'>
             Hai <span className='font-semibold'>{currentUser.username}</span>, do you <br/> want to add a post ?<br/>
             <FontAwesomeIcon icon={faArrowUpFromBracket} className='h- w-20 p-2 hover:bg-gray-700 rounded-full cursor-pointer border-4 border-green-700 ml-20 mt-5 mb-5'

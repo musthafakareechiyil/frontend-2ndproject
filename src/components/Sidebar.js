@@ -82,12 +82,6 @@ function Sidebar( {type, styleprop} ) {
             </Link>
           </li>
           <li className="mb-4">
-            <Link to="/users" className="flex items-center text-white hover:bg-gray-700 px-4 py-2 ml-3 rounded-md ">
-                <FontAwesomeIcon icon={faCloudArrowUp} className='mr-3' /> 
-                <div className='hidden md:flex'>Upload</div>
-            </Link>
-          </li>
-          <li className="mb-4">
             <Link to="/user/profile" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "profile" ? "font-bold" : '' }`}>
                 <FontAwesomeIcon icon={faUser} className='mr-4' /> 
                 <div className='hidden md:flex'>profile</div>
