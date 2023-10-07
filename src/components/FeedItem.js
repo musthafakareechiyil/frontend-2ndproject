@@ -1,18 +1,17 @@
-import { faComment, faEllipsisVertical, faHeart, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesDown, faComment, faEllipsisVertical, faHeart, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import { UserUrl } from '../APIs/BaseUrl';
-import { useSelector } from 'react-redux';
 import { UserAxios } from '../config/Header_request';
 
 function FeedItem() {
   const [liked, setLiked] = useState(false);
   const [muted, setMuted] = useState(true)
-  const currentUser = useSelector((state) => state?.userDetails?.user);
   const userAxios = UserAxios();
   const [feeds, setFeeds] = useState([]);
   const videoRef = useRef(null)
   const videoIntersectionObserver = useRef(null)
+  const [ page, setPage ] = useState(1)
 
   const toggleLike = () => {
     setLiked(!liked);
@@ -33,7 +32,7 @@ function FeedItem() {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         const video = entry.target;
-  
+
         // Check if the video can play
         if (video.readyState >= 2) {
           video.play();
@@ -48,31 +47,62 @@ function FeedItem() {
       }
     });
   }
-  
+
+  const loadMorePosts = async () => {
+    try {
+      const response = await userAxios.get(UserUrl + 'posts', {
+        params: {
+          page: page + 1,
+        }
+      });
+
+      const newFeeds = response.data;
+      setFeeds([...feeds, ...newFeeds]);
+      setPage(page + 1);
+    } catch (e) {
+      console.error("Error loading more pages", e);
+    }
+  }
 
   useEffect(() => {
-    const feedData = async () => {
+    const fetchInitialPosts = async () => {
       try {
-        const response = await userAxios.get(UserUrl + 'posts');
-        console.log(response.data);
+        const response = await userAxios.get(UserUrl + 'posts', {
+          params: {
+            page: 1,
+          }
+        });
+        console.log(response.data.data);
         setFeeds(response.data);
       } catch (error) {
         console.error("error while fetching feed data", error);
       }
     };
-    feedData();
+    fetchInitialPosts();
 
-    videoIntersectionObserver.current = new IntersectionObserver(handleVideoIntersection,{
+    videoIntersectionObserver.current = new IntersectionObserver(handleVideoIntersection, {
       root: null,
       threshold: 0.5
-    })
+    });
 
-    return () => {
-      if (videoIntersectionObserver.current){
-        videoIntersectionObserver.current.disconnect()
+    const handleScroll = () => {
+      if(
+        window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight
+      ){
+        loadMorePosts()
       }
     }
-    // eslint-disable-next-line
+
+    window.addEventListener('scroll', handleScroll)
+
+    // Cleanup the event listener
+    return () => {
+      if (videoIntersectionObserver.current) {
+        videoIntersectionObserver.current.disconnect();
+      }
+    };
+  // eslint-disable-next-line
   }, []);
 
   return (
@@ -83,11 +113,11 @@ function FeedItem() {
             <div className="flex justify-between items-center">
               <div className="flex items-center ms-3 mt-2 mb-3">
                 <img
-                  src={currentUser.profile_url}
+                  src={feed?.user.profile_url}
                   alt="User Profile"
                   className="w-9 h-9 rounded-full object-cover mr-2"
                 />
-                <span className="font-semibold">{currentUser.username}</span>
+                <span className="font-semibold">{feed?.user.username}</span>
               </div>
               <div>
                 <button className="text-white">
@@ -159,6 +189,11 @@ function FeedItem() {
             </div>
           </div>
         ))}
+        <div className="flex justify-center mt-4">
+          <button onClick={loadMorePosts} className="bg-gray-700 text-white px-4 py-1 rounded-md hover:bg-gray-600">
+          <FontAwesomeIcon icon={faAnglesDown} />
+          </button>
+        </div>
     </>
   );
 }
