@@ -5,6 +5,8 @@ import { UserAxios } from '../../config/Header_request';
 import { UserUrl } from '../../APIs/BaseUrl';
 import axios from 'axios';
 import { cloudinary_url } from '../../APIs/Cloudinary_url';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function UserProfile() {
   const userAxios = UserAxios();
@@ -67,8 +69,8 @@ function UserProfile() {
     <div className="bg-gray-800 w-screen h-screen text-white flex">
       {/* Sidebar component */}
       <Sidebar type="user" styleprop="profile" />
-      <div className="w-4/5 h-screen p-4 flex justify-center">
-        <div className="w-9/12  h-96 flex flex-col justify-center items-center border-b">
+      <div className="w-4/5 h-screen p-4 flex flex-col justify-center items-center md:w-full">
+        <div className="w-9/12 h-96 flex flex-col justify-center items-center border-b">
           {/* Profile pic */}
           <div className="w-48 h-48 flex justify-center items-center">
             <img
@@ -112,6 +114,34 @@ function UserProfile() {
             </div>
           </div>
         </div>
+        <div className='w-9/12 h-4/5 mt-10 overflow-y-scroll grid-cols-4 grid gap-2'>
+        {userData &&
+          userData.posts.map((post) => (
+            <div className='relative' key={post.id}>
+              <div style={{ paddingBottom: '100%' }}>
+                {post.toLowerCase().endsWith('.mp4') ? (
+                  // Render video for .mp4 files
+                  <div>
+                    <video
+                      src={post}
+                      alt='Video'
+                      className='absolute inset-0 w-full h-full object-cover'
+                    />
+                    <FontAwesomeIcon icon={faPlay} className='absolute m-3 '/>
+                  </div>
+                ) : (
+                  // Render image for other file types
+                  <img
+                    src={post}
+                    alt='Image'
+                    className='absolute inset-0 w-full h-full object-cover'
+                  />
+                )}
+              </div>
+            </div>
+          ))}
+      </div>
+           
       </div>
     </div>
   );
