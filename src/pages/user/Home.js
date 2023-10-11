@@ -1,17 +1,19 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar';
 import SuggestedUsers from '../../components/SuggestedUsers';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { UserUrl } from '../../APIs/BaseUrl';
 import { UserAxios } from '../../config/Header_request';
 import FeedItem from '../../components/FeedItem';
+import { addFeedItem } from '../../Redux/feedSlice';
 
 function Home() {
   const currentUser = useSelector((state) => state?.userDetails?.user)
   const userAxios = UserAxios();
+  const dispatch = useDispatch()
 
   const uploadPost = async (e) => {
     const selectedPostImageOrVideos = e.target.files[0]
@@ -24,10 +26,16 @@ function Home() {
         const resourceType = selectedPostImageOrVideos.type === 'video/mp4' ? 'video' : 'image';
   
         const response = await axios.post(`https://api.cloudinary.com/v1_1/dbpcfcpit/${resourceType}/upload`,data)
-        console.log(response.data.url)
+        console.log(response.data, "post upload response from couldinary")
         const post_url = response.data.url
 
-        await userAxios.post(UserUrl+'posts',{post_url})
+        const serverResponse = await userAxios.post(UserUrl+'posts',{post_url})
+        console.log(serverResponse, "response from server (rails)")
+
+        const post = serverResponse.data.post
+        console.log(post, "added post data")
+
+        dispatch(addFeedItem(post))
         
       }catch(error){
         console.error("Error uploading post",error)

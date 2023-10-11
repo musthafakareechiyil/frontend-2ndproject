@@ -2,10 +2,12 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { UserAxios } from '../config/Header_request'
 import { UserUrl } from '../APIs/BaseUrl'
+import useFollowUnfollow from './useFollowUnfollow.js'
 
 function FeedItemModal({ feedItem, closeModal }) {
   const currentUser = useSelector((state) => state?.userDetails.user.username)
   const userAxios = UserAxios()
+  const { unfollowUser } = useFollowUnfollow([])
   
   const deleteFeed = async() => {
     try {
@@ -31,7 +33,9 @@ function FeedItemModal({ feedItem, closeModal }) {
             Delete
           </p>
         ):(
-          <p className='w-full h-12 bg-gray-800 border-b border-gray-700 rounded-t-md flex justify-center items-center hover:bg-gray-700 text-red-500 cursor-pointer'>
+          <p className='w-full h-12 bg-gray-800 border-b border-gray-700 rounded-t-md flex justify-center items-center hover:bg-gray-700 text-red-500 cursor-pointer'
+            onClick={() => unfollowUser(feedItem.user.username)}
+          >
             Unfollow
           </p>
         )} 

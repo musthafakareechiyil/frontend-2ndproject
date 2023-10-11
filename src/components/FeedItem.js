@@ -4,18 +4,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import { UserUrl } from '../APIs/BaseUrl';
 import { UserAxios } from '../config/Header_request';
 import FeedItemModal from './FeedItemModal';
+import { setPosts } from '../Redux/feedSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 function FeedItem() {
   const [liked, setLiked] = useState(false);
   const [muted, setMuted] = useState(true)
   const userAxios = UserAxios();
-  const [feeds, setFeeds] = useState([]);
+  // const [feeds, setFeeds] = useState([]);
   const videoRef = useRef(null)
   const videoIntersectionObserver = useRef(null)
   const [ page, setPage ] = useState(1)
   const [ commentsCount, setCommnetsCount ] = useState(null)
   const [ isOpen, setIsOpen ] = useState(false)
   const [ selectedFeed, setSelectedFeed ] = useState(null)
+  const dispatch = useDispatch()
+  const feeds = useSelector((state) => state?.feedData?.feedItems)
+  console.log(feeds, "from redux")
 
   const closeModal = () => {
     setIsOpen(false)
@@ -67,9 +72,11 @@ function FeedItem() {
 
       const newFeeds = response.data.posts;
       const newComments = response.data.comment_counts
-      setFeeds([...feeds, ...newFeeds]);
+      // setFeeds([...feeds, ...newFeeds]);
       setCommnetsCount({...commentsCount, ...newComments})
       setPage(page + 1);
+
+      dispatch(setPosts(newFeeds))
     } catch (e) {
       console.error("Error loading more pages", e);
     }
@@ -84,8 +91,10 @@ function FeedItem() {
           }
         });
         console.log(response.data.posts);
-        setFeeds(response.data.posts);
+        // setFeeds(response.data.posts);
         setCommnetsCount(response.data.comment_counts)
+
+        dispatch(setPosts(response.data.posts))
       } catch (error) {
         console.error("error while fetching feed data", error);
       }
@@ -178,7 +187,7 @@ function FeedItem() {
             )}
             </div>
             <div className='text-gray-400 flex justify-end text-sm m-1'>
-              {commentsCount[feed.id] !== null && commentsCount[feed.id] > 0 && (
+              {commentsCount && commentsCount[feed.id] !== null && commentsCount[feed.id] > 0 && (
                 <p>{commentsCount[feed.id]} comments</p>
               )}
             </div>

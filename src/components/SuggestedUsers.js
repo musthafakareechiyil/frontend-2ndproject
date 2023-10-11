@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { UserAxios } from '../config/Header_request';
 import { UserUrl } from '../APIs/BaseUrl';
 import { useSelector } from 'react-redux';
+import useFollowUnfollow from './useFollowUnfollow.js';
 
 const SuggestedUsers = () => {
   const [users, setUsers] = useState([]);
-  const [followingUsers, setFollowingUsers] = useState([]); // New state to track followed users
+  // const [followingUsers, setFollowingUsers] = useState([]); // New state to track followed users
   const [seeAll, setSeeAll] = useState(false); // State to track "See All" click
   const userAxios = UserAxios();
   const currentUser = useSelector((state) => state?.userDetails?.user);
+  const { followingUsers, followUser, unfollowUser } = useFollowUnfollow([])
 
   useEffect(() => {
     const fetchSuggestedUsers = async () => {
@@ -26,35 +28,6 @@ const SuggestedUsers = () => {
     fetchSuggestedUsers();
     // eslint-disable-next-line
   }, [currentUser]);
-
-  // follow user
-
-  const followUser = async (username) => {
-    try {
-      const response = await userAxios.post(UserUrl + `${username}/follow_user`);
-      console.log(response, "You have followed the user successfully");
-      // Add the followed user to the followingUsers state
-      setFollowingUsers([...followingUsers, username]);
-    } catch (error) {
-      console.error("Error while following user:", error);
-    }
-  };
-
-  // unfollow user
-
-  const unfollowUser = async (username) => {
-    try {
-      const confirmUnfollow = window.confirm(`Are you sure you want to unfollow ${username}`)
-      if (confirmUnfollow) {
-        const response = await userAxios.post(UserUrl + `${username}/unfollow_user`)
-        console.log(response);
-        // Remove the unfollowed user from the followingUsers state
-        setFollowingUsers(followingUsers.filter(user => user !== username));
-      }
-    } catch (error) {
-      console.error("Error while unfollowing user", error);
-    }
-  }
 
   return (
     <div className="bg-gray-800 mt-8">
@@ -111,5 +84,6 @@ const SuggestedUsers = () => {
     </div>
   );
 };
+
 
 export default SuggestedUsers;
