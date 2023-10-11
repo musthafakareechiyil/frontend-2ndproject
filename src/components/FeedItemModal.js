@@ -1,13 +1,15 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { UserAxios } from '../config/Header_request'
 import { UserUrl } from '../APIs/BaseUrl'
 import useFollowUnfollow from './useFollowUnfollow.js'
+import { deleteFeedItem } from '../Redux/feedSlice'
 
 function FeedItemModal({ feedItem, closeModal }) {
   const currentUser = useSelector((state) => state?.userDetails.user.username)
   const userAxios = UserAxios()
   const { unfollowUser } = useFollowUnfollow([])
+  const dispatch = useDispatch()
   
   const deleteFeed = async() => {
     try {
@@ -15,6 +17,7 @@ function FeedItemModal({ feedItem, closeModal }) {
       if (confirmDelete){
         const response = await userAxios.delete(UserUrl+`posts/${feedItem.id}`)
         console.log(response)
+        dispatch(deleteFeedItem(feedItem.id))
       }
     }catch(error){
       console.error("Failed to delete feed", error)
