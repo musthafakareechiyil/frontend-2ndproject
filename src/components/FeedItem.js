@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import { UserUrl } from '../APIs/BaseUrl';
 import { UserAxios } from '../config/Header_request';
+import FeedItemModal from './FeedItemModal';
 
 function FeedItem() {
   const [liked, setLiked] = useState(false);
@@ -12,6 +13,14 @@ function FeedItem() {
   const videoRef = useRef(null)
   const videoIntersectionObserver = useRef(null)
   const [ page, setPage ] = useState(1)
+  const [ commentsCount, setCommnetsCount ] = useState(null)
+  const [ isOpen, setIsOpen ] = useState(false)
+  const [ selectedFeed, setSelectedFeed ] = useState(null)
+
+  const closeModal = () => {
+    setIsOpen(false)
+    setSelectedFeed(null)
+  }
 
   const toggleLike = () => {
     setLiked(!liked);
@@ -56,8 +65,10 @@ function FeedItem() {
         }
       });
 
-      const newFeeds = response.data;
+      const newFeeds = response.data.posts;
+      const newComments = response.data.comment_counts
       setFeeds([...feeds, ...newFeeds]);
+      setCommnetsCount({...commentsCount, ...newComments})
       setPage(page + 1);
     } catch (e) {
       console.error("Error loading more pages", e);
@@ -72,8 +83,9 @@ function FeedItem() {
             page: 1,
           }
         });
-        console.log(response.data.data);
-        setFeeds(response.data);
+        console.log(response.data.posts);
+        setFeeds(response.data.posts);
+        setCommnetsCount(response.data.comment_counts)
       } catch (error) {
         console.error("error while fetching feed data", error);
       }
@@ -120,12 +132,23 @@ function FeedItem() {
                 <span className="font-semibold">{feed?.user.username}</span>
               </div>
               <div>
-                <button className="text-white">
+                <button
+                  className="text-white"
+                  onClick={() => {
+                    setSelectedFeed(feed);
+                    setIsOpen(true);
+                  }}
+                >
                   <svg className="h-6 w-6">
-                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                    <FontAwesomeIcon icon={faEllipsisVertical}/>
                   </svg>
                 </button>
+                {/* Conditionally render FeedItemModal with the selected feed.id */}
+                {isOpen && selectedFeed === feed && (
+                  <FeedItemModal feedItem={selectedFeed} closeModal={closeModal}/>
+                )}
               </div>
+            
             </div>
             <div style={{ maxHeight: 'calc(85vh - 4rem)', overflow: 'hidden' }}>
             {feed.post_url.toLowerCase().endsWith('.mp4') ? (
@@ -153,6 +176,11 @@ function FeedItem() {
               // Render the image
               <img src={feed.post_url} alt="Post" className="w-full" />
             )}
+            </div>
+            <div className='text-gray-400 flex justify-end text-sm m-1'>
+              {commentsCount[feed.id] !== null && commentsCount[feed.id] > 0 && (
+                <p>{commentsCount[feed.id]} comments</p>
+              )}
             </div>
             <div className="flex justify-between mt-4 mb-2 mx-2">
               <div>
