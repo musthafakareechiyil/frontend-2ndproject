@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faChartLine, faHouse, faMagnifyingGlass, faPhotoFilm, faComment, faBell, faUser } from '@fortawesome/free-solid-svg-icons';
-import { useDispatch } from 'react-redux';
+import { faUsers, faChartLine, faHouse, faMagnifyingGlass, faPhotoFilm, faComment, faBell } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
 import { adminLogout } from '../Redux/adiminSlice';
 import { userLogout } from '../Redux/userSlice';
 
 
 function Sidebar( {type, styleprop} ) {
     const dispatch = useDispatch()
+    const currentUser = useSelector((state) => state?.userDetails?.user)
 
     const handleLogout = () => {
       type === "admin" ? 
@@ -82,9 +83,13 @@ function Sidebar( {type, styleprop} ) {
             </Link>
           </li>
           <li className="mb-4">
-            <Link to="/user/profile" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "profile" ? "font-bold" : '' }`}>
-                <FontAwesomeIcon icon={faUser} className='mr-4' /> 
-                <div className='hidden md:flex'>profile</div>
+            <Link to={`${currentUser.username}`} className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "profile" ? "font-bold" : '' }`}>
+              <img
+                className='w-5 h-5 rounded-full object-cover mr-2'
+                src={currentUser.profile_url}
+                alt={currentUser.id}
+              />
+                <div className='hidden md:flex'>Profile</div>
             </Link>
           </li>
         </ul>

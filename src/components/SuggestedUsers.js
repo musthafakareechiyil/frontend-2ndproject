@@ -3,6 +3,7 @@ import { UserAxios } from '../config/Header_request';
 import { UserUrl } from '../APIs/BaseUrl';
 import { useSelector } from 'react-redux';
 import useFollowUnfollow from './useFollowUnfollow.js';
+import { Link } from 'react-router-dom';
 
 const SuggestedUsers = () => {
   const [users, setUsers] = useState([]);
@@ -54,14 +55,16 @@ const SuggestedUsers = () => {
       <ul>
         {users && users.slice(0, seeAll ? users.length : 5).map((user) => (
           <li key={user.id} className="flex items-center justify-between py-2 mb-1 cursor-pointer">
-            <div className="flex items-center">
+          
+            <Link to={`${user.username}`} className='flex items-center'>
               <img
                 src={user.profile_url}
                 alt={`Profile of ${user.username}`}
                 className="w-8 h-8 rounded-full object-cover mr-2"
               />
               <span className="text-white">{user.username}</span>
-            </div>
+            </Link>
+          
             {followingUsers.includes(user.username) ? (
               <button
                 className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md cursor-pointer"

@@ -6,6 +6,7 @@ import { UserAxios } from '../config/Header_request';
 import FeedItemModal from './FeedItemModal';
 import { setPosts } from '../Redux/feedSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function FeedItem() {
   const [liked, setLiked] = useState(false);
@@ -132,14 +133,14 @@ function FeedItem() {
         feeds.map((feed) => (
           <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg" key={feed.id}>
             <div className="flex justify-between items-center">
-              <div className="flex items-center ms-3 mt-2 mb-3">
+              <Link to={`${feed.user.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
                 <img
                   src={feed?.user.profile_url}
                   alt="User Profile"
                   className="w-9 h-9 rounded-full object-cover mr-2"
                 />
                 <span className="font-semibold">{feed?.user.username}</span>
-              </div>
+              </Link>
               <div>
                 <button
                   className="text-white"

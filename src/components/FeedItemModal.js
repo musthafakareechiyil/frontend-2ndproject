@@ -4,6 +4,7 @@ import { UserAxios } from '../config/Header_request'
 import { UserUrl } from '../APIs/BaseUrl'
 import useFollowUnfollow from './useFollowUnfollow.js'
 import { deleteFeedItem } from '../Redux/feedSlice'
+import { Link } from 'react-router-dom'
 
 function FeedItemModal({ feedItem, closeModal }) {
   const currentUser = useSelector((state) => state?.userDetails.user.username)
@@ -45,11 +46,13 @@ function FeedItemModal({ feedItem, closeModal }) {
         <p className='w-full h-12 bg-gray-800 border-b border-gray-700 flex justify-center items-center hover:bg-gray-700 cursor-pointer'>
           Save post
         </p>
+        <Link to={`${feedItem.user.username}`}>
+          <p className='w-full h-12 bg-gray-800 flex border-b border-gray-700 justify-center items-center hover:bg-gray-700 cursor-pointer'>
+            View profile
+          </p>
+        </Link>
         <p className='w-full h-12 bg-gray-800 flex border-b border-gray-700 justify-center items-center hover:bg-gray-700 cursor-pointer'>
           View post
-        </p>
-        <p className='w-full h-12 bg-gray-800 flex border-b border-gray-700 justify-center items-center hover:bg-gray-700 cursor-pointer'>
-          View profile
         </p>
         <p className='w-full h-12 bg-gray-800 rounded-b-md flex justify-center items-center hover:bg-gray-700 text-red-500 cursor-pointer'
           onClick={closeModal}

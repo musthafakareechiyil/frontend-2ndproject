@@ -22,7 +22,7 @@ function App() {
           <Route path="admin" element= {adminToken? <Navigate to='/dashboard'/>:<AdminLogin/>}/>
           <Route path="dashboard" element = {adminToken? <Dashboard/>:<AdminLogin/>}/>
           <Route path="users" element = {adminToken? <Users/>:<AdminLogin/>}/>
-          <Route path="user/profile" element = {userToken? <UserProfile/>:<Login/>}/>
+          <Route path=":username" element = {userToken? <UserProfile/>:<Login/>}/>
         </Routes>
     </div>
   );

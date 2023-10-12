@@ -7,12 +7,14 @@ import axios from 'axios';
 import { cloudinary_url } from '../../APIs/Cloudinary_url';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useParams } from 'react-router-dom';
 
 function UserProfile() {
   const userAxios = UserAxios();
   const [userData, setUserData] = useState(null);
   const currentUser = useSelector((state) => state?.userDetails?.user);
-  const [currentDp, setCurrentDp] = useState(currentUser.profile_url);
+  const [currentDp, setCurrentDp] = useState();
+  const { username } = useParams()
 
   const updateLocalStorageProfileUrl = (newProfileUrl) => {
     const userData = JSON.parse(localStorage.getItem('user'))
@@ -25,7 +27,9 @@ function UserProfile() {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await userAxios.get(`${UserUrl}users/${currentUser.id}`);
+        const response = await userAxios.get(UserUrl+`user/${username}`)
+        console.log(userData, "userdata wihth username from params")
+        // const response = await userAxios.get(UserUrl+`$users/${currentUser.id}`);
         console.log(response.data);
         setUserData(response?.data);
       } catch (error) {
@@ -34,7 +38,7 @@ function UserProfile() {
     }
     fetchUserData();
     // eslint-disable-next-line
-  }, [currentUser.id]);
+  }, [username]);
 
   const handleProfilePicChange = async (e) => {
     const selectedProfilePic = e.target.files[0];
@@ -74,7 +78,7 @@ function UserProfile() {
           {/* Profile pic */}
           <div className="w-48 h-48 flex justify-center items-center">
             <img
-              src={currentDp}
+              src={userData?.user.profile_url}
               alt="Profile"
               className="w-40 h-40 rounded-full object-cover"
               onClick={() => document.getElementById('profilepic').click()}
@@ -88,7 +92,7 @@ function UserProfile() {
             />
           </div>
           {/* Username */}
-          <h1 className="text-2xl font-semibold mt-2 mb-3">{currentUser.username}</h1>
+          <h1 className="text-2xl font-semibold mt-2 mb-3">{userData?.user.username}</h1>
           {/* Edit and View Archive Buttons */}
           <div className="flex mt-4">
             <button className="text-gray-200 mr-4 px-4 py-1 cursor-pointer hover:bg-gray-600 bg-gray-700 rounded-md">
