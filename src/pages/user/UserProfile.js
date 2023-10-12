@@ -77,12 +77,21 @@ function UserProfile() {
         <div className="w-9/12 h-96 flex flex-col justify-center items-center border-b">
           {/* Profile pic */}
           <div className="w-48 h-48 flex justify-center items-center">
+          { username === currentUser.username? (
             <img
               src={userData?.user.profile_url}
               alt="Profile"
               className="w-40 h-40 rounded-full object-cover"
               onClick={() => document.getElementById('profilepic').click()}
             />
+          ):(
+            <img
+              src={userData?.user.profile_url}
+              alt="Profile"
+              className="w-40 h-40 rounded-full object-cover"
+            />
+          )}
+
             <input
               type="file"
               id="profilepic"
@@ -95,11 +104,14 @@ function UserProfile() {
           <h1 className="text-2xl font-semibold mt-2 mb-3">{userData?.user.username}</h1>
           {/* Edit and View Archive Buttons */}
           <div className="flex mt-4">
-            <button className="text-gray-200 mr-4 px-4 py-1 cursor-pointer hover:bg-gray-600 bg-gray-700 rounded-md">
-              Edit Profile
+            <button className="text-gray-200 mr-4 px-4 py-1 cursor-pointer hover:bg-gray-600 bg-gray-700 rounded-md w-32">
+              { username === currentUser.username ? 'Edit Profile' : (
+                'follow'
+              ) }
+              
             </button>
-            <button className="text-gray-200 mr-4 px-4 py-1 cursor-pointer hover:bg-gray-600 bg-gray-700 rounded-md">
-              View Archive
+            <button className="text-gray-200 mr-4 px-4 py-1 cursor-pointer hover:bg-gray-600 bg-gray-700 rounded-md w-32">
+                {username === currentUser.username? 'View Archive':'Message'}
             </button>
           </div>
           {/* posts following followers */}

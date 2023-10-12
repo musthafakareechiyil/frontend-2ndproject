@@ -83,13 +83,15 @@ function Sidebar( {type, styleprop} ) {
             </Link>
           </li>
           <li className="mb-4">
-            <Link to={`${currentUser.username}`} className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "profile" ? "font-bold" : '' }`}>
+            <Link to={`/${currentUser.username}`} className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "profile" ? "font-bold" : '' }`}>
               <img
                 className='w-5 h-5 rounded-full object-cover mr-2'
                 src={currentUser.profile_url}
                 alt={currentUser.id}
               />
-                <div className='hidden md:flex'>Profile</div>
+                <div className='hidden md:flex'>
+                  Profile
+                </div>
             </Link>
           </li>
         </ul>

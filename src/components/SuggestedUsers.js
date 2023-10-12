@@ -67,14 +67,14 @@ const SuggestedUsers = () => {
           
             {followingUsers.includes(user.username) ? (
               <button
-                className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md cursor-pointer"
+                className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md cursor-pointer transform hover:scale-105"
                 onClick={() => unfollowUser(user.username)}
               >
                 Unfollow
               </button>
             ) : (
               <button
-                className={`bg-indigo-600 hover:bg-indigo-800 text-white px-3 py-1 rounded-md cursor-pointer`}
+                className={`bg-indigo-600 hover:bg-indigo-800 text-white px-3 py-1 rounded-md cursor-pointer hover:scale-105`}
                 onClick={() => followUser(user.username)}
                 disabled={followingUsers.includes(user.username)}
               >

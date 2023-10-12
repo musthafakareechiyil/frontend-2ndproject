@@ -7,12 +7,13 @@ import FeedItemModal from './FeedItemModal';
 import { setPosts } from '../Redux/feedSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import ShowItem from './ShowItem';
 
 function FeedItem() {
+  const [ showItem, setShowItem ] = useState(false)
   const [liked, setLiked] = useState(false);
   const [muted, setMuted] = useState(true)
   const userAxios = UserAxios();
-  // const [feeds, setFeeds] = useState([]);
   const videoRef = useRef(null)
   const videoIntersectionObserver = useRef(null)
   const [ page, setPage ] = useState(1)
@@ -26,6 +27,7 @@ function FeedItem() {
   const closeModal = () => {
     setIsOpen(false)
     setSelectedFeed(null)
+    setShowItem(false)
   }
 
   const toggleLike = () => {
@@ -131,9 +133,9 @@ function FeedItem() {
     <>
       {feeds &&
         feeds.map((feed) => (
-          <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg" key={feed.id}>
+          <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg" key={feed?.id}>
             <div className="flex justify-between items-center">
-              <Link to={`${feed.user.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
+              <Link to={`${feed?.user?.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
                 <img
                   src={feed?.user.profile_url}
                   alt="User Profile"
@@ -149,8 +151,8 @@ function FeedItem() {
                     setIsOpen(true);
                   }}
                 >
-                  <svg className="h-6 w-6">
-                    <FontAwesomeIcon icon={faEllipsisVertical}/>
+                  <svg className="h-6 w-6 transform transition-transform hover:scale-110 duration-300">
+                    <FontAwesomeIcon icon={faEllipsisVertical} />
                   </svg>
                 </button>
                 {/* Conditionally render FeedItemModal with the selected feed.id */}
@@ -160,8 +162,13 @@ function FeedItem() {
               </div>
             
             </div>
-            <div style={{ maxHeight: 'calc(85vh - 4rem)', overflow: 'hidden' }}>
-            {feed.post_url.toLowerCase().endsWith('.mp4') ? (
+            <div style={{ maxHeight: 'calc(85vh - 4rem)', overflow: 'hidden' }}
+              onClick={()=>{
+                setSelectedFeed(feed)
+                setShowItem(true)
+              }}
+            >
+              {feed.post_url.toLowerCase().endsWith('.mp4') ? (
               // Render the video with mute control button
               <div>
                 <video autoPlay muted={muted} controls={false} className="w-full" loop muteref={videoRef} onClick={handleVideoClick}
@@ -187,6 +194,10 @@ function FeedItem() {
               <img src={feed.post_url} alt="Post" className="w-full" />
             )}
             </div>
+            {/* show item component */}
+            { showItem &&  (
+              <ShowItem feedItem={selectedFeed} closeModal={closeModal}/>
+            )}
             <div className='text-gray-400 flex justify-end text-sm m-1'>
               {commentsCount && commentsCount[feed.id] !== null && commentsCount[feed.id] > 0 && (
                 <p>{commentsCount[feed.id]} comments</p>
@@ -195,7 +206,7 @@ function FeedItem() {
             <div className="flex justify-between mt-4 mb-2 mx-2">
               <div>
                 <button
-                  className={`text-gray-200 ${liked ? 'text-red-500' : ''}`}
+                  className={`text-gray-200 ${liked ? 'text-red-500' : ''} transform transition-transform hover:scale-110 duration-300`}
                   onClick={toggleLike}
                 >
                   {liked ? (
@@ -204,11 +215,11 @@ function FeedItem() {
                     <FontAwesomeIcon icon={faHeart} className="h-6 w-6" />
                   )}
                 </button>
-                <button className="text-gray-200 ml-2">
+                <button className="text-gray-200 ml-2 transform transition-transform hover:scale-110 duration-300">
                   <FontAwesomeIcon icon={faComment} flip="horizontal" className="h-6 w-6 ml-2" />
                 </button>
               </div>
-              <button className="text-gray-200">
+              <button className="text-gray-200 transform transition-transform hover:scale-150 duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
