@@ -55,7 +55,7 @@ function Home() {
         
         <div className='flex flex-col m-9 text-gray-300 ml-10'>
           <div className=' bg-gray-900 p-4 shadow-2xl rounded-lg'>
-            Hai <span className='font-semibold'>{currentUser.username}</span>, do you <br/> want to add a post ?<br/>
+            Hai <span className='font-semibold'>{currentUser?.username}</span>, do you <br/> want to add a post ?<br/>
             <FontAwesomeIcon icon={faArrowUpFromBracket} className='h- w-20 p-2 hover:bg-gray-700 rounded-full cursor-pointer border-4 border-green-700 ml-20 mt-5 mb-5'
               onClick={()=> document.getElementById('post').click()}
             />

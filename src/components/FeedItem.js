@@ -122,8 +122,8 @@ function FeedItem() {
 
     // Cleanup the event listener
     return () => {
-      if (videoIntersectionObserver.current) {
-        videoIntersectionObserver.current.disconnect();
+      if (videoIntersectionObserver?.current) {
+        videoIntersectionObserver?.current?.disconnect();
       }
     };
   // eslint-disable-next-line
@@ -134,15 +134,21 @@ function FeedItem() {
       {feeds &&
         feeds.map((feed) => (
           <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg" key={feed?.id}>
+
+            {/* head part of post */}
             <div className="flex justify-between items-center">
+
+              {/* profile change for current user */}
               <Link to={`${feed?.user?.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
                 <img
-                  src={feed?.user.profile_url}
+                  src={feed?.user?.profile_url}
                   alt="User Profile"
                   className="w-9 h-9 rounded-full object-cover mr-2"
                 />
-                <span className="font-semibold">{feed?.user.username}</span>
+                <span className="font-semibold">{feed?.user?.username}</span>
               </Link>
+
+              {/* three dots on feed */}
               <div>
                 <button
                   className="text-white"
@@ -155,6 +161,7 @@ function FeedItem() {
                     <FontAwesomeIcon icon={faEllipsisVertical} />
                   </svg>
                 </button>
+
                 {/* Conditionally render FeedItemModal with the selected feed.id */}
                 {isOpen && selectedFeed === feed && (
                   <FeedItemModal feedItem={selectedFeed} closeModal={closeModal}/>
@@ -162,24 +169,28 @@ function FeedItem() {
               </div>
             
             </div>
+
+            {/* post part (image and video) */}
             <div style={{ maxHeight: 'calc(85vh - 4rem)', overflow: 'hidden' }}
               onClick={()=>{
                 setSelectedFeed(feed)
                 setShowItem(true)
               }}
             >
-              {feed.post_url.toLowerCase().endsWith('.mp4') ? (
-              // Render the video with mute control button
+              {/* contitional render for video and image */}
+              {feed?.post_url?.toLowerCase().endsWith('.mp4') ? (
+
+              // video part
               <div>
                 <video autoPlay muted={muted} controls={false} className="w-full" loop muteref={videoRef} onClick={handleVideoClick}
                 ref = {(el) => {
                   if (el) {
-                    videoIntersectionObserver.current.observe(el)
+                    videoIntersectionObserver?.current?.observe(el)
                   }
                   videoRef.current = el;
                 }}
               >
-                  <source src={feed.post_url} type="video/mp4"/>
+                  <source src={feed?.post_url} type="video/mp4"/>
                 </video>
                 <button onClick={toggleMute} className="text-white">
                   {muted ? (
@@ -189,18 +200,21 @@ function FeedItem() {
                   )}
                 </button>
               </div>
-            ) : (
-              // Render the image
-              <img src={feed.post_url} alt="Post" className="w-full" />
-            )}
+
+              ) : (
+
+                // Render the image
+                <img src={feed?.post_url} alt="Post" className="w-full" />
+              )}
             </div>
+
             {/* show item component */}
             { showItem &&  (
               <ShowItem feedItem={selectedFeed} closeModal={closeModal}/>
             )}
             <div className='text-gray-400 flex justify-end text-sm m-1'>
-              {commentsCount && commentsCount[feed.id] !== null && commentsCount[feed.id] > 0 && (
-                <p>{commentsCount[feed.id]} comments</p>
+              {commentsCount && commentsCount[feed?.id] !== null && commentsCount[feed?.id] > 0 && (
+                <p>{commentsCount[feed?.id]} comments</p>
               )}
             </div>
             <div className="flex justify-between mt-4 mb-2 mx-2">
@@ -240,7 +254,7 @@ function FeedItem() {
         ))}
         <div className="flex justify-center mt-4">
           <button onClick={loadMorePosts} className="bg-gray-700 text-white px-4 py-1 rounded-md hover:bg-gray-600">
-          <FontAwesomeIcon icon={faAnglesDown} />
+            <FontAwesomeIcon icon={faAnglesDown} />
           </button>
         </div>
     </>
