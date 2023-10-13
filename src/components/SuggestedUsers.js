@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 
 const SuggestedUsers = () => {
   const [users, setUsers] = useState([]);
-  // const [followingUsers, setFollowingUsers] = useState([]); // New state to track followed users
   const [seeAll, setSeeAll] = useState(false); // State to track "See All" click
   const userAxios = UserAxios();
   const currentUser = useSelector((state) => state?.userDetails?.user);
