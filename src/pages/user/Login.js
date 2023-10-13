@@ -91,6 +91,8 @@ function Login() {
         console.log('Error occurred while logging in with Google', error);
       });
   };
+
+  // otp for login using phone
   const handleSendOtp = async() => {
     try{
       const recaptchaVerifier = new RecaptchaVerifier(auth,"recaptcha",{})
@@ -103,6 +105,7 @@ function Login() {
     }
   }
 
+  // otp varification
   const handleVerifyOtp = async() => {
     try{
       if (user && user.confirm){
@@ -134,90 +137,125 @@ function Login() {
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col justify-center sm:py-12">
       <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md bg-gray-900 rounded-md shadow-2xl">
+
+        {/* app logo */}
         <img 
           src={appLogo.logo}
           className="w-28 h-auto mx-auto"
           alt='App Logo'
         />
+
+        {/* Standerd Login(with email, phone or username) */}
         { !otpForm &&(
-        <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div className="pb-4">
-              {isEpuNotEmpty && (
-                <p className='text-gray-400 text-xs pl-3 pb-1'>Email Phone or Username</p>
-              )}
-              <label htmlFor="emailOrPhoneOrUsername" className="sr-only">
-                Email Phone or Username
-              </label>
-              <input
-                value={epu}
-                onChange={(e) => {
-                  setEpu(e.target.value);
-                }}
-                id="emailOrPhoneOrUsername"
-                name="emailOrPhoneOrUsername"
-                type="text"
-                autoComplete="username"
-                required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 placeholder-gray-400 text-white focus:outline-none focus:z-10 sm:text-sm bg-gray-700"
-                placeholder="Email Phone or Username"
-              />
+
+          <form className="mt-2 space-y-6" onSubmit={handleSubmit}>
+
+            {/* input fields */}
+            <div className="rounded-md shadow-sm -space-y-px">
+
+              {/* input for email phone or username */}
+              <div className="pb-4">
+                {isEpuNotEmpty && (
+                  <p className='text-gray-400 text-xs pl-3 pb-1'>Email Phone or Username</p>
+                )}
+                <label htmlFor="emailOrPhoneOrUsername" className="sr-only">
+                  Email Phone or Username
+                </label>
+                <input
+                  value={epu}
+                  onChange={(e) => {
+                    setEpu(e.target.value);
+                  }}
+                  id="emailOrPhoneOrUsername"
+                  name="emailOrPhoneOrUsername"
+                  type="text"
+                  autoComplete="username"
+                  required
+                  className="appearance-none rounded-md relative block w-full px-3 py-2 placeholder-gray-400 text-white focus:outline-none focus:z-10 sm:text-sm bg-gray-700"
+                  placeholder="Email Phone or Username"
+                />
+              </div>
+
+              {/* input for email */}
+              <div>
+                {isPasswordNotEmpty && (
+                  <p className='text-gray-400 text-xs pl-3 pb-1'>Password</p>
+                )}
+                <label htmlFor="password" className="sr-only">
+                  Password
+                </label>
+                <input
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="appearance-none rounded-md relative block w-full px-3 py-2 placeholder-gray-400 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm bg-gray-700"
+                  placeholder="Password"
+                />
+              </div>
+
             </div>
+
+            {/* alerts for invalid credential */}
+            {alert && (
+              <div className="text-red-500 text-sm mt-2">Invalid Credentials</div>
+            )}
+
+            {/* login button (submit)  */}
             <div>
-              {isPasswordNotEmpty && (
-                <p className='text-gray-400 text-xs pl-3 pb-1'>Password</p>
-              )}
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-md relative block w-full px-3 py-2 placeholder-gray-400 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm bg-gray-700"
-                placeholder="Password"
-              />
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Log in
+              </button>
             </div>
-          </div>
-          {alert && (
-            <div className="text-red-500 text-sm mt-2">Invalid Credentials</div>
-          )} 
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Log in
-            </button>
-          </div>
-          <div className='border-t-2 shadow-sm border-gray-700 pt-3'></div>
-          <div className='flex pb-3 space-x-10'>
-          <GoogleLogin
-            onSuccess={handleGoogleLoginSuccess}
-            onError={() => {
-              console.log('Login Failed');
-            }}
-          />
-          <div className='bg-indigo-600 hover:bg-indigo-800 text-white cursor-pointer rounded-md px-2 py-2 h-10 flex items-center space-x-2'
-               onClick={()=> setOtpForm(true)}
-          >
-          <span>Otp</span>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-          </div>
-          </div>
-          <p className='text-white text-sm mt-5'>donot have an account?  <Link to="/signup" className='text-indigo-500'> Sign up</Link></p>
-        </form>
+
+            {/* division between input field and footer section */}
+            <div className='border-t-2 shadow-sm border-gray-700 pt-3'></div>
+
+            {/* google login and otp section */}
+            <div className='flex pb-3 space-x-10'>
+
+                {/* google login */}
+                <GoogleLogin
+                  onSuccess={handleGoogleLoginSuccess}
+                  onError={() => {
+                    console.log('Login Failed');
+                  }}
+                />
+
+                {/* to otp button */}
+                <div className='bg-indigo-600 hover:bg-indigo-800 text-white cursor-pointer rounded-md px-2 py-2 h-10 flex items-center space-x-2'
+                    onClick={()=> setOtpForm(true)}
+                >
+                  <span>Otp</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+
+            </div>
+
+            {/* link to sign up   */}
+            <p className='text-white text-sm mt-5'>donot have an account?  <Link to="/signup" className='text-indigo-500'> Sign up</Link></p>
+
+          </form>
+
         )}
+
+        {/* controlled render for otp form */}
         {otpForm && (
+
+          // form for otp
           <div>
+
+            {/* phone number input field */}
             <div>
               <label htmlFor="phoneNumber" className="sr-only">
                 Phone Number
@@ -233,6 +271,8 @@ function Login() {
                 placeholder="Phone Number"
               />
             </div>
+
+            {/* send otp button */}
             <div>
               <button
                 type="button"
@@ -242,30 +282,43 @@ function Login() {
                 Send OTP
               </button>
             </div>
+
+            {/* div for recaptcha */}
             <div id = "recaptcha" className='mb-5'>
 
             </div>
-              <div className="flex justify-between items-center">
-              <input
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                id="otp"
-                name="otp"
-                type="text"
-                required
-                className="appearance-none rounded-s-md relative block w-full px-3 py-2 placeholder-gray-400 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm bg-gray-700"
-                placeholder="Enter OTP"
-              />
-              <button
-                type="button"
-                onClick={handleVerifyOtp}
-                className="group relative flex-shrink-0 py-2 px-4 border border-transparent text-sm font-medium rounded-e-md text-white bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-9"
-              >
-                Verify OTP
-              </button>
+
+            {/* enter otp and varify otp sections */}
+            <div className="flex justify-between items-center">
+
+                {/* enter otp input field */}
+                <input
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  id="otp"
+                  name="otp"
+                  type="text"
+                  required
+                  className="appearance-none rounded-s-md relative block w-full px-3 py-2 placeholder-gray-400 text-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm bg-gray-700"
+                  placeholder="Enter OTP"
+                />
+
+                {/* varify otp button */}
+                <button
+                  type="button"
+                  onClick={handleVerifyOtp}
+                  className="group relative flex-shrink-0 py-2 px-4 border border-transparent text-sm font-medium rounded-e-md text-white bg-indigo-600 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-9"
+                >
+                  Verify OTP
+                </button>
+
             </div>
+
+            {/* back to standerd login arrow */}
             <FontAwesomeIcon icon={faArrowLeft} style={{color: "#ffffff",}} className='mt-5 ml-1 cursor-pointer' onClick={()=>setOtpForm(false)}/>
+
           </div>
+
         )}
         
       </div>

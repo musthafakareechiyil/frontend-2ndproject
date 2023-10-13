@@ -1,4 +1,4 @@
-import { faAnglesDown, faComment, faEllipsisVertical, faHeart, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesDown, faBookmark, faComment, faEllipsisVertical, faHeart, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import { UserUrl } from '../APIs/BaseUrl';
@@ -85,6 +85,7 @@ function FeedItem() {
     }
   }
 
+  // initial render of post (page one)
   useEffect(() => {
     const fetchInitialPosts = async () => {
       try {
@@ -131,8 +132,11 @@ function FeedItem() {
 
   return (
     <>
+      {/* maping feeds */}
       {feeds &&
         feeds.map((feed) => (
+
+          // feed section
           <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg" key={feed?.id}>
 
             {/* head part of post */}
@@ -208,16 +212,17 @@ function FeedItem() {
               )}
             </div>
 
-            {/* show item component */}
-            { showItem &&  (
-              <ShowItem feedItem={selectedFeed} closeModal={closeModal}/>
-            )}
+            {/* comments count section */}
             <div className='text-gray-400 flex justify-end text-sm m-1'>
               {commentsCount && commentsCount[feed?.id] !== null && commentsCount[feed?.id] > 0 && (
                 <p>{commentsCount[feed?.id]} comments</p>
               )}
             </div>
+
+            {/* post footer(like button, comment and archive) */}
             <div className="flex justify-between mt-4 mb-2 mx-2">
+
+              {/* like and comment */}
               <div>
                 <button
                   className={`text-gray-200 ${liked ? 'text-red-500' : ''} transform transition-transform hover:scale-110 duration-300`}
@@ -233,30 +238,38 @@ function FeedItem() {
                   <FontAwesomeIcon icon={faComment} flip="horizontal" className="h-6 w-6 ml-2" />
                 </button>
               </div>
-              <button className="text-gray-200 transform transition-transform hover:scale-150 duration-300">
+
+              {/* archive button */}
+              <button className="text-gray-200 transform transition-transform hover:scale-110 duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  className="h-6 w-6"
+                  className="h-5 w-5"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
+                  <FontAwesomeIcon icon={faBookmark}/>
                 </svg>
               </button>
+
             </div>
+
           </div>
-        ))}
-        <div className="flex justify-center mt-4">
+
+      ))}
+
+      {/* show item component */}
+      { showItem &&  (
+          <ShowItem feedItem={selectedFeed} closeModal={closeModal}/>
+      )}
+
+      {/* new page load button */}
+      <div className="flex justify-center mt-4">
           <button onClick={loadMorePosts} className="bg-gray-700 text-white px-4 py-1 rounded-md hover:bg-gray-600">
             <FontAwesomeIcon icon={faAnglesDown} />
           </button>
-        </div>
+      </div>
+
     </>
   );
 }

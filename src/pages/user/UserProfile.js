@@ -23,11 +23,6 @@ function UserProfile() {
     setShowProfileItem(false)
   }
 
-  // const handleImageClick = () => {
-  //   setSelectedFeed(post)
-  //   setShowProfileItem(true)
-  // }
-
   const updateLocalStorageProfileUrl = (newProfileUrl) => {
     const userData = JSON.parse(localStorage.getItem('user'))
     if(userData){
@@ -84,6 +79,7 @@ function UserProfile() {
       {/* Sidebar component */}
       <Sidebar type="user" styleprop="profile" />
 
+      {/* profile page */}
       <div className="w-4/5 h-screen p-4 flex flex-col justify-center items-center md:w-full">
 
         {/* profile head details section */}
@@ -204,6 +200,7 @@ function UserProfile() {
         )}
 
       </div>
+      
     </div>
   );
 }
