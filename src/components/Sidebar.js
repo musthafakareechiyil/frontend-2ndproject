@@ -5,6 +5,7 @@ import { faUsers, faChartLine, faHouse, faMagnifyingGlass, faPhotoFilm, faCommen
 import { useDispatch, useSelector } from 'react-redux';
 import { adminLogout } from '../Redux/adiminSlice';
 import { userLogout } from '../Redux/userSlice';
+import { resetFeed } from '../Redux/feedSlice';
 
 
 function Sidebar( {type, styleprop} ) {
@@ -12,8 +13,12 @@ function Sidebar( {type, styleprop} ) {
     const currentUser = useSelector((state) => state?.userDetails?.user)
 
     const handleLogout = () => {
-      type === "admin" ? 
-        dispatch(adminLogout()) : dispatch(userLogout())
+      if (type === "admin") {
+        dispatch(adminLogout());
+      }else{
+        dispatch(userLogout())
+        dispatch(resetFeed())
+      } 
     }
 
     const appLogo = {logo: "https://res.cloudinary.com/dbpcfcpit/image/upload/v1696220925/V-logo-removebg-preview_rjpizi.png"}

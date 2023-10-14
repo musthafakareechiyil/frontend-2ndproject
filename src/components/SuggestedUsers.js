@@ -31,58 +31,86 @@ const SuggestedUsers = () => {
 
   return (
     <div className="bg-gray-800 mt-8">
+
+      {/* div contains see all and seggested head section */}
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-gray-500 text-sm font-semibold mr-5">Suggested for You</h2>
+
+        {/* suggested for you head */}
+        <h2 className="text-gray-500 text-sm font-semibold mr-28">Suggested for You</h2>
+
+        {/* conditional render for see all and less buttons */}
         { seeAll === true ? (
+
+          // see less button
           <button
-          className="text-blue-500 hover:bg-gray-700 px-2 rounded-md"
-          onClick={() => setSeeAll(false)}
-        >
-          See Less
-        </button>
+            className="text-blue-500 hover:text-white text-sm"
+            onClick={() => setSeeAll(false)}
+          >
+            See Less
+          </button>
 
         ):(
+          
+          // see all button
           <button
-          className="text-blue-500 hover:bg-gray-700 px-2 rounded-md"
-          onClick={() => setSeeAll(true)}
-        >
-          See All
-        </button>
+            className="text-blue-500 hover:text-white text-sm"
+            onClick={() => setSeeAll(true)}
+          >
+            See All
+          </button>
+
         )}
 
       </div>
+
+      {/* listing users */}
       <ul>
+
+        {/* maping users */}
         {users && users.slice(0, seeAll ? users.length : 5).map((user) => (
           <li key={user.id} className="flex items-center justify-between py-2 mb-1 cursor-pointer">
           
+            {/* image and username section link added */}
             <Link to={`${user.username}`} className='flex items-center'>
+
               <img
                 src={user.profile_url}
                 alt={`Profile of ${user.username}`}
                 className="w-8 h-8 rounded-full object-cover mr-2"
               />
+
               <span className="text-white">{user.username}</span>
+
             </Link>
           
-            {followingUsers.includes(user.username) ? (
+            {/* conditionally rendering follow and following buttons */}
+            {followingUsers.includes(user?.username) ? (
+
+              // following action
               <button
-                className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md cursor-pointer transform hover:scale-105"
-                onClick={() => unfollowUser(user.username)}
+                className="text-blue-500 hover:text-white cursor-pointer transform hover:scale-105 text-sm"
+                onClick={() => unfollowUser(user?.username)}
               >
-                Unfollow
+                Following
               </button>
+              
             ) : (
+
+              // unfollow action
               <button
-                className={`bg-indigo-600 hover:bg-indigo-800 text-white px-3 py-1 rounded-md cursor-pointer hover:scale-105`}
-                onClick={() => followUser(user.username)}
-                disabled={followingUsers.includes(user.username)}
+                className={` hover:text-white text-blue-500 cursor-pointer hover:scale-105 text-sm`}
+                onClick={() => followUser(user?.username)}
+                disabled={followingUsers.includes(user?.username)}
               >
-                {followingUsers.includes(user.username) ? 'Following' : 'Follow'}
+                Follow
               </button>
+
             )}
+
           </li>
         ))}
       </ul>
+
     </div>
   );
 };

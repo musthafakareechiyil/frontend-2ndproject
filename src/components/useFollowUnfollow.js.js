@@ -6,10 +6,10 @@ const useFollowUnfollow = (initialFollowinUsers) => {
   const [followingUsers, setFollowingUsers] = useState(initialFollowinUsers)
   const userAxios = UserAxios();
 
+  // follow user
   const followUser = async (username) => {
     try {
-      const response = await userAxios.post(UserUrl + `${username}/follow_user`);
-      console.log(response, "You have followed the user successfully");
+      await userAxios.post(UserUrl + `${username}/follow_user`);
       // Add the followed user to the followingUsers state
       setFollowingUsers([...followingUsers, username]);
     } catch (error) {
@@ -19,7 +19,6 @@ const useFollowUnfollow = (initialFollowinUsers) => {
   };
 
   // unfollow user
-
   const  unfollowUser = async (username) => {
     try {
       const confirmUnfollow = window.confirm(`Are you sure you want to unfollow ${username}`)
@@ -34,6 +33,7 @@ const useFollowUnfollow = (initialFollowinUsers) => {
       throw error
     }
   }
+
   return { followingUsers, followUser, unfollowUser}
 }
 
