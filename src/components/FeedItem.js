@@ -221,30 +221,46 @@ function FeedItem() {
 
                 {/* like button */}
                 <button
-                  className={`text-gray-200 ${feed.liked == true ? 'text-red-500' : ''} transform transition-transform hover:scale-110 duration-300`}
+                  className={` transform transition-transform hover:scale-110 duration-300`}
                   onClick={() => toggleLike(feed.id, 'Post')}
                 >
-                    <FontAwesomeIcon icon={faHeart} className="h-6 w-6" />
+                  {feed?.liked ? (
+                    <lord-icon
+                      src="https://cdn.lordicon.com/gfabuoru.json"
+                      trigger="hover"
+                      state="hover-match"
+                      colors="primary:#c71f16,secondary:#ebe6ef,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00"
+                    />
+                  ):(
+                    <lord-icon
+                      src="https://cdn.lordicon.com/gfabuoru.json"
+                      trigger="morph"
+                      state="morph-two-hearts"
+                      colors="primary:#ffffff,secondary:#911710,quaternary:#e83a30"
+                    />
+                  )}
+                   
                 </button>
                 
                 {/* comment button */}
                 <button className="text-gray-200 ml-2 transform transition-transform hover:scale-110 duration-300">
-                  <FontAwesomeIcon icon={faComment} flip="horizontal" className="h-6 w-6 ml-2" />
+                  <lord-icon
+                      src="https://cdn.lordicon.com/ayhtotha.json"
+                      trigger="hover"
+                      colors="primary:#ffffff"
+                  />
                 </button>
                 
               </div>
 
               {/* archive button */}
               <button className="text-gray-200 transform transition-transform hover:scale-110 duration-300">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <FontAwesomeIcon icon={faBookmark}/>
-                </svg>
+                  <lord-icon
+                      src="https://cdn.lordicon.com/prjooket.json"
+                      trigger="morph"
+                      state="morph-marked-bookmark"
+                      colors="primary:#ffffff"
+                  />
               </button>
 
             </div>
