@@ -8,10 +8,11 @@ import { setPosts } from '../Redux/feedSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ShowItem from './ShowItem';
+import useToggleLike from './useTogleLike';
 
 function FeedItem() {
   const [ showItem, setShowItem ] = useState(false)
-  const [liked, setLiked] = useState(false);
+  // const [liked, setLiked] = useState(false);
   const [muted, setMuted] = useState(true)
   const userAxios = UserAxios();
   const videoRef = useRef(null)
@@ -21,18 +22,14 @@ function FeedItem() {
   const [ isOpen, setIsOpen ] = useState(false)
   const [ selectedFeed, setSelectedFeed ] = useState(null)
   const dispatch = useDispatch()
+  const { toggleLike,liked } = useToggleLike()
   const feeds = useSelector((state) => state?.feedData?.feedItems)
-  console.log(feeds, "from redux")
 
   const closeModal = () => {
     setIsOpen(false)
     setSelectedFeed(null)
     setShowItem(false)
   }
-
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
 
   const toggleMute = () => {
     setMuted(!muted);
@@ -94,9 +91,6 @@ function FeedItem() {
             page: 1,
           }
         });
-        console.log(response.data.posts);
-        // setFeeds(response.data.posts);
-        setCommnetsCount(response.data.comment_counts)
 
         dispatch(setPosts(response.data.posts))
       } catch (error) {
@@ -215,7 +209,7 @@ function FeedItem() {
             {/* comments count section */}
             <div className='text-gray-400 flex justify-end text-sm m-1'>
               {commentsCount && commentsCount[feed?.id] !== null && commentsCount[feed?.id] > 0 && (
-                <p>{commentsCount[feed?.id]} comments</p>
+                <p>{feed?.comment_counts} comments</p>
               )}
             </div>
 
@@ -224,16 +218,16 @@ function FeedItem() {
 
               {/* like and comment */}
               <div>
+
+                {/* like button */}
                 <button
-                  className={`text-gray-200 ${liked ? 'text-red-500' : ''} transform transition-transform hover:scale-110 duration-300`}
-                  onClick={toggleLike}
+                  className={`text-gray-200 ${feed.liked == true ? 'text-red-500' : ''} transform transition-transform hover:scale-110 duration-300`}
+                  onClick={() => toggleLike(feed.id, 'Post')}
                 >
-                  {liked ? (
-                    <FontAwesomeIcon icon={faHeart} style={{ color: "#ff0000" }} className="h-6 w-6" />
-                  ) : (
                     <FontAwesomeIcon icon={faHeart} className="h-6 w-6" />
-                  )}
                 </button>
+                
+                {/* comment button */}
                 <button className="text-gray-200 ml-2 transform transition-transform hover:scale-110 duration-300">
                   <FontAwesomeIcon icon={faComment} flip="horizontal" className="h-6 w-6 ml-2" />
                 </button>

@@ -21,10 +21,24 @@ const feedSlice = createSlice({
     },
     resetFeed: (state) => {
       state.feedItems = [];
+    },
+    updateLikedStatus: (state, action) => {
+      const { likable_id, liked } = action.payload
+
+      const postToUpdate = state.feedItems.find((item) => item.id === likable_id)
+      if(postToUpdate){
+        postToUpdate.liked = liked;
+
+        if (liked){
+          postToUpdate.likes_count++
+        }else{
+          postToUpdate.likes_count--
+        }
+      }
     }
 
   }
 })
 
-export const { setPosts, addFeedItem ,deleteFeedItem ,resetFeed} = feedSlice.actions
+export const { setPosts, addFeedItem ,deleteFeedItem ,resetFeed, updateLikedStatus} = feedSlice.actions
 export default feedSlice.reducer;
