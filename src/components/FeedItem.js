@@ -132,7 +132,7 @@ function FeedItem() {
 
           // feed section
           <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg" key={feed?.id}>
-
+            {console.log(feed,"form mapped items")}
             {/* head part of post */}
             <div className="flex justify-between items-center">
 
@@ -206,10 +206,10 @@ function FeedItem() {
               )}
             </div>
 
-            {/* comments count section */}
-            <div className='text-gray-400 flex justify-end text-sm m-1'>
-              {commentsCount && commentsCount[feed?.id] !== null && commentsCount[feed?.id] > 0 && (
-                <p>{feed?.comment_counts} comments</p>
+            {/* likes count section */}
+            <div className='text-gray-400 flex text-sm m-1'>
+              {feed?.likes_count > 0 && (
+                <p>{feed.likes_count} {feed.likes_count === 1 ? 'Like' : 'Likes'}</p>
               )}
             </div>
 
@@ -231,6 +231,7 @@ function FeedItem() {
                 <button className="text-gray-200 ml-2 transform transition-transform hover:scale-110 duration-300">
                   <FontAwesomeIcon icon={faComment} flip="horizontal" className="h-6 w-6 ml-2" />
                 </button>
+                
               </div>
 
               {/* archive button */}
