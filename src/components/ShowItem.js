@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import useToggleLike from './useTogleLike';
 
-function ShowItem({ feedItem, closeModal }) {
+function ShowItem({ feedItem, closeModal ,userData}) {
   const [ isOpen, setIsOpen ] = useState(false)
   const [ feed, setFeed ] = useState('')
   const { toggleLike } = useToggleLike() 
@@ -45,14 +45,14 @@ function ShowItem({ feedItem, closeModal }) {
           <div className="flex items-center p-4 w-full justify-between border-b border-b-gray-600">
 
             {/* profile icon and username */}
-            <Link to={`${feedItem?.user?.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
+            <Link to={`/${(feedItem?.user || userData)?.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
               <img
-                src={feedItem.user.profile_url}
+                src={(feedItem.user || userData)?.profile_url}
                 alt="User Profile"
                 className="w-9 h-9 rounded-full object-cover mr-2"
               />
               <span className="font-semibold text-white">
-                {feedItem.user.username}
+                {(feedItem?.user || userData)?.username}
               </span>
             </Link>
             
@@ -61,7 +61,7 @@ function ShowItem({ feedItem, closeModal }) {
                 <button
                   className="text-white"
                   onClick={() => {
-                    setFeed(feedItem)
+                    setFeed(feedItem || userData)
                     setIsOpen(true);
                   }}
                 >
@@ -79,7 +79,7 @@ function ShowItem({ feedItem, closeModal }) {
           </div>
 
           {/* comments show section */}
-          <div className='flex  p-4 h-3/5 border-b border-b-gray-600'>
+          <div className='flex  p-4 h-4/5 border-b border-b-gray-600'>
 
             {/* user profile div */}
             <div className='rounded-full h-9 w-9 bg-white mt-2 ml-3 mr-3'>
@@ -95,10 +95,10 @@ function ShowItem({ feedItem, closeModal }) {
           </div>
           
           {/* like and archive div */}
-          <div className='p-4 m-3'>
+          {/* <div className='p-4 m-3'> */}
 
             {/* like archive button with count */}
-            <button
+            {/* <button
               className={` transform transition-transform hover:scale-110 duration-300 mr-2`}
               onClick={() => toggleLike(feedItem.id, 'Post')}
             >
@@ -117,27 +117,27 @@ function ShowItem({ feedItem, closeModal }) {
                   colors="primary:#ffffff,secondary:#911710,quaternary:#e83a30"
                 />
               )}     
-            </button>
+            </button> */}
 
             {/* archive button */}
-            <button className="text-gray-200 transform transition-transform hover:scale-110 duration-300">
+            {/* <button className="text-gray-200 transform transition-transform hover:scale-110 duration-300">
               <lord-icon
                 src="https://cdn.lordicon.com/prjooket.json"
                 trigger="morph"
                 state="morph-marked-bookmark"
                 colors="primary:#ffffff"
               />
-            </button>
+            </button> */}
 
             {/* likes and comments count */}
-            {feedItem?.likes_count > 0 &&(
+            {/* {feedItem?.likes_count > 0 &&(
               <div>
               <p>{feedItem.likes_count} {feedItem.likes_count === 1 ? 'Like' : 'Likes'}</p>
             </div>
-            )}
+            )} */}
 
 
-          </div>
+          {/* </div> */}
 
           {/* add comment section */}
           <div className="flex p-4">

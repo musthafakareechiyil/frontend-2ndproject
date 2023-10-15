@@ -18,7 +18,7 @@ function UserProfile() {
   const currentUser = useSelector((state) => state?.userDetails?.user);
   const [currentDp, setCurrentDp] = useState();
   const { username } = useParams()
-
+  console.log(userData, 'user data consoling from profile')
   const closeModal = () => {
     setShowProfileItem(false)
   }
@@ -169,6 +169,7 @@ function UserProfile() {
               <div className='relative' key={post?.id}>
                 <div style={{ paddingBottom: '100%' }} onClick={()=> {
                   setSelectedFeed(post)
+                  console.log(post,'post from the userprfile')
                   setShowProfileItem(true)
                 }}>
                   {post?.post_url.toLowerCase().endsWith('.mp4') ? (
@@ -196,7 +197,7 @@ function UserProfile() {
         
         {/* rendering the ShowItem component */}
         { showProfileItem && (
-          <ShowItem feedItem = {selectedFeed} closeModal = { closeModal } />
+          <ShowItem feedItem = {selectedFeed} closeModal = { closeModal } userData = {userData?.user}/>
         )}
 
       </div>
