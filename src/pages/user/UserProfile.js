@@ -9,6 +9,7 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'react-router-dom';
 import ShowItem from '../../components/ShowItem';
+import useFollowUnfollow from '../../components/useFollowUnfollow.js';
 
 function UserProfile() {
   const [ selectedFeed, setSelectedFeed ] = useState('')
@@ -18,7 +19,10 @@ function UserProfile() {
   const currentUser = useSelector((state) => state?.userDetails?.user);
   const [currentDp, setCurrentDp] = useState();
   const { username } = useParams()
+  const {followUser, unfollowUser} = useFollowUnfollow([], false, setUserData)
+
   console.log(userData, 'user data consoling from profile')
+
   const closeModal = () => {
     setShowProfileItem(false)
   }
@@ -117,16 +121,34 @@ function UserProfile() {
           {/* Edit and View Archive Buttons */}
           <div className="flex mt-4">
 
-            {/* follow or edit profile button */}
-            <button
-              className={`text-gray-200 mr-4 px-4 py-1 cursor-pointer rounded-md w-32 ${
-                username === currentUser.username
-                  ? 'bg-gray-600 hover:bg-gray-700'
-                  : 'bg-indigo-600 hover:bg-indigo-800'
-              }`}
-            >
-              {username === currentUser.username ? 'Edit Profile' : 'Follow'}
-            </button>
+            {/* edit profile button if currentUser */}
+            {currentUser.username === username && (
+              <button
+                className={`text-gray-200 mr-4 px-4 py-1 cursor-pointer rounded-md w-32 ${
+                  username === currentUser.username
+                    ? 'bg-gray-600 hover:bg-gray-700'
+                    : 'bg-indigo-600 hover:bg-indigo-800'
+                }`}
+              >
+                Edit Profile
+              </button>
+            )}
+
+            {/* follow and unfollow button */}
+            {!currentUser.is_following && userData?.user?.username !== currentUser.username && (
+              <button
+                className="text-gray-200 mr-4 px-4 py-1 cursor-pointer rounded-md w-32 bg-blue-600 hover:bg-blue-800"
+                onClick={() => {
+                  if (userData?.is_following) {
+                    unfollowUser(userData?.user.username);
+                  } else {
+                    followUser(userData?.user.username);
+                  }
+                }}
+              >
+                {userData?.is_following ? 'Following' : 'Follow'}
+              </button>
+            )}
 
             {/* view archive or Message button */}
             <button
