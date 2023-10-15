@@ -21,7 +21,7 @@ function FeedItem() {
   const [ isOpen, setIsOpen ] = useState(false)
   const [ selectedFeed, setSelectedFeed ] = useState(null)
   const dispatch = useDispatch()
-  const { toggleLike,liked } = useToggleLike()
+  const { toggleLike } = useToggleLike()
   const feeds = useSelector((state) => state?.feedData?.feedItems)
 
   const closeModal = () => {

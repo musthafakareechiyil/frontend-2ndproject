@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import FeedItemModal from './FeedItemModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import useToggleLike from './useTogleLike';
 
 function ShowItem({ feedItem, closeModal }) {
   const [ isOpen, setIsOpen ] = useState(false)
-  const [ feed, setFeed ] = useState('') 
+  const [ feed, setFeed ] = useState('')
+  const { toggleLike } = useToggleLike() 
 
   const closeShowModal = () => {
     setIsOpen(false)
@@ -72,18 +74,87 @@ function ShowItem({ feedItem, closeModal }) {
                 {isOpen && (
                   <FeedItemModal feedItem={feed} closeModal={closeShowModal}/>
                 )}
-            </div>
+            </div>  
 
           </div>
 
           {/* comments show section */}
-          <div></div>
+          <div className='flex  p-4 h-3/5 border-b border-b-gray-600'>
 
-          {/* like archive button with count */}
-          <div></div>
+            {/* user profile div */}
+            <div className='rounded-full h-9 w-9 bg-white mt-2 ml-3 mr-3'>
+              <img src=''/>
+            </div>
+            
+            {/* username and comment */}
+            <div>
+              <p className='font-bold'>username</p>
+              <p className='font-light w-full h-auto'>comments here</p>
+            </div>
+
+          </div>
+          
+          {/* like and archive div */}
+          <div className='p-4 m-3'>
+
+            {/* like archive button with count */}
+            <button
+              className={` transform transition-transform hover:scale-110 duration-300 mr-2`}
+              onClick={() => toggleLike(feedItem.id, 'Post')}
+            >
+              {feedItem?.liked ? (
+                <lord-icon
+                  src="https://cdn.lordicon.com/gfabuoru.json"
+                  trigger="hover"
+                  state="hover-match"
+                  colors="primary:#c71f16,secondary:#ebe6ef,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00"
+                />
+              ):(
+                <lord-icon
+                  src="https://cdn.lordicon.com/gfabuoru.json"
+                  trigger="morph"
+                  state="morph-two-hearts"
+                  colors="primary:#ffffff,secondary:#911710,quaternary:#e83a30"
+                />
+              )}     
+            </button>
+
+            {/* archive button */}
+            <button className="text-gray-200 transform transition-transform hover:scale-110 duration-300">
+              <lord-icon
+                src="https://cdn.lordicon.com/prjooket.json"
+                trigger="morph"
+                state="morph-marked-bookmark"
+                colors="primary:#ffffff"
+              />
+            </button>
+
+            {/* likes and comments count */}
+            {feedItem?.likes_count > 0 &&(
+              <div>
+              <p>{feedItem.likes_count} {feedItem.likes_count === 1 ? 'Like' : 'Likes'}</p>
+            </div>
+            )}
+
+
+          </div>
 
           {/* add comment section */}
-          <div></div>
+          <div className="flex p-4">
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              className="w-full p-2 text-white bg-gray-700 rounded-3xl"
+            />
+            <button
+              className="text-blue-600 ml-2 bg-transparent hover:text-white"
+              onClick={() => {
+                // Add your logic to post a comment here
+              }}
+            >
+              Post
+            </button>
+          </div>
 
         </div>
         
