@@ -169,10 +169,6 @@ function FeedItem() {
 
             {/* post part (image and video) */}
             <div style={{ maxHeight: 'calc(85vh - 4rem)', overflow: 'hidden' }}
-              onClick={()=>{
-                setSelectedFeed(feed)
-                setShowItem(true)
-              }}
             >
               {/* contitional render for video and image */}
               {feed?.post_url?.toLowerCase().endsWith('.mp4') ? (
@@ -251,6 +247,10 @@ function FeedItem() {
                       src="https://cdn.lordicon.com/ayhtotha.json"
                       trigger="hover"
                       colors="primary:#ffffff"
+                      onClick={()=>{
+                        setSelectedFeed(feed)
+                        setShowItem(true)
+                      }}
                   />
                 </button>
                 
