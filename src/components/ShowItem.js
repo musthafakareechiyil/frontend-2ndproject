@@ -37,12 +37,12 @@ function ShowItem({ feedItem, closeModal }) {
         </div>
 
         {/* right side */}
-        <div>
+        <div className=' w-2/5'>
           
           {/* username , profile_url and 3 dots*/}
-          <div className="flex items-center p-4">
+          <div className="flex items-center p-4 w-full justify-between border-b border-b-gray-600">
 
-
+            {/* profile icon and username */}
             <Link to={`${feedItem?.user?.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
               <img
                 src={feedItem.user.profile_url}
@@ -53,7 +53,8 @@ function ShowItem({ feedItem, closeModal }) {
                 {feedItem.user.username}
               </span>
             </Link>
-
+            
+            {/* 3 dots */}
             <div>
                 <button
                   className="text-white"

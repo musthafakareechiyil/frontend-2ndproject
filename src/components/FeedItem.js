@@ -268,14 +268,15 @@ function FeedItem() {
 
             </div>
 
+            {/* show item component */}
+            { showItem && selectedFeed === feed && (
+              <ShowItem feedItem={selectedFeed} closeModal={closeModal}/>
+            )}
+
           </div>
 
       ))}
 
-      {/* show item component */}
-      { showItem &&  (
-          <ShowItem feedItem={selectedFeed} closeModal={closeModal}/>
-      )}
 
       {/* new page load button */}
       <div className="flex justify-center mt-4">

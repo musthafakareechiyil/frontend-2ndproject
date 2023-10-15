@@ -24,7 +24,7 @@ function FeedItemModal({ feedItem, closeModal }) {
       console.error("Failed to delete feed", error)
     }
   }
-
+  
   return (
     <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-brightness-50'
       onClick={closeModal}
