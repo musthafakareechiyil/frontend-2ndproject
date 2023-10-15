@@ -35,7 +35,7 @@ function Sidebar( {type, styleprop} ) {
       </div>
 
       <nav className="flex-1">
-{/* Admin Sidebar */}      
+      {/* Admin Sidebar */}      
       { type === "admin" && (
         <ul>
             <li className="mb-4">
@@ -53,56 +53,74 @@ function Sidebar( {type, styleprop} ) {
             </li>
         </ul>
       )}
-{/*User Sidebar*/}
+
+      {/*User Sidebar*/}
       { type === "user" && (
         <ul>
+          
+            {/* Home button */}
             <li className="mb-4">
               <Link to="/" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "home" ? "font-bold" : '' }`}>
-                  <FontAwesomeIcon icon={faHouse} className='mr-4'/>
-                  <div className='hidden md:flex'>Home</div>
+                <lord-icon
+                  src="https://cdn.lordicon.com/cnpvyndp.json"
+                  trigger="hover"
+                  colors="primary:#ffffff"      
+                />
+                <div className='hidden md:flex ml-4 mt-2'>Home</div>
               </Link>
             </li>
 
+            {/* search button */}
             <li className="mb-4">
               <Link to="/users" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "search" ? "font-bold" : '' }`}>
-                  <FontAwesomeIcon icon={faMagnifyingGlass} className='mr-4' /> 
-                  <div className='hidden md:flex'>Search</div>
+                <FontAwesomeIcon icon={faMagnifyingGlass} className='mr-4' /> 
+                <div className='hidden md:flex'>Search</div>
               </Link>
             </li>
+
+            {/* Explore button */}
             <li className="mb-4">
-            <Link to="/users" className="flex items-center text-white hover:bg-gray-700 px-4 py-2 ml-4 rounded-md ">
+              <Link to="/users" className="flex items-center text-white hover:bg-gray-700 px-4 py-2 ml-4 rounded-md ">
                 <FontAwesomeIcon icon={faPhotoFilm} className='mr-3' /> 
                 <div className='hidden md:flex'>Explore</div>
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link to="/users" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "messages" ? "font-bold" : '' }`}>
+              </Link>
+            </li>
+
+            {/* messages */}
+            <li className="mb-4">
+              <Link to="/users" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "messages" ? "font-bold" : '' }`}>
                 <FontAwesomeIcon icon={faComment} className='mr-4' /> 
                 <div className='hidden md:flex'>Messages</div>
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link to="/users" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "notification" ? "font-bold" : '' }`}>
+              </Link>
+            </li>
+            
+            {/* notification */}
+            <li className="mb-4">
+              <Link to="/users" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "notification" ? "font-bold" : '' }`}>
                 <FontAwesomeIcon icon={faBell} className='mr-4' /> 
                 <div className='hidden md:flex'>Notification</div>
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link to={`/${currentUser.username}`} className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "profile" ? "font-bold" : '' }`}>
-              <img
-                className='w-5 h-5 rounded-full object-cover mr-2'
-                src={currentUser.profile_url}
-                alt={currentUser.id}
-              />
+              </Link>
+            </li>
+
+            {/* profile */}
+            <li className="mb-4">
+              <Link to={`/${currentUser.username}`} className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "profile" ? "font-bold" : '' }`}>
+                <img
+                  className='w-5 h-5 rounded-full object-cover mr-2'
+                  src={currentUser.profile_url}
+                  alt={currentUser.id}
+                />
                 <div className='hidden md:flex'>
                   Profile
                 </div>
-            </Link>
-          </li>
+              </Link>
+            </li>
+
         </ul>
         )}
       </nav>
-{/*Logout Button*/}
+
+      {/*Logout Button*/}
       <div className="p-4">
         <button
             onClick={handleLogout} 

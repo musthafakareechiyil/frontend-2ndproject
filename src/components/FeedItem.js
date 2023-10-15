@@ -12,7 +12,6 @@ import useToggleLike from './useTogleLike';
 
 function FeedItem() {
   const [ showItem, setShowItem ] = useState(false)
-  // const [liked, setLiked] = useState(false);
   const [muted, setMuted] = useState(true)
   const userAxios = UserAxios();
   const videoRef = useRef(null)
@@ -136,7 +135,7 @@ function FeedItem() {
             {/* head part of post */}
             <div className="flex justify-between items-center">
 
-              {/* profile change for current user */}
+              {/* username and dp */}
               <Link to={`${feed?.user?.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
                 <img
                   src={feed?.user?.profile_url}
@@ -210,6 +209,10 @@ function FeedItem() {
             <div className='text-gray-400 flex text-sm m-1'>
               {feed?.likes_count > 0 && (
                 <p>{feed.likes_count} {feed.likes_count === 1 ? 'Like' : 'Likes'}</p>
+              )}
+
+              {feed?.comments_count > 0 && (
+                <p>{feed.comment_counts}</p>
               )}
             </div>
 
