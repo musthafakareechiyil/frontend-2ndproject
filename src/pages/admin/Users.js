@@ -105,11 +105,11 @@ function Users() {
 
   return (
     <div className='bg-gray-800 text-white flex'>
-{/* Sidebar component */}
+      {/* Sidebar component */}
       <Sidebar type = "admin" styleprop = "users"/>
       <div className='w-4/5 h-screen flex justify-center'>
         <div className='p-5 w-1/2 mt-7 overflow-y-auto'>
-{/*Shimmer*/}
+            {/*Shimmer*/}
             {isLoading? (<Shimmer/>):(
             <table className='w-full table-auto'>
             <tbody>

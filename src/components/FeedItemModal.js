@@ -6,7 +6,7 @@ import useFollowUnfollow from './useFollowUnfollow.js'
 import { deleteFeedItem } from '../Redux/feedSlice'
 import { Link } from 'react-router-dom'
 
-function FeedItemModal({ feedItem, closeModal }) {
+function FeedItemModal({ feedItem, closeModal, onDelete}) {
   const currentUser = useSelector((state) => state?.userDetails?.user)
   const userAxios = UserAxios()
   const { unfollowUser } = useFollowUnfollow([])
@@ -19,6 +19,8 @@ function FeedItemModal({ feedItem, closeModal }) {
         const response = await userAxios.delete(UserUrl+`posts/${feedItem.id}`)
         console.log(response)
         dispatch(deleteFeedItem(feedItem.id))
+        onDelete(feedItem.id)
+        closeModal()
       }
     }catch(error){
       console.error("Failed to delete feed", error)

@@ -23,6 +23,16 @@ function UserProfile() {
 
   console.log(userData, 'user data consoling from profile')
 
+  const handleDelete = (feedItemId) => {
+    if(userData) {
+      const updatedPosts = userData?.posts?.filter((post) => post?.id !== feedItemId)
+      setUserData((preUserData) => ({
+        ...preUserData,
+        posts: updatedPosts,
+      }))
+    }
+  }
+
   const closeModal = () => {
     setShowProfileItem(false)
   }
@@ -219,7 +229,7 @@ function UserProfile() {
         
         {/* rendering the ShowItem component */}
         { showProfileItem && (
-          <ShowItem feedItem = {selectedFeed} closeModal = { closeModal } userData = {userData}/>
+          <ShowItem feedItem = {selectedFeed} closeModal = { closeModal } userData = {userData} onDelete={handleDelete}/>
         )}
 
       </div>

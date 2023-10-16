@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import FeedItemModal from './FeedItemModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import useToggleLike from './useTogleLike';
 
-function ShowItem({ feedItem, closeModal ,userData}) {
+function ShowItem({ feedItem, closeModal , userData, onDelete}) {
   const [ isOpen, setIsOpen ] = useState(false)
   const [ feed, setFeed ] = useState('')
 
   const closeShowModal = () => {
     setIsOpen(false)
+    closeModal()
   }
 
   const handleContendClick = (e) => {
@@ -23,7 +23,6 @@ function ShowItem({ feedItem, closeModal ,userData}) {
 
         {/* image and video show here */}
         <div className="w-3/5 h-full flex">
-          {console.log(feedItem,'feedItems inside the post show')}
           {feedItem?.post_url?.toLowerCase().endsWith('.mp4') ? (
             // Video rendering
             <div>
@@ -71,7 +70,7 @@ function ShowItem({ feedItem, closeModal ,userData}) {
 
                 {/* Conditionally render FeedItemModal with the selected feed.id */}
                 {isOpen && (
-                  <FeedItemModal feedItem={feed} closeModal={closeShowModal}/>
+                  <FeedItemModal feedItem={feed} closeModal={closeShowModal} onDelete = {onDelete}/>
                 )}
             </div>  
 
