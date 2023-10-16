@@ -1,4 +1,4 @@
-import { faAnglesDown, faBookmark, faComment, faEllipsisVertical, faHeart, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesDown, faEllipsisVertical, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import { UserUrl } from '../APIs/BaseUrl';
@@ -127,7 +127,7 @@ function FeedItem() {
     <>
       {/* maping feeds */}
       {feeds &&
-        feeds.map((feed) => (
+        feeds?.map((feed) => (
 
           // feed section
           <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg" key={feed?.id}>
@@ -204,7 +204,7 @@ function FeedItem() {
             {/* likes count section */}
             <div className='text-gray-400 flex text-sm m-1'>
               {feed?.likes_count > 0 && (
-                <p>{feed.likes_count} {feed.likes_count === 1 ? 'Like' : 'Likes'}</p>
+                <p>{feed?.likes_count} {feed.likes_count === 1 ? 'Like' : 'Likes'}</p>
               )}
 
               {feed?.comments_count > 0 && (
@@ -221,7 +221,7 @@ function FeedItem() {
                 {/* like button */}
                 <button
                   className={` transform transition-transform hover:scale-110 duration-300`}
-                  onClick={() => toggleLike(feed.id, 'Post')}
+                  onClick={() => toggleLike(feed?.id, 'Post')}
                 >
                   {feed?.liked ? (
                     <lord-icon

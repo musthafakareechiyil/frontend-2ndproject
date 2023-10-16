@@ -81,7 +81,7 @@ function ShowItem({ feedItem, closeModal , userData, onDelete}) {
 
             {/* user profile div */}
             <div className='rounded-full h-9 w-9 bg-white mt-2 ml-3 mr-3'>
-              <img src=''/>
+              {/* <img src=''/> */}
             </div>
             
             {/* username and comment */}
