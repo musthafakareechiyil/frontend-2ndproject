@@ -14,7 +14,10 @@ const useFollowUnfollow = (initialFollowingUsers, shouldFilter = true, setUserDa
       // Add the followed user to the followingUsers state
       setFollowingUsers([...followingUsers, username]);
 
-      setUserData((prevUserData) => ({ ...prevUserData, is_following: true ,followers_count: prevUserData.followers_count + 1}));
+      // from user profile
+      if (setUserData){
+        setUserData((prevUserData) => ({ ...prevUserData, is_following: true ,followers_count: prevUserData.followers_count + 1}));
+      }
     } catch (error) {
       console.error("Error while following user:", error);
       throw error;
@@ -31,7 +34,10 @@ const useFollowUnfollow = (initialFollowingUsers, shouldFilter = true, setUserDa
         // Remove the unfollowed user from the followingUsers state
         setFollowingUsers(followingUsers.filter((user) => user !== username));
 
-        setUserData((prevUserData) => ({ ...prevUserData, is_following: false, followers_count: prevUserData.followers_count - 1 }));
+        // for profile follow and unfollow
+        if(setUserData){
+          setUserData((prevUserData) => ({ ...prevUserData, is_following: false, followers_count: prevUserData.followers_count - 1 }));
+        }
       }
     } catch (error) {
       console.error("Error while unfollowing user", error);

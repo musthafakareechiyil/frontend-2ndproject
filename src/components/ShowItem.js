@@ -93,7 +93,7 @@ function ShowItem({ feedItem, closeModal , userData, onDelete}) {
           </div>
 
           {/* add comment section */}
-          <div className="flex p-4">
+          <div className="flex p-3 mb-5">
             <input
               type="text"
               placeholder="Add a comment..."
