@@ -8,7 +8,6 @@ import useToggleLike from './useTogleLike';
 function ShowItem({ feedItem, closeModal ,userData}) {
   const [ isOpen, setIsOpen ] = useState(false)
   const [ feed, setFeed ] = useState('')
-  const { toggleLike } = useToggleLike() 
 
   const closeShowModal = () => {
     setIsOpen(false)
@@ -25,16 +24,16 @@ function ShowItem({ feedItem, closeModal ,userData}) {
         {/* image and video show here */}
         <div className="w-3/5 h-full flex">
           {console.log(feedItem,'feedItems inside the post show')}
-          {feedItem.post_url.toLowerCase().endsWith('.mp4') ? (
+          {feedItem?.post_url?.toLowerCase().endsWith('.mp4') ? (
             // Video rendering
             <div>
               <video autoPlay muted className="w-full h-full object-cover">
-                <source src={feedItem.post_url} type="video/mp4" />
+                <source src={feedItem?.post_url} type="video/mp4" />
               </video>
             </div>
           ) : (
             // Image rendering
-            <img src={feedItem.post_url} className="w-full h-full object-cover" alt="Post" />
+            <img src={feedItem?.post_url} className="w-full h-full object-cover" alt="Post" />
           )}
         </div>
 
@@ -45,14 +44,14 @@ function ShowItem({ feedItem, closeModal ,userData}) {
           <div className="flex items-center p-4 w-full justify-between border-b border-b-gray-600">
 
             {/* profile icon and username */}
-            <Link to={`/${(feedItem?.user || userData)?.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
+            <Link to={`/${(feedItem?.user || userData?.user)?.username}`} className="flex items-center ms-3 mt-2 mb-3 cursor-pointer">
               <img
-                src={(feedItem.user || userData)?.profile_url}
+                src={(feedItem.user || userData?.user)?.profile_url}
                 alt="User Profile"
                 className="w-9 h-9 rounded-full object-cover mr-2"
               />
               <span className="font-semibold text-white">
-                {(feedItem?.user || userData)?.username}
+                {(feedItem?.user || userData?.user)?.username}
               </span>
             </Link>
             
@@ -93,51 +92,6 @@ function ShowItem({ feedItem, closeModal ,userData}) {
             </div>
 
           </div>
-          
-          {/* like and archive div */}
-          {/* <div className='p-4 m-3'> */}
-
-            {/* like archive button with count */}
-            {/* <button
-              className={` transform transition-transform hover:scale-110 duration-300 mr-2`}
-              onClick={() => toggleLike(feedItem.id, 'Post')}
-            >
-              {feedItem?.liked ? (
-                <lord-icon
-                  src="https://cdn.lordicon.com/gfabuoru.json"
-                  trigger="hover"
-                  state="hover-match"
-                  colors="primary:#c71f16,secondary:#ebe6ef,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00"
-                />
-              ):(
-                <lord-icon
-                  src="https://cdn.lordicon.com/gfabuoru.json"
-                  trigger="morph"
-                  state="morph-two-hearts"
-                  colors="primary:#ffffff,secondary:#911710,quaternary:#e83a30"
-                />
-              )}     
-            </button> */}
-
-            {/* archive button */}
-            {/* <button className="text-gray-200 transform transition-transform hover:scale-110 duration-300">
-              <lord-icon
-                src="https://cdn.lordicon.com/prjooket.json"
-                trigger="morph"
-                state="morph-marked-bookmark"
-                colors="primary:#ffffff"
-              />
-            </button> */}
-
-            {/* likes and comments count */}
-            {/* {feedItem?.likes_count > 0 &&(
-              <div>
-              <p>{feedItem.likes_count} {feedItem.likes_count === 1 ? 'Like' : 'Likes'}</p>
-            </div>
-            )} */}
-
-
-          {/* </div> */}
 
           {/* add comment section */}
           <div className="flex p-4">

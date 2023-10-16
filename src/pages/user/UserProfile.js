@@ -219,7 +219,7 @@ function UserProfile() {
         
         {/* rendering the ShowItem component */}
         { showProfileItem && (
-          <ShowItem feedItem = {selectedFeed} closeModal = { closeModal } userData = {userData?.user}/>
+          <ShowItem feedItem = {selectedFeed} closeModal = { closeModal } userData = {userData}/>
         )}
 
       </div>

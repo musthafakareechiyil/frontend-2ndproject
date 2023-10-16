@@ -7,7 +7,7 @@ import { deleteFeedItem } from '../Redux/feedSlice'
 import { Link } from 'react-router-dom'
 
 function FeedItemModal({ feedItem, closeModal }) {
-  const currentUser = useSelector((state) => state?.userDetails.user.username)
+  const currentUser = useSelector((state) => state?.userDetails?.user)
   const userAxios = UserAxios()
   const { unfollowUser } = useFollowUnfollow([])
   const dispatch = useDispatch()
@@ -30,7 +30,7 @@ function FeedItemModal({ feedItem, closeModal }) {
       onClick={closeModal}
     >
       <div className='absolute w-72 h-auto rounded-md shadow-2xl'>
-        { currentUser === feedItem.user.username ? (
+        { currentUser?.username === feedItem?.user?.username || currentUser.id === feedItem?.user_id ? (
           <p className='w-full h-12 bg-gray-800 border-b border-gray-700 rounded-t-md flex justify-center items-center hover:bg-gray-700 text-red-500 cursor-pointer'
             onClick={deleteFeed}
           >
@@ -38,7 +38,7 @@ function FeedItemModal({ feedItem, closeModal }) {
           </p>
         ):(
           <p className='w-full h-12 bg-gray-800 border-b border-gray-700 rounded-t-md flex justify-center items-center hover:bg-gray-700 text-red-500 cursor-pointer'
-            onClick={() => unfollowUser(feedItem.user.username)}
+            onClick={() => unfollowUser(feedItem?.user?.username)}
           >
             Unfollow
           </p>
@@ -46,7 +46,7 @@ function FeedItemModal({ feedItem, closeModal }) {
         <p className='w-full h-12 bg-gray-800 border-b border-gray-700 flex justify-center items-center hover:bg-gray-700 cursor-pointer'>
           Save post
         </p>
-        <Link to={`${feedItem.user.username}`}>
+        <Link to={`${feedItem?.user?.username}`}>
           <p className='w-full h-12 bg-gray-800 flex border-b border-gray-700 justify-center items-center hover:bg-gray-700 cursor-pointer'>
             View profile
           </p>
