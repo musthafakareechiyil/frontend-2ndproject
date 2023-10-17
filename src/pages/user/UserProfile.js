@@ -248,36 +248,40 @@ function UserProfile() {
 
                       {/* like buttons and count */}
                       <div className='flex items-center'>
-                        <span>
-                        <lord-icon
-                          src="https://cdn.lordicon.com/igciyimj.json"
-                          trigger="hover"
-                          colors="primary:#ffffff,secondary:#ffffff,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
-                          style={ {width:'25px'} }
-                        />
-                        </span>
-                        <p className='font-bold mb-2'>10</p>
-                        {/* <span className='w-2 h-2'>
-                        <lord-icon
-                          src="https://cdn.lordicon.com/igciyimj.json"
-                          trigger="hover"
-                          colors="primary:#c71f16,secondary:#c71f16,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
-                          style={ {width:'25px'} }
-                        />
-                        </span>   */}
-                        {post.comment_count}
+                        { post?.liked ? (
+                          <span className='flex'>
+                            <lord-icon
+                              src="https://cdn.lordicon.com/igciyimj.json"
+                              trigger="hover"
+                              colors="primary:#c71f16,secondary:#c71f16,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
+                              style={ {width:'25px'} }
+                            />
+                            <p className='font-bold mt-1 ml-1'>{post?.likes_count}</p>
+                          </span>
+                        ):(
+                          <span className='flex'>
+                            <lord-icon
+                              src="https://cdn.lordicon.com/igciyimj.json"
+                              trigger="hover"
+                              colors="primary:#ffffff,secondary:#ffffff,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
+                              style={ {width:'25px'} }
+                            />
+                            <p className='font-bold mt-1 ml-1'>{post?.likes_count}</p>
+                          </span>  
+
+                        )}
                       </div>
 
                       {/* comment button and count (no action on button) */}
                       <div className='ml-2 flex'>
-                        <FontAwesomeIcon icon={faComment} className='h-5 w-5 mt-1'/> {post.likes_count}
-                        <p className='font-bold mb-2'>10</p>
+                        <FontAwesomeIcon icon={faComment} className='h-5 w-5'/> 
+                        <p className='font-bold'>{post?.comment_count}</p>
                       </div>
                     </div>
                   </div>          
                 </div>
               </div>
-          ))}
+            ))}
         </div> 
         
         {/* rendering the ShowItem component */}
