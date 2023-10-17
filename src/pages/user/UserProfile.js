@@ -5,7 +5,7 @@ import { UserAxios } from '../../config/Header_request';
 import { UserUrl } from '../../APIs/BaseUrl';
 import axios from 'axios';
 import { cloudinary_url } from '../../APIs/Cloudinary_url';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'react-router-dom';
 import ShowItem from '../../components/ShowItem';
@@ -203,7 +203,23 @@ function UserProfile() {
                   setSelectedFeed(post)
                   console.log(post,'post from the userprfile')
                   setShowProfileItem(true)
-                }}>
+                  }}
+                  // hower image in mouseEnter and Leave
+                  onMouseEnter = { () => {
+                    const tooltip = document.getElementById(`tooltip-${post.id}`)
+                    if (tooltip) {
+                      tooltip.style.display = 'block';
+                    }
+                  }}
+                  
+                  // Hide on mouse leave
+                  onMouseLeave={() => {
+                    const tooltip = document.getElementById(`tooltip-${post.id}`);
+                    if (tooltip) {
+                      tooltip.style.display = 'none';
+                    }
+                  }}
+                >
                   {post?.post_url.toLowerCase().endsWith('.mp4') ? (
                     // Render video for .mp4 files
                     <div>
@@ -222,6 +238,43 @@ function UserProfile() {
                       className='absolute inset-0 w-full h-full object-cover'
                     />
                   )}
+
+                  {/* hidden tooltip with like and commment counts */}
+                  <div
+                    id={`tooltip-${post.id}`}
+                    className="h-full w-full hidden text-white p-2 absolute backdrop-brightness-75"
+                  >
+                    <div className='flex justify-center items-center h-full'>
+
+                      {/* like buttons and count */}
+                      <div className='flex items-center'>
+                        <span>
+                        <lord-icon
+                          src="https://cdn.lordicon.com/igciyimj.json"
+                          trigger="hover"
+                          colors="primary:#ffffff,secondary:#ffffff,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
+                          style={ {width:'25px'} }
+                        />
+                        </span>
+                        <p className='font-bold mb-2'>10</p>
+                        {/* <span className='w-2 h-2'>
+                        <lord-icon
+                          src="https://cdn.lordicon.com/igciyimj.json"
+                          trigger="hover"
+                          colors="primary:#c71f16,secondary:#c71f16,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
+                          style={ {width:'25px'} }
+                        />
+                        </span>   */}
+                        {post.comment_count}
+                      </div>
+
+                      {/* comment button and count (no action on button) */}
+                      <div className='ml-2 flex'>
+                        <FontAwesomeIcon icon={faComment} className='h-5 w-5 mt-1'/> {post.likes_count}
+                        <p className='font-bold mb-2'>10</p>
+                      </div>
+                    </div>
+                  </div>          
                 </div>
               </div>
           ))}
