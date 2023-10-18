@@ -274,15 +274,6 @@ function UserProfile() {
 
                       {/* like buttons and count */}
                       <div className='flex items-center'
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleToggleLike(post.id)
-                          if (likedPosts.includes(post.id)) {
-                            post.likes_count -= 1
-                          }else{
-                            post.likes_count += 1
-                          }
-                        }}
                       >
                         { likedPosts.includes(post.id) ? (
                           <span className='flex '>
@@ -291,6 +282,15 @@ function UserProfile() {
                               trigger="hover"
                               colors="primary:#c71f16,secondary:#c71f16,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
                               style={ {width:'25px'} }
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleToggleLike(post.id)
+                                if (likedPosts.includes(post.id)) {
+                                  post.likes_count -= 1
+                                }else{
+                                  post.likes_count += 1
+                                }
+                              }}
                             />
                             <p className='font-bold mt-1 ml-1'>{post?.likes_count}</p>
                           </span>
@@ -301,6 +301,15 @@ function UserProfile() {
                               trigger="hover"
                               colors="primary:#ffffff,secondary:#ffffff,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
                               style={ {width:'25px'} }
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleToggleLike(post.id)
+                                if (likedPosts.includes(post.id)) {
+                                  post.likes_count -= 1
+                                }else{
+                                  post.likes_count += 1
+                                }
+                              }}
                             />
                             <p className='font-bold mt-1 ml-1'>{post?.likes_count}</p>
                           </span>  
