@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ShowItem from './ShowItem';
 import useToggleLike from './useTogleLike';
+import LikedUsers from './LikedUsers';
 
 function FeedItem() {
   const [ showItem, setShowItem ] = useState(false)
@@ -22,12 +23,14 @@ function FeedItem() {
   const [ selectedFeed, setSelectedFeed ] = useState(null)
   const dispatch = useDispatch()
   const { toggleLike } = useToggleLike()
+  const [ showLikedUsers, setShowLikedUsers ] = useState(false)
   const feeds = useSelector((state) => state?.feedData?.feedItems)
 
   const closeModal = () => {
     setIsOpen(false)
     setSelectedFeed(null)
     setShowItem(false)
+    setShowLikedUsers(false)
   }
 
   const toggleMute = () => {
@@ -131,7 +134,7 @@ function FeedItem() {
 
           // feed section
           <div className="bg-gray-900 text-white p-1 mx-24 mt-9 shadow-2xl rounded-lg" key={feed?.id}>
-            {console.log(feed,"form mapped items")}
+            {console.log(feed,"feed from mapped items")}
             {/* head part of post */}
             <div className="flex justify-between items-center">
 
@@ -202,7 +205,12 @@ function FeedItem() {
             </div>
 
             {/* likes count section */}
-            <div className='text-gray-400 flex text-sm m-1'>
+            <div className='text-gray-400 flex text-sm m-1 cursor-pointer'
+              onClick={() =>{
+                setShowLikedUsers(true)
+                setSelectedFeed(feed)
+              }}
+            >
               {feed?.likes_count > 0 && (
                 <p>{feed?.likes_count} {feed.likes_count === 1 ? 'Like' : 'Likes'}</p>
               )}
@@ -271,6 +279,11 @@ function FeedItem() {
             {/* show item component */}
             { showItem && selectedFeed === feed && (
               <ShowItem feedItem={selectedFeed} closeModal={closeModal}/>
+            )}
+
+            {/* show liked users component */}
+            { showLikedUsers && (
+              <LikedUsers closeModal={closeModal} feedItem = {selectedFeed}/>
             )}
 
           </div>

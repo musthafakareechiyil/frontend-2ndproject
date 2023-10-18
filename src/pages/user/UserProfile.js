@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useParams } from 'react-router-dom';
 import ShowItem from '../../components/ShowItem';
 import useFollowUnfollow from '../../components/useFollowUnfollow.js';
+import useToggleLike from '../../components/useTogleLike';
 
 function UserProfile() {
   const [ selectedFeed, setSelectedFeed ] = useState('')
@@ -20,8 +21,29 @@ function UserProfile() {
   const [currentDp, setCurrentDp] = useState();
   const { username } = useParams()
   const {followUser, unfollowUser} = useFollowUnfollow([], false, setUserData)
+  const { toggleLike } = useToggleLike()
+  const [likedPosts, setLikedPosts] = useState([]);
+
 
   console.log(userData, 'user data consoling from profile')
+
+  const handleToggleLike = async (postId) => {
+    try {
+      await toggleLike(postId, 'Post');
+  
+      // Check if the post is already in the likedPosts array.
+      const isLiked = likedPosts.includes(postId);
+  
+      if (isLiked) {
+        setLikedPosts(likedPosts.filter((id) => id !== postId));
+      } else {
+        setLikedPosts([...likedPosts, postId]);
+      }
+    } catch (error) {
+      console.error("Error toggling like", error);
+    }
+  };
+  
 
   const handleDelete = (feedItemId) => {
     if(userData) {
@@ -50,6 +72,10 @@ function UserProfile() {
       try {
         const response = await userAxios.get(UserUrl+`user/${username}`)
         setUserData(response?.data);
+        const initialLikedPosts = response.data.posts
+          .filter((post) => post.liked)
+          .map((post) => post.id)
+        setLikedPosts(initialLikedPosts)
       } catch (error) {
         console.error('Error fetching user data ', error);
       }
@@ -247,9 +273,19 @@ function UserProfile() {
                     <div className='flex justify-center items-center h-full'>
 
                       {/* like buttons and count */}
-                      <div className='flex items-center'>
-                        { post?.liked ? (
-                          <span className='flex'>
+                      <div className='flex items-center'
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleToggleLike(post.id)
+                          if (likedPosts.includes(post.id)) {
+                            post.likes_count -= 1
+                          }else{
+                            post.likes_count += 1
+                          }
+                        }}
+                      >
+                        { likedPosts.includes(post.id) ? (
+                          <span className='flex '>
                             <lord-icon
                               src="https://cdn.lordicon.com/igciyimj.json"
                               trigger="hover"
@@ -278,7 +314,8 @@ function UserProfile() {
                         <p className='font-bold'>{post?.comment_count}</p>
                       </div>
                     </div>
-                  </div>          
+                  </div>
+                            
                 </div>
               </div>
             ))}
@@ -286,7 +323,7 @@ function UserProfile() {
         
         {/* rendering the ShowItem component */}
         { showProfileItem && (
-          <ShowItem feedItem = {selectedFeed} closeModal = { closeModal } userData = {userData} onDelete={handleDelete}/>
+          <ShowItem feedItem = { selectedFeed } closeModal = { closeModal } userData = { userData } onDelete={ handleDelete } from = "userProfile"/>
         )}
 
       </div>

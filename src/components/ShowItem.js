@@ -4,7 +4,7 @@ import FeedItemModal from './FeedItemModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
-function ShowItem({ feedItem, closeModal , userData, onDelete}) {
+function ShowItem({ feedItem, closeModal , userData, onDelete, from}) {
   const [ isOpen, setIsOpen ] = useState(false)
   const [ feed, setFeed ] = useState('')
 
@@ -18,26 +18,26 @@ function ShowItem({ feedItem, closeModal , userData, onDelete}) {
   }
 
   return (
-    <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center backdrop-brightness-75" onClick={closeModal}>
-      <div className="w-3/5 h-4/5 bg-gray-900 flex"onClick={handleContendClick}>
+    <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center backdrop-brightness-50" onClick={closeModal}>
+      <div className="w-3/5 h-4/5 bg-gray-900 flex rounded-xl"onClick={handleContendClick}>
 
         {/* image and video show here */}
-        <div className="w-3/5 h-full flex">
+        <div className="w-3/5 h-full flex ">
           {feedItem?.post_url?.toLowerCase().endsWith('.mp4') ? (
             // Video rendering
             <div>
-              <video autoPlay muted className="w-full h-full object-cover">
+              <video autoPlay muted className="w-full h-full object-cover rounded-xl">
                 <source src={feedItem?.post_url} type="video/mp4" />
               </video>
             </div>
           ) : (
             // Image rendering
-            <img src={feedItem?.post_url} className="w-full h-full object-cover" alt="Post" />
+            <img src={feedItem?.post_url} className="w-full h-full object-cover rounded-xl" alt="Post" />
           )}
         </div>
 
         {/* right side */}
-        <div className=' w-2/5'>
+        <div className=' w-2/5 rounded-xl'>
           
           {/* username , profile_url and 3 dots*/}
           <div className="flex items-center p-4 w-full justify-between border-b border-b-gray-600">
