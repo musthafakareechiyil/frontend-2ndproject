@@ -11,18 +11,23 @@ import { useParams } from 'react-router-dom';
 import ShowItem from '../../components/ShowItem';
 import useFollowUnfollow from '../../components/useFollowUnfollow.js';
 import useToggleLike from '../../components/useTogleLike';
+import Followers from '../../components/Followers';
+import Following from '../../components/Following';
 
 function UserProfile() {
   const [ selectedFeed, setSelectedFeed ] = useState('')
   const [ showProfileItem, setShowProfileItem ] = useState(false)
   const userAxios = UserAxios();
-  const [userData, setUserData] = useState(null);
+  const [ userData, setUserData ] = useState(null);
   const currentUser = useSelector((state) => state?.userDetails?.user);
-  const [currentDp, setCurrentDp] = useState();
+  const [ currentDp, setCurrentDp ] = useState();
   const { username } = useParams()
   const {followUser, unfollowUser} = useFollowUnfollow([], false, setUserData)
   const { toggleLike } = useToggleLike()
   const [likedPosts, setLikedPosts] = useState([]);
+  const [ showFollowers, setShowFollowers ] = useState(false)
+  const [ selectedUser, setSelectedUser ] = useState(null)
+  const [ showFollowing, setShowFollowing ] = useState(false)
 
 
   console.log(userData, 'user data consoling from profile')
@@ -57,6 +62,8 @@ function UserProfile() {
 
   const closeModal = () => {
     setShowProfileItem(false)
+    setShowFollowers(false)
+    setShowFollowing(false)
   }
 
   const updateLocalStorageProfileUrl = (newProfileUrl) => {
@@ -205,13 +212,23 @@ function UserProfile() {
             </div>
 
             {/* followers count */}
-            <div className="mr-6 text-center">
+            <div className="mr-6 text-center cursor-pointer"
+              onClick={() => {
+                setShowFollowers(true)
+                setSelectedUser(userData?.user)
+              }}
+            >
               <p className="font-semibold">{userData?.followers_count}</p>
               <p className="text-gray-400">Followers</p>
             </div>
             
             {/* following count */}
-            <div className="text-center mb-9">
+            <div className="text-center mb-9 cursor-pointer"
+              onClick={() => {
+                setShowFollowing(true)
+                setSelectedUser(userData?.user)
+              }}
+            >
               <p className="font-semibold">{userData?.following_count}</p>
               <p className="text-gray-400">Following</p>
             </div>
@@ -333,6 +350,16 @@ function UserProfile() {
         {/* rendering the ShowItem component */}
         { showProfileItem && (
           <ShowItem feedItem = { selectedFeed } closeModal = { closeModal } userData = { userData } onDelete={ handleDelete } from = "userProfile"/>
+        )}
+
+        {/* Follwers component */}
+        { showFollowers && (
+          <Followers closeModal={closeModal} user = {selectedUser}/>
+        )}
+
+        {/* following component */}
+        { showFollowing && (
+          <Following closeModal={closeModal} user = { selectedUser}/>
         )}
 
       </div>
