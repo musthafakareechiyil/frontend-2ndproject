@@ -335,9 +335,9 @@ function UserProfile() {
                       </div>
 
                       {/* comment button and count (no action on button) */}
-                      <div className='ml-2 flex'>
-                        <FontAwesomeIcon icon={faComment} className='h-5 w-5'/> 
-                        <p className='font-bold'>{post?.comment_count}</p>
+                      <div className='ml-2 flex items-center'>
+                        <FontAwesomeIcon icon={faComment} className='h-5 w-5 mr-2'/> 
+                        <p className='font-bold'>{post?.comments_count}</p>
                       </div>
                     </div>
                   </div>

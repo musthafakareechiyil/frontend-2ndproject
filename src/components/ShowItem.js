@@ -3,10 +3,30 @@ import { Link } from 'react-router-dom';
 import FeedItemModal from './FeedItemModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { UserAxios } from '../config/Header_request';
+import { UserUrl } from '../APIs/BaseUrl';
 
-function ShowItem({ feedItem, closeModal , userData, onDelete, from}) {
+function ShowItem({ feedItem, closeModal , userData, onDelete}) {
   const [ isOpen, setIsOpen ] = useState(false)
   const [ feed, setFeed ] = useState('')
+  const [ newComment, setNewComment ] = useState('')
+  const userAxios = UserAxios()
+
+  const addComment = async () => {
+    try{
+      const response = await userAxios.post(UserUrl+'comments',{
+        comment: {
+          commentable_type: 'Post',
+          commentable_id: feed?.id,
+          body: newComment
+        }
+      })
+      setNewComment('')
+      console.log(response, 'response from adding new comment')
+    }catch(e){
+      console.error('Error while adding comment', e)
+    }
+  }
 
   const closeShowModal = () => {
     setIsOpen(false)
@@ -98,11 +118,16 @@ function ShowItem({ feedItem, closeModal , userData, onDelete, from}) {
               type="text"
               placeholder="Add a comment..."
               className="w-full p-2 text-white bg-gray-700 rounded-3xl"
+              value={newComment}
+              onChange={(e) => {
+                setFeed(feedItem || userData)
+                setNewComment(e.target.value)
+              }}
             />
             <button
               className="text-blue-600 ml-2 bg-transparent hover:text-white"
               onClick={() => {
-                // Add your logic to post a comment here
+                addComment()
               }}
             >
               Post

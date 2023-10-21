@@ -205,18 +205,19 @@ function FeedItem() {
             </div>
 
             {/* likes count section */}
-            <div className='text-gray-400 flex text-sm m-1 cursor-pointer'
-              onClick={() =>{
-                setShowLikedUsers(true)
-                setSelectedFeed(feed)
-              }}
+            <div className='text-gray-400 flex text-sm m-1 cursor-pointer justify-between'
             >
               {feed?.likes_count > 0 && (
-                <p>{feed?.likes_count} {feed.likes_count === 1 ? 'Like' : 'Likes'}</p>
+                <p
+                  onClick={() =>{
+                    setShowLikedUsers(true)
+                    setSelectedFeed(feed)
+                  }}
+                >{feed?.likes_count} {feed.likes_count === 1 ? 'Like' : 'Likes'}</p>
               )}
 
               {feed?.comments_count > 0 && (
-                <p>{feed.comment_counts}</p>
+                <p>{feed?.comments_count} Comments</p>
               )}
             </div>
 
