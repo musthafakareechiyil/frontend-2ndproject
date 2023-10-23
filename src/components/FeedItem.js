@@ -170,6 +170,11 @@ function FeedItem() {
             
             </div>
 
+            {/* post caption */}
+            <div className='p-1 ml-2 text-sm text-gray-300 mb-2 flex flex-wrap w-'>
+              {feed?.caption}
+            </div>
+
             {/* post part (image and video) */}
             <div style={{ maxHeight: 'calc(85vh - 4rem)', overflow: 'hidden' }}
             >

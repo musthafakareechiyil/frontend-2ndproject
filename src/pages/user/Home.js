@@ -2,8 +2,6 @@ import React from 'react';
 import Sidebar from '../../components/Sidebar';
 import SuggestedUsers from '../../components/SuggestedUsers';
 import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { UserUrl } from '../../APIs/BaseUrl';
 import { UserAxios } from '../../config/Header_request';
@@ -17,6 +15,7 @@ function Home() {
 
   const uploadPost = async (e) => {
     const selectedPostImageOrVideos = e.target.files[0]
+    console.log(selectedPostImageOrVideos, 'target from home ')
     if(selectedPostImageOrVideos){
       try{
         const data = new FormData()
@@ -57,26 +56,8 @@ function Home() {
           <FeedItem/>
         </div>
         
-        {/* upload post and suggested users*/}
+        {/*suggested users*/}
         <div className='flex flex-col m-9 text-gray-300 ml-10'>
-
-          {/* upload post */}
-          <div className=' bg-gray-900 p-4 shadow-2xl rounded-lg'>
-            Hai <span className='font-semibold'>{currentUser?.username}</span>, do you <br/> want to add a post ?<br/>
-            <FontAwesomeIcon icon={faArrowUpFromBracket} className='h- w-20 p-2 hover:bg-gray-700 rounded-full cursor-pointer border-4 border-green-700 ml-20 mt-5 mb-5'
-              onClick={()=> document.getElementById('post').click()}
-            />
-
-            <input 
-              type='file'
-              id = 'post'
-              accept='image/*, video/*'
-              style={{display: 'none'}}
-              multiple
-              onChange={uploadPost}
-            />
-
-          </div>
 
           {/* suggestion */}
           <SuggestedUsers/>

@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faChartLine, faHouse, faMagnifyingGlass, faPhotoFilm, faComment, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faChartLine, faMagnifyingGlass, faPhotoFilm, faComment, faBell } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { adminLogout } from '../Redux/adiminSlice';
 import { userLogout } from '../Redux/userSlice';
 import { resetFeed } from '../Redux/feedSlice';
+import AddPost from './AddPost';
 
 
 function Sidebar( {type, styleprop} ) {
     const dispatch = useDispatch()
+    const [ addPost, setAddPost ] = useState(false)
     const currentUser = useSelector((state) => state?.userDetails?.user)
+
+    const closeModal = () => {
+      setAddPost(false)
+    }
 
     const handleLogout = () => {
       if (type === "admin") {
@@ -102,11 +108,28 @@ function Sidebar( {type, styleprop} ) {
               </Link>
             </li>
 
+            {/* add post */}
+            <li className="mb-4 cursor-pointer"
+              onClick={() => setAddPost(true)}
+            >
+              <div className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "notification" ? "font-bold" : '' }`}>
+              <lord-icon
+                src="https://cdn.lordicon.com/zrkkrrpl.json"
+                trigger="hover"
+                stroke="bold"
+                state="hover-swirl"
+                colors="primary:#ffffff,secondary:#ffffff"
+              >
+              </lord-icon> 
+                <div className='hidden md:flex ml-3'>Add post</div>
+              </div>
+            </li>
+
             {/* profile */}
             <li className="mb-4">
               <Link to={`/${currentUser.username}`} className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "profile" ? "font-bold" : '' }`}>
                 <img
-                  className='w-5 h-5 rounded-full object-cover mr-2'
+                  className='w-8 h-8 rounded-full object-cover mr-3'
                   src={currentUser.profile_url}
                   alt={currentUser.id}
                 />
@@ -115,6 +138,10 @@ function Sidebar( {type, styleprop} ) {
                 </div>
               </Link>
             </li>
+
+            { addPost && (
+              <AddPost closeModal={closeModal}/>
+            )}
 
         </ul>
         )}

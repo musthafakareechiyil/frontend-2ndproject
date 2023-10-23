@@ -80,7 +80,7 @@ function ShowItem({ feedItem, closeModal , userData, onDelete}) {
   }
 
   return (
-    <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center backdrop-brightness-50" onClick={closeModal}>
+    <div className="fixed z-50 top-0 left-0 h-full w-full flex items-center justify-center backdrop-brightness-50" onClick={closeModal}>
       <div className="w-3/5 h-4/5 bg-gray-900 flex rounded-xl"onClick={handleContendClick}>
 
         {/* image and video show here */}
