@@ -204,7 +204,7 @@ function FeedItem() {
               )}
             </div>
 
-            {/* likes count section */}
+            {/* likes and comment count section */}
             <div className='text-gray-400 flex text-sm m-1 cursor-pointer justify-between'
             >
               {feed?.likes_count > 0 && (
@@ -216,6 +216,7 @@ function FeedItem() {
                 >{feed?.likes_count} {feed.likes_count === 1 ? 'Like' : 'Likes'}</p>
               )}
 
+              {/* comments count */}
               {feed?.comments_count > 0 && (
                 <p>{feed?.comments_count} Comments</p>
               )}

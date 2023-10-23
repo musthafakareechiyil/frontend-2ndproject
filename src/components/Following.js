@@ -18,6 +18,7 @@ function Following({ closeModal, user}) {
       console.log(response, 'followers list consoling from followers')
     }
     following();
+    // eslint-disable-next-line
   },[])
   return (
     <div className='h-full w-full fixed top-0 left-0 backdrop-brightness-50 flex justify-center items-center' onClick={closeModal}>

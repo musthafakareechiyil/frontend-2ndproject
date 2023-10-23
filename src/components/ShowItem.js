@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import FeedItemModal from './FeedItemModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,28 @@ function ShowItem({ feedItem, closeModal , userData, onDelete}) {
   const [ feed, setFeed ] = useState('')
   const [ newComment, setNewComment ] = useState('')
   const userAxios = UserAxios()
+  const [ showComments, setShowComments ] = useState([])
+
+  console.log(feed, 'consoling feed from showitem')
+
+  const formatTimeAgo = (timestamp) => {
+    const now = new Date();
+    const date = new Date(timestamp);
+    const secondsAgo = Math.floor((now - date) / 1000);
+
+    if (secondsAgo < 60) {
+      return `${secondsAgo} ${secondsAgo === 1 ? 's' : 's'}`;
+    } else if (secondsAgo < 3600) {
+      const minutesAgo = Math.floor(secondsAgo / 60);
+      return `${minutesAgo} ${minutesAgo === 1 ? 'm' : 'm'}`;
+    } else if (secondsAgo < 86400) {
+      const hoursAgo = Math.floor(secondsAgo / 3600);
+      return `${hoursAgo} ${hoursAgo === 1 ? 'h' : 'h'}`;
+    } else {
+      const daysAgo = Math.floor(secondsAgo / 86400);
+      return `${daysAgo} ${daysAgo === 1 ? 'd' : 'd'}`;
+    }
+  };
 
   const addComment = async () => {
     try{
@@ -21,12 +43,32 @@ function ShowItem({ feedItem, closeModal , userData, onDelete}) {
           body: newComment
         }
       })
+      const lastComment = response?.data
       setNewComment('')
       console.log(response, 'response from adding new comment')
+      setShowComments((prevComments) => [lastComment, ...prevComments])
     }catch(e){
       console.error('Error while adding comment', e)
     }
   }
+
+  useEffect ( () => {
+    const showComments = async () => {
+      try{
+        const response = await userAxios.get(UserUrl+ 'comments', {
+          params: {
+            id: feedItem.id || userData.feed.id
+          }
+        })
+        setShowComments(response.data)
+        console.log(response, 'response from comments show ')
+      }catch(e){
+        console.error('Error while fetching comments',e)
+      }
+    }
+    showComments()
+    // eslint-disable-next-line
+  },[])
 
   const closeShowModal = () => {
     setIsOpen(false)
@@ -97,18 +139,37 @@ function ShowItem({ feedItem, closeModal , userData, onDelete}) {
           </div>
 
           {/* comments show section */}
-          <div className='flex  p-4 h-4/5 border-b border-b-gray-600'>
-
-            {/* user profile div */}
-            <div className='rounded-full h-9 w-9 bg-white mt-2 ml-3 mr-3'>
-              {/* <img src=''/> */}
-            </div>
+          <div className='flex  p-4 h-4/5 border-b border-b-gray-600 overflow-y-auto'>
             
             {/* username and comment */}
-            <div>
-              <p className='font-bold'>username</p>
-              <p className='font-light w-full h-auto'>comments here</p>
-            </div>
+            {showComments ? (
+            <ul className='text-white'>
+              {showComments?.map((comment) => (
+                <li key={comment?.id} className="mb-2">
+                  <div className="flex items-center ">
+
+                    {/* profile image */}
+                    <img
+                      src={comment?.user.profile_url}
+                      alt={comment?.user.username}
+                      className="w-10 h-10 object-cover rounded-full m-2 mr-4"
+                    />
+
+                    {/* username */}
+                    <Link to={`/${comment?.user?.username}`}
+                      className="text-white"
+                    >
+                      <p className='font-bold'>{comment?.user?.username} <span className='text-gray-400 font-thin ml-2'>{formatTimeAgo(comment?.created_at)}</span></p>
+                      <p>{comment?.body}</p>
+                    </Link>
+                    
+                  </div>
+                </li>
+                ))}
+              </ul>
+            ) : (
+              'Loading...'
+            )}
 
           </div>
 

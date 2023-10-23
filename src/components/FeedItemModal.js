@@ -53,9 +53,11 @@ function FeedItemModal({ feedItem, closeModal, onDelete}) {
             View profile
           </p>
         </Link>
-        <p className='w-full h-12 bg-gray-800 flex border-b border-gray-700 justify-center items-center hover:bg-gray-700 cursor-pointer'>
+        {/* <p className='w-full h-12 bg-gray-800 flex border-b border-gray-700 justify-center items-center hover:bg-gray-700 cursor-pointer'
+          onClick={() => setShowPost(true)}
+        >
           View post
-        </p>
+        </p> */}
         <p className='w-full h-12 bg-gray-800 rounded-b-md flex justify-center items-center hover:bg-gray-700 text-red-500 cursor-pointer'
           onClick={closeModal}
         >
