@@ -7,15 +7,18 @@ import { adminLogout } from '../Redux/adiminSlice';
 import { userLogout } from '../Redux/userSlice';
 import { resetFeed } from '../Redux/feedSlice';
 import AddPost from './AddPost';
+import Search from './Search';
 
 
 function Sidebar( {type, styleprop} ) {
     const dispatch = useDispatch()
     const [ addPost, setAddPost ] = useState(false)
+    const [ search, setSearch ] = useState(false)
     const currentUser = useSelector((state) => state?.userDetails?.user)
 
     const closeModal = () => {
       setAddPost(false)
+      setSearch(false)
     }
 
     const handleLogout = () => {
@@ -78,10 +81,14 @@ function Sidebar( {type, styleprop} ) {
 
             {/* search button */}
             <li className="mb-4">
-              <Link to="/users" className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 ${ styleprop === "search" ? "font-bold" : '' }`}>
-                <FontAwesomeIcon icon={faMagnifyingGlass} className='mr-4' /> 
-                <div className='hidden md:flex'>Search</div>
-              </Link>
+              <div className={`flex items-center  text-white px-4 py-2 ml-4 rounded-md hover:bg-gray-700 cursor-pointer ${ styleprop === "search" ? "font-bold" : '' }`}onClick={()=> setSearch(true)}>
+                <lord-icon
+                    src="https://cdn.lordicon.com/kkvxgpti.json"
+                    trigger="hover"
+                    colors="primary:#ffffff"  
+                />
+                <div className='hidden md:flex ml-3'>Search</div>
+              </div>
             </li>
 
             {/* Explore button */}
@@ -141,6 +148,10 @@ function Sidebar( {type, styleprop} ) {
 
             { addPost && (
               <AddPost closeModal={closeModal}/>
+            )}
+
+            { search && (
+              <Search closeModal={closeModal}/>
             )}
 
         </ul>
