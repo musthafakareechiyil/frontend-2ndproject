@@ -93,9 +93,9 @@ function Sidebar( {type, styleprop} ) {
 
             {/* Explore button */}
             <li className="mb-4">
-              <Link to="/users" className="flex items-center text-white hover:bg-gray-700 px-4 py-2 ml-4 rounded-md ">
+              <Link to="/explore" className="flex items-center text-white hover:bg-gray-700 px-4 py-2 ml-4 rounded-md ">
                 <FontAwesomeIcon icon={faPhotoFilm} className='mr-3' /> 
-                <div className='hidden md:flex'>Explore</div>
+                <div className='hidden md:flex'>Gallery</div>
               </Link>
             </li>
 
