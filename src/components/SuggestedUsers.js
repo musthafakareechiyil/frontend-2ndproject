@@ -30,7 +30,7 @@ const SuggestedUsers = () => {
   }, [currentUser]);
 
   return (
-    <div className="bg-gray-800 mt-8">
+    <div className="bg-gray-800 mt-8 md:hidden sm:hidden lg:block">
 
       {/* div contains see all and seggested head section */}
       <div className="flex items-center justify-between mb-2">
