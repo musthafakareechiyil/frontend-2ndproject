@@ -19,6 +19,7 @@ function Search({ closeModal }) {
       }
     }
     search()
+    // eslint-disable-next-line
   },[searchKey])
 
   return (

@@ -70,6 +70,7 @@ function AddPost({ closeModal }) {
               <img
                 className='object-cover rounded-xl'
                 src={uploadedPost}
+                alt='post video'
               />
             </div>
 

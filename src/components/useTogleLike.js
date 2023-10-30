@@ -1,6 +1,5 @@
 import { UserAxios } from "../config/Header_request"
 import { UserUrl } from "../APIs/BaseUrl"
-import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { updateLikedStatus } from "../Redux/feedSlice"
 

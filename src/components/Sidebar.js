@@ -8,17 +8,20 @@ import { userLogout } from '../Redux/userSlice';
 import { resetFeed } from '../Redux/feedSlice';
 import AddPost from './AddPost';
 import Search from './Search';
+import Messages from './Chat';
 
 
 function Sidebar( {type, styleprop} ) {
     const dispatch = useDispatch()
     const [ addPost, setAddPost ] = useState(false)
     const [ search, setSearch ] = useState(false)
+    const [ messages, setMessages ] = useState(false)
     const currentUser = useSelector((state) => state?.userDetails?.user)
 
     const closeModal = () => {
       setAddPost(false)
       setSearch(false)
+      setMessages(false)
     }
 
     const handleLogout = () => {
@@ -101,7 +104,9 @@ function Sidebar( {type, styleprop} ) {
 
             {/* messages */}
             <li className="mb-4">
-              <Link to="/users" className={`flex items-center  text-white px-4 py-2 ml-4 mr-4 rounded-md hover:bg-gray-700 ${ styleprop === "messages" ? "font-bold" : '' }`}>
+              <div className={`flex items-center  text-white px-4 py-2 ml-4 mr-4 rounded-md hover:bg-gray-700 ${ styleprop === "messages" ? "font-bold" : '' }`}
+                onClick={() => setMessages(true)}
+              >
                 <lord-icon
                   src="https://cdn.lordicon.com/wzrwaorf.json"
                   trigger="hover"
@@ -109,7 +114,7 @@ function Sidebar( {type, styleprop} ) {
                   stroke="bold"
                 />
                 <div className='hidden lg:flex ml-3'>Messages</div>
-              </Link>
+              </div>
             </li>
             
             {/* notification */}
@@ -161,6 +166,10 @@ function Sidebar( {type, styleprop} ) {
 
             { search && (
               <Search closeModal={closeModal}/>
+            )}
+
+            { messages && (
+              <Messages closeModal={closeModal}/>
             )}
 
         </ul>
