@@ -128,7 +128,7 @@ function Chat({ closeModal }) {
             />
           </div>
           {/* Content for the right side */}
-          <div className="flex-grow my-8 mx-2">
+          <div className="flex-grow my-8 mx-2 overflow-y-auto">
           {/* Chat messages display */}
             {receiver_id && (
               chatHistory?.map((message) => (
