@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { UserAxios } from '../config/Header_request';
 import { UserUrl } from '../APIs/BaseUrl';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setChats, setNewMessageIntoHistory } from '../Redux/chatSlice';
 
 function Chat({ closeModal }) {
   const userAxios = UserAxios()
@@ -10,16 +10,38 @@ function Chat({ closeModal }) {
   const [ chattedUsers, setChattedUsers ] = useState([])
   const [ receiver_id, setReciever_id ] = useState(null)
   const [ chatHistory, setChatHistory ] = useState([])
+  const dispatch = useDispatch()
+  // const chatHistory = useSelector(s => s.chat.chatHistory);
 
-  useEffect(() => {
-    getChattedUsers();
-    // eslint-disable-next-line
-  },[])
+  const ws = new WebSocket("ws://localhost:3000/cable");
 
-  useEffect(() => {
-    getChatHistory()
-    // eslint-disable-next-line
-  },[receiver_id])
+  ws.onopen = () => {
+    ws.send(
+      JSON.stringify({
+        command: "subscribe",
+        identifier: JSON.stringify({
+          channel: "ChatsChannel",
+          sender_id: currentUser.id,
+          receiver_id: receiver_id
+        }),
+      })
+    );
+  };
+  
+
+  ws.onmessage = (e) => {
+    const data = JSON.parse(e.data)
+    if (data.type === "ping") return
+    if (data.type === "welcome") return
+    if (data.type === "confirm_subscription") return
+
+    const message = data.message
+    console.log(message,"sended message from the action cable broadcasting")
+
+    const newChatHistory = [...chatHistory, message];
+    setChatHistory(newChatHistory)
+    dispatch(setNewMessageIntoHistory(message));
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,23 +54,16 @@ function Chat({ closeModal }) {
         body: body,
       });
   
-      // Check if the response status code indicates success (e.g., 200)
       if (response.status === 201) {
-        // Assuming the response data contains the new chat message
-        const newMessage = response.data;
-  
-        // Update your local chatHistory state with the new message
+        const newMessage = response.data
         setChatHistory([...chatHistory, newMessage]);
       } else {
-        // Handle the case where the request was not successful
         console.error('Error in chat request:', response.status, response.data);
       }
     } catch (e) {
       console.error(e, 'error while chatting');
     }
   }
-  
-  
 
   const getChattedUsers = async () => {
     try {
@@ -63,6 +78,11 @@ function Chat({ closeModal }) {
       console.error(e, 'Error getting chatted users');
     }
   }
+
+  useEffect(() => {
+    getChattedUsers();
+    // eslint-disable-next-line
+  },[])
   
   const getChatHistory = async() => {
     try {
@@ -72,11 +92,17 @@ function Chat({ closeModal }) {
         }
     })
     setChatHistory(response?.data)
-    console.log(response,'response from chat history')
+    dispatch(setChats(response?.data));
+
     }catch (e) {
       console.error(e," Error while fetching chat history ")
     }
   }
+
+  useEffect(() => {
+    getChatHistory()
+    // eslint-disable-next-line
+  },[receiver_id])
 
   return (
     <div className='fixed h-full w-full backdrop-brightness-50 flex items-center justify-center top-0 left-0 z-50'>
@@ -133,6 +159,7 @@ function Chat({ closeModal }) {
             {receiver_id && (
               chatHistory?.map((message) => (
                 <div
+                  key={message.id}
                   className={`m-5 max-w-xs flex ${
                     message.sender_id === currentUser.id
                       ? 'mr-auto'
@@ -146,7 +173,7 @@ function Chat({ closeModal }) {
                         : 'bg-yellow-500 rounded-l-full rounded-br-full'
                     }`}
                   >
-                    <span className='m-3' key={message.id}>
+                    <span className='m-3 text-black' key={message.id}>
                       {message.body}
                     </span>
                   </p>
@@ -165,7 +192,7 @@ function Chat({ closeModal }) {
               type="text"
               name="message" // Add a name to your input element
               placeholder="Type your message..."
-              className="w-5/6 p-2 border border-gray-400 rounded"
+              className="w-5/6 p-2 border border-gray-400 rounded text-black"
             />
             <button
               className="text-white p-2 bg-blue-600 rounded-xl ml-3 w-16"
