@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { UserAxios } from '../config/Header_request';
 import { UserUrl } from '../APIs/BaseUrl';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,14 +9,20 @@ function Chat({ closeModal }) {
   const currentUser = useSelector((state) => state?.userDetails?.user)
   const [ chattedUsers, setChattedUsers ] = useState([])
   const [ receiver_id, setReciever_id ] = useState(null)
-  // const [ chatHistory, setChatHistory ] = useState([])
   const dispatch = useDispatch()
   const chatHistory = useSelector(s => s.chat.chatHistory);
+  const scrollDownRef = useRef(null)
+
+  useEffect(() =>{
+    scrollDownRef.current?.scrollIntoView();
+  })
 
 
+  // connection and boradcast from the action cable
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:3000/cable");
 
+    // subscribing to the actioncable channel
     ws.onopen = () => {
       ws.send(
         JSON.stringify({
@@ -30,6 +36,7 @@ function Chat({ closeModal }) {
       );
     };
 
+    // recieving message from the boradcast
     ws.onmessage = (e) => {
       const data = JSON.parse(e.data);
       if (data.type === "ping" || data.type === "welcome" || data.type === "confirm_subscription") {
@@ -37,10 +44,6 @@ function Chat({ closeModal }) {
       }
 
       const message = data.message;
-      console.log(message, "received message from the Action Cable broadcasting");
-
-      // const newChatHistory = [...chatHistory, message];
-      // setChatHistory(newChatHistory);
       dispatch(setNewMessageIntoHistory(message));
     };
 
@@ -50,6 +53,7 @@ function Chat({ closeModal }) {
     //eslint-disable-next-line
   }, [currentUser, receiver_id]);
 
+  // submitting the new messages
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = e.target.message.value;
@@ -72,6 +76,7 @@ function Chat({ closeModal }) {
     }
   }
 
+  // showing the chatted users
   const getChattedUsers = async () => {
     try {
       const response = await userAxios.get(UserUrl + 'chatted_users');
@@ -91,6 +96,7 @@ function Chat({ closeModal }) {
     // eslint-disable-next-line
   },[])
   
+  // fetching the user chat history
   const getChatHistory = async() => {
     try {
       const response = await userAxios.get(UserUrl+'chats',{
@@ -138,7 +144,6 @@ function Chat({ closeModal }) {
                     <p className='font-bold'>{user?.username}</p>
                     <p className='text-gray-400'>{user?.fullname}</p>
                   </div>
-                  
                 </div>
               </li>
             ))}
@@ -184,9 +189,11 @@ function Chat({ closeModal }) {
                       {message.body}
                     </span>
                   </p>
+                  
                 </div>
               ))
             )}
+            <div ref={scrollDownRef}/>
           </div>
 
 
