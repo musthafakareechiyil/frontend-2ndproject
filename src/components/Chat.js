@@ -9,39 +9,46 @@ function Chat({ closeModal }) {
   const currentUser = useSelector((state) => state?.userDetails?.user)
   const [ chattedUsers, setChattedUsers ] = useState([])
   const [ receiver_id, setReciever_id ] = useState(null)
-  const [ chatHistory, setChatHistory ] = useState([])
+  // const [ chatHistory, setChatHistory ] = useState([])
   const dispatch = useDispatch()
-  // const chatHistory = useSelector(s => s.chat.chatHistory);
+  const chatHistory = useSelector(s => s.chat.chatHistory);
 
-  const ws = new WebSocket("ws://localhost:3000/cable");
 
-  ws.onopen = () => {
-    ws.send(
-      JSON.stringify({
-        command: "subscribe",
-        identifier: JSON.stringify({
-          channel: "ChatsChannel",
-          sender_id: currentUser.id,
-          receiver_id: receiver_id
-        }),
-      })
-    );
-  };
-  
+  useEffect(() => {
+    const ws = new WebSocket("ws://localhost:3000/cable");
 
-  ws.onmessage = (e) => {
-    const data = JSON.parse(e.data)
-    if (data.type === "ping") return
-    if (data.type === "welcome") return
-    if (data.type === "confirm_subscription") return
+    ws.onopen = () => {
+      ws.send(
+        JSON.stringify({
+          command: "subscribe",
+          identifier: JSON.stringify({
+            channel: "ChatsChannel",
+            sender_id: currentUser.id,
+            receiver_id: receiver_id
+          }),
+        })
+      );
+    };
 
-    const message = data.message
-    console.log(message,"sended message from the action cable broadcasting")
+    ws.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      if (data.type === "ping" || data.type === "welcome" || data.type === "confirm_subscription") {
+        return;
+      }
 
-    const newChatHistory = [...chatHistory, message];
-    setChatHistory(newChatHistory)
-    dispatch(setNewMessageIntoHistory(message));
-  }
+      const message = data.message;
+      console.log(message, "received message from the Action Cable broadcasting");
+
+      // const newChatHistory = [...chatHistory, message];
+      // setChatHistory(newChatHistory);
+      dispatch(setNewMessageIntoHistory(message));
+    };
+
+    return () => {
+      ws.close();
+    };
+    //eslint-disable-next-line
+  }, [currentUser, receiver_id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,8 +62,8 @@ function Chat({ closeModal }) {
       });
   
       if (response.status === 201) {
-        const newMessage = response.data
-        setChatHistory([...chatHistory, newMessage]);
+        // const newMessage = response.data
+        // setChatHistory([...chatHistory, newMessage]);
       } else {
         console.error('Error in chat request:', response.status, response.data);
       }
@@ -91,7 +98,7 @@ function Chat({ closeModal }) {
           receiver_id: receiver_id
         }
     })
-    setChatHistory(response?.data)
+    // setChatHistory(response?.data)
     dispatch(setChats(response?.data));
 
     }catch (e) {
