@@ -374,7 +374,7 @@ function UserProfile() {
 
         {/* show chat component */}
         { showChats && (
-          <Chat closeModal={closeModal} profileId={userData?.user.id} userData ={userData.user}/>
+          <Chat closeModal={closeModal} userData={userData?.user}/>
         )}
 
       </div>

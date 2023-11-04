@@ -6,7 +6,7 @@ import { setChats, setNewMessageIntoHistory } from '../Redux/chatSlice';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'
 
-function Chat({ closeModal ,profileId}) {
+function Chat({ closeModal ,userData}) {
   const userAxios = UserAxios()
   const currentUser = useSelector((state) => state?.userDetails?.user)
   const [ chattedUsers, setChattedUsers ] = useState([])
@@ -16,9 +16,7 @@ function Chat({ closeModal ,profileId}) {
   const scrollDownRef = useRef(null)
   const [ selectedUser, setSelectedUser ] = useState(null)
 
-  // setSelectedUser(userData)
-
-  console.log(profileId, "consoling profile id")
+  console.log(userData, "consoling profile id")
 
   useEffect(() =>{
     scrollDownRef.current?.scrollIntoView();
@@ -37,7 +35,7 @@ function Chat({ closeModal ,profileId}) {
           identifier: JSON.stringify({
             channel: "ChatsChannel",
             sender_id: currentUser.id,
-            receiver_id: receiver_id || profileId
+            receiver_id: receiver_id
           }),
         })
       );
@@ -68,7 +66,7 @@ function Chat({ closeModal ,profileId}) {
   
     try {
       const response = await userAxios.post(UserUrl + 'chats', {
-        receiver_id: receiver_id || profileId,
+        receiver_id: receiver_id,
         body: body,
       });
   
@@ -88,7 +86,11 @@ function Chat({ closeModal ,profileId}) {
     try {
       const response = await userAxios.get(UserUrl + 'chatted_users');
       if (response.status === 200) {
-        setChattedUsers(response.data);
+        const responseData = response.data
+        if (userData) {
+          responseData.unshift(userData)
+        }
+        setChattedUsers(responseData);
         console.log(response.data, 'chatted users')
       } else {
         console.error('Error getting chatted users: Invalid response status');
@@ -108,7 +110,7 @@ function Chat({ closeModal ,profileId}) {
     try {
       const response = await userAxios.get(UserUrl+'chats',{
         params: {
-          receiver_id: receiver_id || profileId
+          receiver_id: receiver_id
         }
     })
     // setChatHistory(response?.data)
@@ -165,6 +167,7 @@ function Chat({ closeModal ,profileId}) {
 
         {/* Right Side */}
         <div className="flex flex-col w-4/5 p-4 relative">
+
           {/* close button */}
           <div className="absolute top-0 right-0 p-3 cursor-pointer"
             onClick={closeModal}
@@ -176,6 +179,7 @@ function Chat({ closeModal ,profileId}) {
             />
           </div>
 
+          {/* username profile on top of chatbox */}
           { receiver_id && (
             <Link className='h-10 w-5/6 flex'
               to={`/${selectedUser?.username}`}
@@ -184,7 +188,7 @@ function Chat({ closeModal ,profileId}) {
                 className='h-10 w-10 rounded-full object-cover mr-3 mt-1'
               />
               <span>
-              <p className='font-bold'>
+              <p className='font-bold text-white'>
                 {selectedUser?.username}
               </p>
               <p className='text-gray-400'>
@@ -193,8 +197,6 @@ function Chat({ closeModal ,profileId}) {
               </span>
             </Link>
           )}
-
-
 
           {/* Content for the right side */}
           <div className="flex-grow my-8 mx-2 overflow-y-auto">
@@ -234,7 +236,8 @@ function Chat({ closeModal ,profileId}) {
 
             <div ref={scrollDownRef}/>
           </div>
-
+          
+          {/* input form */}
           { receiver_id && (
             <form
               className="mt-4 flex"
@@ -256,8 +259,8 @@ function Chat({ closeModal ,profileId}) {
             </form>
           )}
 
-
         </div>
+
       </div>
     </div>
   );
