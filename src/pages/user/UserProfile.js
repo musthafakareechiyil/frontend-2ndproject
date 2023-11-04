@@ -13,6 +13,7 @@ import useFollowUnfollow from '../../components/useFollowUnfollow.js';
 import useToggleLike from '../../components/useTogleLike';
 import Followers from '../../components/Followers';
 import Following from '../../components/Following';
+import Chat from '../../components/Chat';
 
 function UserProfile() {
   const [ selectedFeed, setSelectedFeed ] = useState('')
@@ -28,6 +29,7 @@ function UserProfile() {
   const [ showFollowers, setShowFollowers ] = useState(false)
   const [ selectedUser, setSelectedUser ] = useState(null)
   const [ showFollowing, setShowFollowing ] = useState(false)
+  const [ showChats, setShowChats ] = useState(false)
 
 
   console.log(userData, 'user data consoling from profile')
@@ -64,6 +66,7 @@ function UserProfile() {
     setShowProfileItem(false)
     setShowFollowers(false)
     setShowFollowing(false)
+    setShowChats(false)
   }
 
   const updateLocalStorageProfileUrl = (newProfileUrl) => {
@@ -194,11 +197,18 @@ function UserProfile() {
             )}
 
             {/* view archive or Message button */}
-            <button
-              className={'text-gray-200 mr-4 px-4 py-1 cursor-pointer rounded-md w-32 bg-gray-600 hover:bg-gray-700'}
-            >
-              {username === currentUser.username ? 'View Archive' : 'Message'}
-            </button>
+              {username === currentUser.username ? (
+                <button
+                  className={'text-gray-200 mr-4 px-4 py-1 cursor-pointer rounded-md w-32 bg-gray-600 hover:bg-gray-700'}
+                > View Saved 
+                </button>
+              ): (
+                <button
+                  className={'text-gray-200 mr-4 px-4 py-1 cursor-pointer rounded-md w-32 bg-gray-600 hover:bg-gray-700'}
+                  onClick={()=> setShowChats(true)}
+                > Message
+                </button>
+              )}
 
           </div>
 
@@ -360,6 +370,11 @@ function UserProfile() {
         {/* following component */}
         { showFollowing && (
           <Following closeModal={closeModal} user = { selectedUser}/>
+        )}
+
+        {/* show chat component */}
+        { showChats && (
+          <Chat closeModal={closeModal} profileId={userData?.user.id} userData ={userData.user}/>
         )}
 
       </div>
