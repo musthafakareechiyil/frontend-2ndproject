@@ -229,7 +229,7 @@ function Chat({ closeModal ,userData}) {
                 <motion.img animate={{ y:-80, x:70, rotate: 10 }}
                   src='https://res.cloudinary.com/dbpcfcpit/image/upload/v1699075385/3d-render-hand-throw-paper-plane-business-concept-removebg-preview_vcvipt.png'
                   alt='send_message'
-                  transition={{ duration: 3 }}
+                  transition={{ duration: 30 }}
                 />
               </div>
             )}
