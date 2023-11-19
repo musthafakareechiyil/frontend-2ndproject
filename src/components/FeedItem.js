@@ -33,6 +33,17 @@ function FeedItem() {
     setShowLikedUsers(false)
   }
 
+  const savePost = async(post_id) => {
+    try {
+      const response = await userAxios.post(UserUrl + 'saved_posts',{
+        post_id
+      })
+      console.log(response, "response while saving posts")
+    }catch (e) {
+      console.error("error saving post", e)
+    }
+  }
+
   const toggleMute = () => {
     setMuted(!muted);
   };
@@ -271,13 +282,19 @@ function FeedItem() {
                 
               </div>
 
-              {/* archive button */}
+              {/* save button */}
               <button className="text-gray-200 transform transition-transform hover:scale-110 duration-300">
                   <lord-icon
-                      src="https://cdn.lordicon.com/prjooket.json"
-                      trigger="morph"
-                      state="morph-marked-bookmark"
-                      colors="primary:#ffffff"
+                    src="https://cdn.lordicon.com/prjooket.json"
+                    trigger="morph"
+                    state="morph-marked-bookmark"
+                    colors="primary:#ffffff"
+                    onClick = {() => savePost(feed?.id)}
+                  />
+                  <lord-icon
+                    src="https://cdn.lordicon.com/oiiqgosg.json"
+                    trigger="hover"
+                    colors="primary:#ffffff"
                   />
               </button>
 

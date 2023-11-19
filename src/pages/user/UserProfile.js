@@ -30,6 +30,7 @@ function UserProfile() {
   const [ selectedUser, setSelectedUser ] = useState(null)
   const [ showFollowing, setShowFollowing ] = useState(false)
   const [ showChats, setShowChats ] = useState(false)
+  const [ showSaved, setShowSaved ] = useState(false)
 
 
   console.log(userData, 'user data consoling from profile')
@@ -200,7 +201,8 @@ function UserProfile() {
               {username === currentUser.username ? (
                 <button
                   className={'text-gray-200 mr-4 px-4 py-1 cursor-pointer rounded-md w-32 bg-gray-600 hover:bg-gray-700'}
-                > View Saved 
+                  onClick={() => { setShowSaved(!showSaved)}}
+                > {showSaved ? 'My Posts' : 'Show Saved'}
                 </button>
               ): (
                 <button
@@ -249,7 +251,7 @@ function UserProfile() {
 
         {/* profile posts show section */}
         <div className='w-9/12 h-4/5 mt-10 overflow-y-scroll grid-cols-4 grid gap-2'>
-          {userData &&
+          {userData && showSaved === false &&
             userData?.posts?.map((post) => (
               <div className='relative' key={post?.id}>
                 <div style={{ paddingBottom: '100%' }} onClick={()=> {
