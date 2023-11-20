@@ -38,16 +38,16 @@ function Signup() {
 
       const response = await axios.post(UserUrl+'users',userData);
 
-      if (response.status === 201){
-        console.log('Registration success',response.data)
+      if (response?.status === 201){
+        console.log('Registration success',response?.data)
         navigate("/login")
       }else{
-        console.log('Registration failed',response.statusText)
+        console.log('Registration failed',response?.statusText)
       }
     }catch(error){
       console.log('Error occurred',error)
-      if (error.response.data.errors) {
-        setAlert(error.response.data.errors);
+      if (error?.response?.data?.errors) {
+        setAlert(error?.response?.data?.errors);
       } else {
         setAlert(['An error occurred. Please try again.']);
       }    
