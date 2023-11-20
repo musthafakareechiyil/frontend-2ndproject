@@ -38,8 +38,8 @@ function Signup() {
 
       const response = await axios.post(UserUrl+'users',userData);
 
-      if (response?.status === 201){
-        console.log('Registration success',response?.data)
+      if (response && response.status === 201){
+        console.log('Registration success',response.data)
         navigate("/login")
       }else{
         console.log('Registration failed',response?.statusText)
