@@ -1,4 +1,4 @@
-import { faAnglesDown, faEllipsisVertical, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesDown, faEllipsisVertical, faHeart, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import { UserUrl } from '../APIs/BaseUrl';
@@ -257,13 +257,7 @@ function FeedItem() {
                       colors="primary:#c71f16,secondary:#ebe6ef,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00"
                     />
                   ):(
-                    <lord-icon
-                      src="https://cdn.lordicon.com/gfabuoru.json"
-                      trigger="morph"
-                      state="morph-two-hearts"
-                      colors="primary:#ffffff,secondary:#911710,quaternary:#e83a30"
-                    />
-                  )}
+<FontAwesomeIcon icon={faHeart} />                  )}
                    
                 </button>
                 
