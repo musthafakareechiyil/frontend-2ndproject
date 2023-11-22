@@ -118,7 +118,7 @@ function Sidebar( {type, styleprop} ) {
             </li>
             
             {/* notification */}
-            <li className="mb-4">
+            {/* <li className="mb-4">
               <Link to="/users" className={`flex items-center  text-white px-4 py-2 ml-4 mr-4 rounded-md hover:bg-gray-700 ${ styleprop === "notification" ? "font-bold" : '' }`}>
                 <lord-icon
                   src="https://cdn.lordicon.com/vspbqszr.json"
@@ -127,7 +127,7 @@ function Sidebar( {type, styleprop} ) {
                 />
                 <div className='ml-3 hidden lg:flex'>Notification</div>
               </Link>
-            </li>
+            </li> */}
 
             {/* add post */}
             <li className="mb-4 cursor-pointer"

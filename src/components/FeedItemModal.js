@@ -28,7 +28,7 @@ function FeedItemModal({ feedItem, closeModal, onDelete}) {
   }
   
   return (
-    <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-brightness-50'
+    <div className='fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-brightness-50 z-50'
       onClick={closeModal}
     >
       <div className='absolute w-72 h-auto rounded-md shadow-2xl'>
