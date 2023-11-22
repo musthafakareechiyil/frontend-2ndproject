@@ -251,18 +251,17 @@ function FeedItem() {
                 >
                   {feed?.liked ? (
                     <lord-icon
-                      src="https://cdn.lordicon.com/gfabuoru.json"
-                      trigger="hover"
-                      state="hover-match"
+                      src="https://cdn.lordicon.com/prjooket.json"
+                      trigger="morph"
+                      state="morph-marked-bookmark"
                       colors="primary:#ffffff"
                     />
                   ):(
-                    <lord-icon
-                      src="https://cdn.lordicon.com/gfabuoru.json"
-                      trigger="morph"
-                      state="morph-two-hearts"
-                      colors="primary:#ffffff"
-                    />
+                  <lord-icon
+                    src="https://cdn.lordicon.com/oiiqgosg.json"
+                    trigger="hover"
+                    colors="primary:#ffffff"
+                  />
                   )}
                    
                 </button>
