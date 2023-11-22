@@ -254,7 +254,7 @@ function FeedItem() {
                     />
                   ) : (
                     <lord-icon
-                      src="https://cdn.lordicon.com/gfabuoru.json"
+                      src="https://cdn.lordicon.com/igciyimj.json"
                       trigger="hover"
                       colors="primary:#ffffff,secondary:#ffffff,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
                     />
