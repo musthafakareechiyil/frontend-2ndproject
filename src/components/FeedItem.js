@@ -248,17 +248,15 @@ function FeedItem() {
                 <button className={`transform transition-transform hover:scale-110 duration-300`} onClick={() => toggleLike(feed?.id, 'Post')}>
                   {feed?.liked ? (
                     <lord-icon
-                      src="https://cdn.lordicon.com/gfabuoru.json"
+                      src="https://cdn.lordicon.com/igciyimj.json"
                       trigger="hover"
-                      state="hover-match"
-                      colors="primary:#c71f16,secondary:#ebe6ef,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00"
+                      colors="primary:#c71f16,secondary:#c71f16,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
                     />
                   ) : (
                     <lord-icon
                       src="https://cdn.lordicon.com/gfabuoru.json"
-                      trigger="morph"
-                      state="morph-two-hearts"
-                      colors="primary:#ffffff,secondary:#911710,quaternary:#e83a30"
+                      trigger="hover"
+                      colors="primary:#ffffff,secondary:#ffffff,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
                     />
                   )}
                   <span role="img" aria-label="like-icon-fallback">❤️</span>
