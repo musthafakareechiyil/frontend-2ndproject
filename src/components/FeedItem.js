@@ -254,14 +254,14 @@ function FeedItem() {
                       src="https://cdn.lordicon.com/gfabuoru.json"
                       trigger="hover"
                       state="hover-match"
-                      colors="primary:#c71f16,secondary:#ebe6ef,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00"
+                      colors="primary:#ffffff"
                     />
                   ):(
                     <lord-icon
                       src="https://cdn.lordicon.com/gfabuoru.json"
                       trigger="morph"
                       state="morph-two-hearts"
-                      colors="primary:#ffffff,secondary:#911710,quaternary:#e83a30"
+                      colors="primary:#ffffff"
                     />
                   )}
                    
@@ -291,12 +291,11 @@ function FeedItem() {
                     colors="primary:#ffffff"
                     onClick = {() => savePost(feed?.id)}
                   />
-                    <lord-icon
-                      src="https://cdn.lordicon.com/gfabuoru.json"
-                      trigger="morph"
-                      state="morph-two-hearts"
-                      colors="primary:#ffffff,secondary:#911710,quaternary:#e83a30"
-                    />
+                  <lord-icon
+                    src="https://cdn.lordicon.com/oiiqgosg.json"
+                    trigger="hover"
+                    colors="primary:#ffffff"
+                  />
               </button>
 
             </div>
