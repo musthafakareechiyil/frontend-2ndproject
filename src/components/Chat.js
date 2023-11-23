@@ -236,7 +236,6 @@ function Chat({ closeModal ,userData}) {
 
             <div ref={scrollDownRef}/>
           </div>
-          
           {/* input form */}
           { receiver_id && (
             <form
