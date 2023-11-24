@@ -25,7 +25,7 @@ function Chat({ closeModal ,userData}) {
 
   // connection and boradcast from the action cable
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3000/cable");
+    const ws = new WebSocket("ws://api.v-app.tech/cable");
 
     // subscribing to the actioncable channel
     ws.onopen = () => {
