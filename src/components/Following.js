@@ -23,6 +23,7 @@ function Following({ closeModal, user}) {
   return (
     <div className='h-full w-full fixed top-0 left-0 backdrop-brightness-50 flex justify-center items-center' onClick={closeModal}>
       <div className='bg-gray-800 w-1/6 max-h-96 rounded-lg overflow-y-auto p-4'>
+      <h1 className='border-b font-bold mb-2 border-slate-400 pb-1'>Followings</h1>
       {following ? (
           <ul className='text-white'>
             {following?.map((user) => (

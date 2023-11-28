@@ -31,6 +31,7 @@ function LikedUsers({ closeModal, feedItem }) {
   return (
     <div className='top-0 left-0 fixed h-full w-full backdrop-brightness-75 flex justify-center items-center' onClick={closeModal}>
       <div className='absolute max-h-96 w-1/6 bg-gray-800 rounded-lg p-4 overflow-y-auto'>
+        <h1 className='border-b font-bold mb-2 border-slate-400 pb-1'>Liked users</h1>
         {likedUsersData ? (
           <ul className='text-white'>
             {likedUsersData?.map((user) => (
