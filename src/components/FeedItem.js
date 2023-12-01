@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import ShowItem from './ShowItem';
 import useToggleLike from './useTogleLike';
 import LikedUsers from './LikedUsers';
+import useSavePost from './usePostSave';
 
 function FeedItem() {
   const [ showItem, setShowItem ] = useState(false)
@@ -25,23 +26,14 @@ function FeedItem() {
   const { toggleLike } = useToggleLike()
   const [ showLikedUsers, setShowLikedUsers ] = useState(false)
   const feeds = useSelector((state) => state?.feedData?.feedItems)
+  const { savePost, unSavePost } = useSavePost()
+
 
   const closeModal = () => {
     setIsOpen(false)
     setSelectedFeed(null)
     setShowItem(false)
     setShowLikedUsers(false)
-  }
-
-  const savePost = async(post_id) => {
-    try {
-      const response = await userAxios.post(UserUrl + 'saved_posts',{
-        post_id
-      })
-      console.log(response, "response while saving posts")
-    }catch (e) {
-      console.error("error saving post", e)
-    }
   }
 
   const toggleMute = () => {
@@ -279,6 +271,14 @@ function FeedItem() {
 
               {/* save button */}
               <button className="text-gray-200 transform transition-transform hover:scale-110 duration-300">
+                { feed.saved ? (
+                  <lord-icon
+                    src="https://cdn.lordicon.com/oiiqgosg.json"
+                    trigger="hover"
+                    colors="primary:#ffffff"
+                    onClick = {() => unSavePost(feed?.id)}
+                  />
+                ):(
                   <lord-icon
                     src="https://cdn.lordicon.com/prjooket.json"
                     trigger="morph"
@@ -286,11 +286,8 @@ function FeedItem() {
                     colors="primary:#ffffff"
                     onClick = {() => savePost(feed?.id)}
                   />
-                  <lord-icon
-                    src="https://cdn.lordicon.com/oiiqgosg.json"
-                    trigger="hover"
-                    colors="primary:#ffffff"
-                  />
+                )}
+
               </button>
 
             </div>

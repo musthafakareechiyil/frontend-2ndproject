@@ -6,7 +6,6 @@ import { updateLikedStatus } from "../Redux/feedSlice"
 const useToggleLike = () => {
   const userAxios = UserAxios()
   const dispatch = useDispatch()
-  // const [ liked, setLiked ] = useState(initialState || {}) 
 
   const toggleLike = async (likable_id, likable_type) => {
     try{

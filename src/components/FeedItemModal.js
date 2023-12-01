@@ -5,12 +5,16 @@ import { UserUrl } from '../APIs/BaseUrl'
 import useFollowUnfollow from './useFollowUnfollow.js'
 import { deleteFeedItem } from '../Redux/feedSlice'
 import { Link } from 'react-router-dom'
+import useSavePost from './usePostSave.js'
 
 function FeedItemModal({ feedItem, closeModal, onDelete}) {
   const currentUser = useSelector((state) => state?.userDetails?.user)
   const userAxios = UserAxios()
   const { unfollowUser } = useFollowUnfollow([])
   const dispatch = useDispatch()
+  const { savePost, unSavePost } = useSavePost()
+
+  console.log(feedItem, "consoling feetitem coming from profile")
   
   const deleteFeed = async() => {
     try {
@@ -45,9 +49,23 @@ function FeedItemModal({ feedItem, closeModal, onDelete}) {
             Unfollow
           </p>
         )} 
-        <p className='w-full h-12 bg-gray-800 border-b border-gray-700 flex justify-center items-center hover:bg-gray-700 cursor-pointer'>
-          Save post
-        </p>
+
+        {
+          feedItem?.saved ? (
+            <p className='w-full h-12 bg-gray-800 border-b border-gray-700 flex justify-center items-center hover:bg-gray-700 cursor-pointer'
+              onClick={() => unSavePost(feedItem.id)}
+            >
+              Remove from saved
+            </p>
+          ) : (
+            <p className='w-full h-12 bg-gray-800 border-b border-gray-700 flex justify-center items-center hover:bg-gray-700 cursor-pointer'
+              onClick={() => savePost(feedItem.id) }
+            >
+              Save post
+            </p>
+          )
+        }
+
         <Link to={`${feedItem?.user?.username}`}>
           <p className='w-full h-12 bg-gray-800 flex border-b border-gray-700 justify-center items-center hover:bg-gray-700 cursor-pointer'>
             View profile

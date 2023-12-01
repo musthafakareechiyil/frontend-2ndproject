@@ -35,10 +35,24 @@ const feedSlice = createSlice({
           postToUpdate.likes_count--
         }
       }
+    },
+    // Inside your feedSlice
+
+    saveOrRemoveSaved: (state, action) => {
+      const { postId, saved } = action.payload;
+      console.log("Action payload:", action.payload);
+      const postToUpdate = state.feedItems.find((item) => item.id === postId);
+      console.log(postToUpdate, "consoling post to update value")
+      console.log(postId, "consoling postId")
+
+      if (postToUpdate) {
+        console.log("checking if is is entering to the conditional statemdent")
+        postToUpdate.saved = saved;
+      }
     }
 
   }
 })
 
-export const { setPosts, addFeedItem ,deleteFeedItem ,resetFeed, updateLikedStatus} = feedSlice.actions
+export const { setPosts, addFeedItem ,deleteFeedItem ,resetFeed, updateLikedStatus, saveOrRemoveSaved} = feedSlice.actions
 export default feedSlice.reducer;
