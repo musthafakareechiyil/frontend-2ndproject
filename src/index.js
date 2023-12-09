@@ -13,7 +13,6 @@ root.render(
   <Provider store = { store } >
       <BrowserRouter>
         <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}>
-          {console.log(process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID, "consoling the env data google auth")}
           <App />
         </GoogleOAuthProvider>
       </BrowserRouter>
