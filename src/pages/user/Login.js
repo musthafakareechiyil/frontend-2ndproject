@@ -88,7 +88,8 @@ function Login() {
         }
       })
       .catch((error) => {
-        console.log('Error occurred while logging in with Google', error);
+        console.log('Account not registered! ', error);
+        setAlert(['Account not registered!'])
       });
   };
 
@@ -203,7 +204,7 @@ function Login() {
 
             {/* alerts for invalid credential */}
             {alert && (
-              <div className="text-red-500 text-sm mt-2">Invalid Credentials</div>
+              <div className="text-red-500 text-sm mt-2">{alert}</div>
             )}
 
             {/* login button (submit)  */}
