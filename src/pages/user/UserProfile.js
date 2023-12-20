@@ -31,7 +31,7 @@ function UserProfile() {
   const [ showFollowing, setShowFollowing ] = useState(false)
   const [ showChats, setShowChats ] = useState(false)
   const [ showSaved, setShowSaved ] = useState(false)
-
+  const [ savedPostData, setSavedPostData ] = useState(null)
 
   console.log(userData, 'user data consoling from profile')
 
@@ -124,6 +124,16 @@ function UserProfile() {
     }
   };
 
+  const showSavedPosts = async() => {
+    try {
+      const response = await userAxios.get(UserUrl+ '/saved_posts')
+      console.log("consoling saved posts response", response)
+      setSavedPostData(response.data)
+    }catch(e){
+      console.error("Error while showing saved posts", e)
+    }
+  }
+
   return (
     <div className="bg-gray-800 w-screen h-screen text-white flex">
 
@@ -201,7 +211,9 @@ function UserProfile() {
               {username === currentUser.username ? (
                 <button
                   className={'text-gray-200 mr-4 px-4 py-1 cursor-pointer rounded-md w-32 bg-gray-600 hover:bg-gray-700'}
-                  onClick={() => { setShowSaved(!showSaved)}}
+                  onClick={() => { setShowSaved(!showSaved);
+                    showSavedPosts();
+                  }}
                 > {showSaved ? 'My Posts' : 'Show Saved'}
                 </button>
               ): (
@@ -251,8 +263,8 @@ function UserProfile() {
 
         {/* profile posts show section */}
         <div className='w-9/12 h-4/5 mt-10 overflow-y-scroll grid-cols-4 grid gap-2'>
-          {userData && showSaved === false &&
-            userData?.posts?.map((post) => (
+          {userData && showSaved === false ?
+            (userData?.posts?.map((post) => (
               <div className='relative' key={post?.id}>
                 <div style={{ paddingBottom: '100%' }} onClick={()=> {
                   setSelectedFeed(post)
@@ -356,7 +368,111 @@ function UserProfile() {
                             
                 </div>
               </div>
-            ))}
+            ))):(savedPostData?.map((post) => (
+              <div className='relative' key={post?.id}>
+                <div style={{ paddingBottom: '100%' }} onClick={()=> {
+                  setSelectedFeed(post.post)
+                  console.log(post,'post from the userprfile')
+                  setShowProfileItem(true)
+                  }}
+                  hower image in mouseEnter and Leave
+                  onMouseEnter = { () => {
+                    const tooltip = document.getElementById(`tooltip-${post.id}`)
+                    if (tooltip) {
+                      tooltip.style.display = 'block';
+                    }
+                  }}
+                  
+                  // Hide on mouse leave
+                  onMouseLeave={() => {
+                    const tooltip = document.getElementById(`tooltip-${post.id}`);
+                    if (tooltip) {
+                      tooltip.style.display = 'none';
+                    }
+                  }}
+                >
+                  {post?.post?.post_url.toLowerCase().endsWith('.mp4') ? (
+                    // Render video for .mp4 files
+                    <div>
+                      <video
+                        src={post?.post?.post_url}
+                        alt='Video'
+                        className='absolute inset-0 w-full h-full object-cover'
+                      />
+                      <FontAwesomeIcon icon={faPlay} className='absolute m-3 '/>
+                    </div>
+                  ) : (
+                    // Render image for other file types
+                    <img
+                      src={post?.post?.post_url}
+                      alt='post'
+                      className='absolute inset-0 w-full h-full object-cover'
+                    />
+                  )}
+
+                  {/* hidden tooltip with like and commment counts */}
+                  <div
+                    id={`tooltip-${post.id}`}
+                    className="h-full w-full hidden text-white p-2 absolute backdrop-brightness-75"
+                  >
+                    <div className='flex justify-center items-center h-full'>
+
+                      {/* like buttons and count */}
+                      {/* <div className='flex items-center'
+                      >
+                        { likedPosts.includes(post.id) ? (
+                          <span className='flex '>
+                            <lord-icon
+                              src="https://cdn.lordicon.com/igciyimj.json"
+                              trigger="hover"
+                              colors="primary:#c71f16,secondary:#c71f16,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
+                              style={ {width:'25px'} }
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleToggleLike(post.id)
+                                if (likedPosts.includes(post.id)) {
+                                  post.likes_count -= 1
+                                }else{
+                                  post.likes_count += 1
+                                }
+                              }}
+                            />
+                            <p className='font-bold mt-1 ml-1'>{post?.likes_count}</p>
+                          </span>
+                        ):(
+                          <span className='flex'>
+                            <lord-icon
+                              src="https://cdn.lordicon.com/igciyimj.json"
+                              trigger="hover"
+                              colors="primary:#ffffff,secondary:#ffffff,tertiary:#ffc738,quaternary:#f9c9c0,quinary:#f24c00,senary:#ebe6ef"
+                              style={ {width:'25px'} }
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleToggleLike(post.id)
+                                if (likedPosts.includes(post.id)) {
+                                  post.likes_count -= 1
+                                }else{
+                                  post.likes_count += 1
+                                }
+                              }}
+                            />
+                            <p className='font-bold mt-1 ml-1'>{post?.likes_count}</p>
+                          </span>  
+
+                        )}
+                      </div> */}
+
+                      {/* comment button and count (no action on button) */}
+                      {/* <div className='ml-2 flex items-center'>
+                        <FontAwesomeIcon icon={faComment} className='h-5 w-5 mr-2'/> 
+                        <p className='font-bold'>{post?.comments_count}</p>
+                      </div> */}
+                    </div>
+                  </div>
+                            
+                </div>
+              </div>
+            )))}
         </div> 
         
         {/* rendering the ShowItem component */}
